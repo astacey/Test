@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://www.dnb.com/DNB_WebServices/Providers/TransferRegistration" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="wsp_TransferRegistration" targetNamespace="http://www.dnb.com/DNB_WebServices/Providers/TransferRegistration">
+  <wsdl:types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.dnb.com/DNB_WebServices/Providers/TransferRegistration" xmlns:SOAP_ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://www.dnb.com/DNB_WebServices/Providers/TransferRegistration">
+          
+          <xsd:complexType name="ws_TransferRegistration">
+            <xsd:sequence>
+              <xsd:element name="transferRegistrationRequest" nillable="true" type="tns:transferRegistrationRequest"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="transferRegistrationRequest">
+            <xsd:sequence>
+              <xsd:element name="UserId" nillable="true" type="xsd:string"/>
+              <xsd:element name="Password" nillable="true" type="xsd:string"/>
+              <xsd:element name="transferRegistrationrequestData" nillable="true" type="tns:transferRegistrationrequestData"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="transferRegistrationrequestData">
+            <xsd:sequence>
+              <xsd:element name="Source_User_ID" nillable="true" type="xsd:string"/>
+              <xsd:element name="Source_User_Password" nillable="true" type="xsd:string"/>
+              <xsd:element name="Target_User_ID" nillable="true" type="xsd:string"/>
+              <xsd:element name="Target_User_Password" nillable="true" type="xsd:string"/>
+              <xsd:element name="DnB_DUNS_Number" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="CountryCode" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Product_Name" nillable="true" type="xsd:string"/>
+              <xsd:element name="Notification_Level" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Customer_Account_ID" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Endorsement" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Last_Update_Date_From" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Last_Update_Date_To" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Renewal_Date_From" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Renewal_Date_To" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Expiration_Date_From" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Expiration_Date_To" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Cancel_Duplicate_Registration" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Character_Set_Override" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="ws_TransferRegistrationResponse">
+            <xsd:sequence>
+              <xsd:element name="transferRegistrationResponse" nillable="true" type="tns:transferRegistrationResponse"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="transferRegistrationResponse">
+            <xsd:sequence>
+              <xsd:element name="DGX" nillable="true" type="tns:DGX"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="DGX">
+            <xsd:sequence>
+              <xsd:element name="SIGNONMSGSRSV1" nillable="true" type="tns:SIGNONMSGSRSV1"/>
+              <xsd:element name="GLBLMNSVCMSGSRSV1" nillable="true" type="tns:GLBLMNSVCMSGSRSV1" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="SIGNONMSGSRSV1">
+            <xsd:sequence>
+              <xsd:element name="SONRS" nillable="true" type="tns:SONRS"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="SONRS">
+            <xsd:sequence>
+              <xsd:element name="STATUS" nillable="true" type="tns:STATUS"/>
+              <xsd:element name="DTSERVER" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="LANGUAGE" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="STATUS">
+            <xsd:sequence>
+              <xsd:element name="CODE" nillable="true" type="xsd:string"/>
+              <xsd:element name="SEVERITY" nillable="true" type="xsd:string"/>
+              <xsd:element name="MESSAGE" nillable="true" type="xsd:string"/>
+              <xsd:element name="TECH_MESSAGE" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="SUPPORT_MESSAGE" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="GLBLMNSVCMSGSRSV1">
+            <xsd:sequence>
+              <xsd:element name="XFERREGNTRNRS" nillable="true" type="tns:XFERREGNTRNRS" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="XFERREGNTRNRS">
+            <xsd:sequence>
+              <xsd:element name="TRNUID" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="RSLT_TKT" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="STATUS" nillable="true" type="tns:STATUS2" minOccurs="0"/>
+              <xsd:element name="XFERREGNRS" nillable="true" type="tns:XFERREGNRS"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="STATUS2">
+            <xsd:sequence>
+              <xsd:element name="CODE" nillable="true" type="xsd:string"/>
+              <xsd:element name="SEVERITY" nillable="true" type="xsd:string"/>
+              <xsd:element name="MESSAGE" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="TECH_MESSAGE" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="SUPPORT_MESSAGE" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="XFERREGNRS">
+            <xsd:sequence>
+              <xsd:element name="USERRS" nillable="true" type="tns:ArrayOfUSERRS" minOccurs="0"/>
+              <xsd:element name="AUDITRS" nillable="true" type="tns:ArrayOfAUDITRS" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="USERRS">
+            <xsd:sequence>
+              <xsd:element name="USERID" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="PFLRS" nillable="true" type="tns:ArrayOfPFLRS" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="PFLRS">
+            <xsd:sequence>
+              <xsd:element name="PFL_NME" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="PROD_NME" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="NTFC_LVL" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="REGNRS" nillable="true" type="tns:ArrayOfREGNRS" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="REGNRS">
+            <xsd:sequence>
+              <xsd:element name="CUST_ACCT_ID" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="DUNS_NBR" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="CTRY_CD" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="PRIM_NME" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="CUST_ENDR" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="STAT_CD" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="STAT_DESC" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="RNEW_DT" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="EXP_DT" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="LAST_UPD_DT" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="HISTRS" nillable="true" type="tns:ArrayOfHISTRS" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="HISTRS">
+            <xsd:sequence>
+              <xsd:element name="ACTV_DT" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="ACTV_CD" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="ACTV_DESC" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="ADDL_DET_RS" nillable="true" type="tns:ArrayOfADDL_DET_RS" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="ADDL_DET_RS">
+            <xsd:sequence>
+              <xsd:element name="FRMR_DUNS_NBR" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="CHRG_XMIT_DT" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="FINL_EMBT_IND" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="TRADE_UP_DUNS_NBR" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="REQD_CTRY_CD" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="ArrayOfADDL_DET_RS"><xsd:sequence>
+			<xsd:element name="ArrayOfADDL_DET_RSItem" type="tns:ADDL_DET_RS" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+          </xsd:complexType>
+          <xsd:complexType name="ArrayOfHISTRS"><xsd:sequence>
+			<xsd:element name="ArrayOfHISTRSItem" type="tns:HISTRS" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+          </xsd:complexType>
+          <xsd:complexType name="ArrayOfREGNRS"><xsd:sequence>
+			<xsd:element name="ArrayOfREGNRSItem" type="tns:REGNRS" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+          </xsd:complexType>
+          <xsd:complexType name="ArrayOfPFLRS"><xsd:sequence>
+			<xsd:element name="ArrayOfPFLRSItem" type="tns:PFLRS" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+          </xsd:complexType>
+          <xsd:complexType name="ArrayOfUSERRS"><xsd:sequence>
+			<xsd:element name="ArrayOfUSERRSItem" type="tns:USERRS" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+          </xsd:complexType>
+          <xsd:complexType name="AUDITRS">
+            <xsd:sequence>
+              <xsd:element name="NME" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="CNT" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="ArrayOfAUDITRS"><xsd:sequence>
+			<xsd:element name="ArrayOfAUDITRSItem" type="tns:AUDITRS" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+          </xsd:complexType>
+          <xsd:complexType name="Exception">
+            <xsd:sequence>
+              <xsd:element name="message" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        			<xsd:element name="ws_TransferRegistration" type="tns:ws_TransferRegistration"/>
+			<xsd:element name="ws_TransferRegistrationResponse" type="tns:ws_TransferRegistrationResponse"/>
+			<xsd:element name="Exception" type="tns:Exception"/>
+	</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="wsp_TransferRegistration_PortType_ws_TransferRegistration">
+    <wsdl:part name="parameters" element="tns:ws_TransferRegistration">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="Exception">
+    <wsdl:part name="parameters" element="tns:Exception">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="wsp_TransferRegistration_PortType_ws_TransferRegistrationResponse">
+    <wsdl:part name="parameters" element="tns:ws_TransferRegistrationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="wsp_TransferRegistration_PortType">
+    <wsdl:operation name="ws_TransferRegistration">
+      <wsdl:input message="tns:wsp_TransferRegistration_PortType_ws_TransferRegistration">
+    </wsdl:input>
+      <wsdl:output message="tns:wsp_TransferRegistration_PortType_ws_TransferRegistrationResponse">
+    </wsdl:output>
+      <wsdl:fault name="Exception" message="tns:Exception">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DNB_WebServices_Providers_TransferRegistration_wsp_TransferRegistration_Binder" type="tns:wsp_TransferRegistration_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ws_TransferRegistration">
+      <soap:operation soapAction="DNB_WebServices_Providers_TransferRegistration_wsp_TransferRegistration_Binder_ws_TransferRegistration" style="document"/>
+      <wsdl:input>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsp_TransferRegistration">
+    <wsdl:port name="DNB_WebServices_Providers_TransferRegistration_wsp_TransferRegistration_Port" binding="tns:DNB_WebServices_Providers_TransferRegistration_wsp_TransferRegistration_Binder">
+      <soap:address location="https://toolkit.dnb.com/ws/DNB_WebServices.Providers.TransferRegistration:wsp_TransferRegistration"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

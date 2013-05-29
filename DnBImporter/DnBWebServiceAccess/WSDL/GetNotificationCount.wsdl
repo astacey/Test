@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://www.dnb.com/DNB_WebServices/Providers/GetNotificationCount" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="wsp_GetNotificationCount" targetNamespace="http://www.dnb.com/DNB_WebServices/Providers/GetNotificationCount">
+  <wsdl:types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.dnb.com/DNB_WebServices/Providers/GetNotificationCount" xmlns:SOAP_ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://www.dnb.com/DNB_WebServices/Providers/GetNotificationCount">
+          
+          <xsd:complexType name="ws_GetNotificationCount">
+            <xsd:sequence>
+              <xsd:element name="getNotificationCountRequest" nillable="true" type="tns:getNotificationCountRequest"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="getNotificationCountRequest">
+            <xsd:sequence>
+              <xsd:element name="UserId" nillable="true" type="xsd:string"/>
+              <xsd:element name="Password" nillable="true" type="xsd:string"/>
+              <xsd:element name="getNotificationCountRequestData" nillable="true" type="tns:getNotificationCountRequestData"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="getNotificationCountRequestData">
+            <xsd:sequence>
+              <xsd:element name="DnB_DUNS_Number" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="CountryCode" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Product_Name" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Notification_Level" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Customer_Account_ID" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Endorsement" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="User_Level" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Result_Ticket" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Detection_Date_From" nillable="true" type="xsd:string"/>
+              <xsd:element name="Detection_Date_To" nillable="true" type="xsd:string"/>
+              <xsd:element name="Active_Registrations_only" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Pending_Notices_only" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Character_Set_Override" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="ws_GetNotificationCountResponse">
+            <xsd:sequence>
+              <xsd:element name="getNotificationCountResponse" nillable="true" type="tns:getNotificationCountResponse"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="getNotificationCountResponse">
+            <xsd:sequence>
+              <xsd:element name="DGX" nillable="true" type="tns:DGX"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="DGX">
+            <xsd:sequence>
+              <xsd:element name="SIGNONMSGSRSV1" nillable="true" type="tns:SIGNONMSGSRSV1"/>
+              <xsd:element name="GLBLMNSVCMSGSRSV1" nillable="true" type="tns:GLBLMNSVCMSGSRSV1" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="SIGNONMSGSRSV1">
+            <xsd:sequence>
+              <xsd:element name="SONRS" nillable="true" type="tns:SONRS"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="SONRS">
+            <xsd:sequence>
+              <xsd:element name="STATUS" nillable="true" type="tns:STATUS"/>
+              <xsd:element name="DTSERVER" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="LANGUAGE" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="STATUS">
+            <xsd:sequence>
+              <xsd:element name="CODE" nillable="true" type="xsd:string"/>
+              <xsd:element name="SEVERITY" nillable="true" type="xsd:string"/>
+              <xsd:element name="MESSAGE" nillable="true" type="xsd:string"/>
+              <xsd:element name="TECH_MESSAGE" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="SUPPORT_MESSAGE" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="GLBLMNSVCMSGSRSV1">
+            <xsd:sequence>
+              <xsd:element name="GETNTFCCNTTRNRS" nillable="true" type="tns:GETNTFCCNTTRNRS" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="GETNTFCCNTTRNRS">
+            <xsd:sequence>
+              <xsd:element name="TRNUID" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="RSLT_TKT" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="STATUS" nillable="true" type="tns:STATUS2" minOccurs="0"/>
+              <xsd:element name="GETNTFCCNTRS" nillable="true" type="tns:GETNTFCCNTRS" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="STATUS2">
+            <xsd:sequence>
+              <xsd:element name="CODE" nillable="true" type="xsd:string"/>
+              <xsd:element name="SEVERITY" nillable="true" type="xsd:string"/>
+              <xsd:element name="MESSAGE" nillable="true" type="xsd:string"/>
+              <xsd:element name="TECH_MESSAGE" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="SUPPORT_MESSAGE" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="GETNTFCCNTRS">
+            <xsd:sequence>
+              <xsd:element name="REQ_ID" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="USERRS" nillable="true" type="tns:ArrayOfUSERRS" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="USERRS">
+            <xsd:sequence>
+              <xsd:element name="USERID" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="NTFCCNTRS" nillable="true" type="tns:ArrayOfNTFCCNTRS" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="NTFCCNTRS">
+            <xsd:sequence>
+              <xsd:element name="DETECT_FROM_DT" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="DETECT_TO_DT" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="NTFCCOUNT" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="SUBJCOUNT" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="ArrayOfNTFCCNTRS"><xsd:sequence>
+			<xsd:element name="ArrayOfNTFCCNTRSItem" type="tns:NTFCCNTRS" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+          </xsd:complexType>
+          <xsd:complexType name="ArrayOfUSERRS"><xsd:sequence>
+			<xsd:element name="ArrayOfUSERRSItem" type="tns:USERRS" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+          </xsd:complexType>
+          <xsd:complexType name="Exception">
+            <xsd:sequence>
+              <xsd:element name="message" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        			<xsd:element name="ws_GetNotificationCount" type="tns:ws_GetNotificationCount"/>
+			<xsd:element name="ws_GetNotificationCountResponse" type="tns:ws_GetNotificationCountResponse"/>
+			<xsd:element name="Exception" type="tns:Exception"/>
+	</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="wsp_GetNotificationCount_PortType_ws_GetNotificationCount">
+    <wsdl:part name="parameters" element="tns:ws_GetNotificationCount">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="wsp_GetNotificationCount_PortType_ws_GetNotificationCountResponse">
+    <wsdl:part name="parameters" element="tns:ws_GetNotificationCountResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="Exception">
+    <wsdl:part name="parameters" element="tns:Exception">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="wsp_GetNotificationCount_PortType">
+    <wsdl:operation name="ws_GetNotificationCount">
+      <wsdl:input message="tns:wsp_GetNotificationCount_PortType_ws_GetNotificationCount">
+    </wsdl:input>
+      <wsdl:output message="tns:wsp_GetNotificationCount_PortType_ws_GetNotificationCountResponse">
+    </wsdl:output>
+      <wsdl:fault name="Exception" message="tns:Exception">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DNB_WebServices_Providers_GetNotificationCount_wsp_GetNotificationCount_Binder" type="tns:wsp_GetNotificationCount_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ws_GetNotificationCount">
+      <soap:operation soapAction="DNB_WebServices_Providers_GetNotificationCount_wsp_GetNotificationCount_Binder_ws_GetNotificationCount" style="document"/>
+      <wsdl:input>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsp_GetNotificationCount">
+    <wsdl:port name="DNB_WebServices_Providers_GetNotificationCount_wsp_GetNotificationCount_Port" binding="tns:DNB_WebServices_Providers_GetNotificationCount_wsp_GetNotificationCount_Binder">
+      <soap:address location="https://toolkit.dnb.com/ws/DNB_WebServices.Providers.GetNotificationCount:wsp_GetNotificationCount"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

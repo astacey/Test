@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://www.dnb.com/DNB_WebServices/Providers/GetRegistrationList" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="wsp_GetRegistrationList" targetNamespace="http://www.dnb.com/DNB_WebServices/Providers/GetRegistrationList">
+  <wsdl:types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.dnb.com/DNB_WebServices/Providers/GetRegistrationList" targetNamespace="http://www.dnb.com/DNB_WebServices/Providers/GetRegistrationList">
+          <xsd:complexType name="ws_GetRegistrationList">
+            <xsd:sequence>
+              <xsd:element name="getRegistrationListRequest" nillable="true" type="tns:getRegistrationListRequest"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="getRegistrationListRequest">
+            <xsd:sequence>
+              <xsd:element name="UserId" nillable="true" type="xsd:string"/>
+              <xsd:element name="Password" nillable="true" type="xsd:string"/>
+              <xsd:element name="getRegistrationListData" nillable="true" type="tns:getRegistrationListData"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="getRegistrationListData">
+            <xsd:sequence>
+              <xsd:element name="DnB_DUNS_Number" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="CountryCode" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Product_Name" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Notification_Level" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Customer_Account_ID" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Endorsement" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="User_Level" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Result_Ticket" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Last_Update_Date_From" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Last_Update_Date_To" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Renewal_Date_From" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Renewal_Date_To" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Expiration_Date_From" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Expiration_Date_To" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Character_Set_Override" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="ws_GetRegistrationListResponse">
+            <xsd:sequence>
+              <xsd:element name="getRegistrationListResponse" nillable="true" type="tns:getRegistrationListResponse"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="getRegistrationListResponse">
+            <xsd:sequence>
+              <xsd:element name="Response" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        			<xsd:element name="ws_GetRegistrationList" type="tns:ws_GetRegistrationList"/>
+			<xsd:element name="ws_GetRegistrationListResponse" type="tns:ws_GetRegistrationListResponse"/>
+	</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="wsp_GetRegistrationList_PortType_ws_GetRegistrationListResponse">
+    <wsdl:part name="parameters" element="tns:ws_GetRegistrationListResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="wsp_GetRegistrationList_PortType_ws_GetRegistrationList">
+    <wsdl:part name="parameters" element="tns:ws_GetRegistrationList">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="wsp_GetRegistrationList_PortType">
+    <wsdl:operation name="ws_GetRegistrationList">
+      <wsdl:input message="tns:wsp_GetRegistrationList_PortType_ws_GetRegistrationList">
+    </wsdl:input>
+      <wsdl:output message="tns:wsp_GetRegistrationList_PortType_ws_GetRegistrationListResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DNB_WebServices_Providers_GetRegistrationList_wsp_GetRegistrationList_Binder" type="tns:wsp_GetRegistrationList_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ws_GetRegistrationList">
+      <soap:operation soapAction="DNB_WebServices_Providers_GetRegistrationList_wsp_GetRegistrationList_Binder_ws_GetRegistrationList" style="document"/>
+      <wsdl:input>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsp_GetRegistrationList">
+    <wsdl:port name="DNB_WebServices_Providers_GetRegistrationList_wsp_GetRegistrationList_Port" binding="tns:DNB_WebServices_Providers_GetRegistrationList_wsp_GetRegistrationList_Binder">
+      <soap:address location="https://toolkit.dnb.com/ws/DNB_WebServices.Providers.GetRegistrationList:wsp_GetRegistrationList"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
