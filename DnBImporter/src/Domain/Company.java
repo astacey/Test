@@ -2,7 +2,7 @@ package Domain;
 
 public class Company 
 {
-	// id of the company. Expecting this to come from agresso ? via csv ? via Daas ? via magic ?
+	// id of the company. Expecting this to come from agresso
 	private String id;
 	// Name - from agresso probably
 	private String name;
@@ -10,6 +10,16 @@ public class Company
 	private CompanyType type;
 	// Company Registration Number
 	private String companyRegistrationNumber;
+	// Vertical Market ( from Agresso )
+	private String verticalMarket;
+	// Account Group ( from Agresso )	
+	private AccountGroup accountGroup;
+	// Total Spend
+	private DatedValueCollection totalSpend;
+	// Avg Days To Payment
+	private DatedValueCollection averageDaysToPayment;
+	// Open Balance
+	private DatedValueCollection openBalance; 
 	// D&B's data...
 	DnBData dunnBradstreetData;
 	
@@ -18,6 +28,9 @@ public class Company
 		this.id=id;
 		this.name=name;
 		this.type=type;
+		this.totalSpend=new DatedValueCollection();
+		this.averageDaysToPayment=new DatedValueCollection();
+		this.openBalance=new DatedValueCollection();
 	}
 	
 	@Override
@@ -80,5 +93,51 @@ public class Company
 
 	public void setCompanyRegistrationNumber(String companyRegistrationNumber) {
 		this.companyRegistrationNumber = companyRegistrationNumber;
+	}
+
+	public String getVerticalMarket() {
+		return verticalMarket;
+	}
+
+	public void setVerticalMarket(String verticalMarket) {
+		this.verticalMarket = verticalMarket;
+	}
+
+	public AccountGroup getAccountGroup() {
+		return accountGroup;
+	}
+
+	public void setAccountGroup(AccountGroup accountGroup) {
+		this.accountGroup = accountGroup;
+	}
+
+	public DatedValueCollection getTotalSpendCollection() {
+		return totalSpend;
+	}
+
+	public DatedValueCollection getAverageDaysToPaymentCollection() {
+		return averageDaysToPayment;
+	}
+
+	public DatedValueCollection getOpenBalanceCollection() {
+		return openBalance;
+	}
+	
+	// returns current openBalance
+	public DatedValue getOpenBalance()
+	{
+		return this.openBalance.getCurrent();
+	}
+	
+	// returns current Avg Days To Payment
+	public DatedValue getAverageDaysToPayment()
+	{
+		return this.averageDaysToPayment.getCurrent();
+	}
+	
+	// returns current Total Spend
+	public DatedValue getTotalSpend()
+	{
+		return this.totalSpend.getCurrent();
 	}
 }

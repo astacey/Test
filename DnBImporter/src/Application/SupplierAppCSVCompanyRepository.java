@@ -11,9 +11,12 @@ import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 
 import Test.TestRepositories.TestCompanyRepository;
+import Domain.AccountGroup;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
+import Domain.DatedValue;
+import Domain.DatedValueCollection;
 import Domain.DnBData;
 import Domain.DnBFailureRisk;
 import Domain.DnBPaydex;
@@ -31,7 +34,7 @@ import Domain.ICompanyRepository;
 public class SupplierAppCSVCompanyRepository implements ICompanyRepository 
 {
 	private final String accountsFileName = "accounts.csv";
-	private final String[] accountsFileHeaders = new String[] { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS" };
+	private final String[] accountsFileHeaders = new String[] { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS", "ACCOUNT_GROUP_CODE","ACCOUNT_GROUP_NAME","VERTICAL_MARKET" };
 	private final String allMemberId = "1";
 	private final String factFileName = "fact_data.csv"; 
 	private final String[] factFileHeaders = new String[] {"VALUE", "TIME", "ACCOUNTS (GEN_ID)", "DATASET (GEN_ID)" };
@@ -42,6 +45,9 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 	private final String datasetpaydexNormId = "PN";
 	private final String datasetFailureRiskId = "FR";
 	private final String datasetFailureRiskPercentileId = "FRP";
+	private final String datasetAvgDaysToPaymentId = "ADTP";
+	private final String datasetOpenBalanceId = "OB";
+	private final String datasetTotalSpendId = "S";
 	
 	private static Logger logger = Logger.getLogger(SupplierAppCSVCompanyRepository.class.getName());
 
@@ -111,7 +117,6 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 			// company is not in collection so add
 			allCompanies.add(c);
 		}
-		
 	}
 
 	@Override
@@ -134,13 +139,19 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 	
 	private void writeAccountsFile(Company c)
 	{
-		// { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS" };
+		// { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS";ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET };
 		try
 		{
+			String accGroupName = "", accGroupCode ="";
+			if(c.getAccountGroup()!=null)
+			{
+				accGroupName = c.getAccountGroup().getName();
+				accGroupCode = c.getAccountGroup().getCode();
+			}
 			if(c.hasDunnBradstreetData())
-				csvAccounts.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), String.valueOf(c.getDunnBradstreetData().getDunsNumber()), getOutOfBusinessString(c.getDunnBradstreetData().getOutOfBusiness()), c.getDunnBradstreetData().getRegistrationDetails().getStatus().getDescription()});
+				csvAccounts.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), String.valueOf(c.getDunnBradstreetData().getDunsNumber()), getOutOfBusinessString(c.getDunnBradstreetData().getOutOfBusiness()), c.getDunnBradstreetData().getRegistrationDetails().getStatus().getDescription(), accGroupCode, accGroupName, c.getVerticalMarket()});
 			else
-				csvAccounts.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), "", "Active", ""});
+				csvAccounts.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), "", "Active", "", accGroupCode, accGroupName, c.getVerticalMarket()});
 			csvAccounts.flush();
 		}
 		catch(IOException e)
@@ -180,6 +191,10 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 						csvFactData.writeRecord(new String[] { String.valueOf(p.getPaydexNorm()), getFormattedStringForDate(p.getDate()), c.getId(), datasetpaydexNormId });
 				}
 				csvFactData.flush();
+				writeDatedValueFactRow(c.getAverageDaysToPaymentCollection(), csvFactData, c.getId(), datasetAvgDaysToPaymentId);
+				writeDatedValueFactRow(c.getOpenBalanceCollection(), csvFactData, c.getId(), datasetOpenBalanceId);
+				writeDatedValueFactRow(c.getTotalSpendCollection(), csvFactData, c.getId(), datasetTotalSpendId);
+				csvFactData.flush();
 			}
 		}
 		catch(IOException e)
@@ -188,27 +203,18 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 		}
 	}
 	
+	private void writeDatedValueFactRow(DatedValueCollection values, CsvWriter csvWriter, String id, String datasetId) throws IOException
+	{
+		for(DatedValue dv : values)
+		{
+			csvWriter.writeRecord(new String[] { String.valueOf(dv.getValue()), getFormattedStringForDate(dv.getDate()), id, datasetId });
+		}
+	}
+	
 	private void initialise()
 	{
 		// read in all existing companies
 		readAllCompanies();
-		// if files already exist, rename them.
-		// should use java.nio.file.Files from java 1.7
-		archiveFiles();
-		
-		// Write headers
-		try
-		{
-			initialiseAccounts();
-			initialiseFactData();
-			// Stop copying dataset - it's static currently
-			// if you uncomment this, look for the archive of this file also
-			//initialiseDataset();
-		}
-		catch(IOException e)
-		{
-			logger.severe(e.getMessage());
-		}
 	}
 	
 	private void readAllCompanies()
@@ -222,12 +228,15 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 			{
 				while(csvAccountsReader.readRecord()==true)
 				{	
-					//{ "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS" };
+					//{ "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS";ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET };
 					// TODO : constants for each header ?
 					String id = csvAccountsReader.get("GEN_ID");
 					String name = csvAccountsReader.get("NAME");
 					String companyRegNo = csvAccountsReader.get("CH_NO");
 					String status = csvAccountsReader.get("STATUS");
+					String verticalMarket = csvAccountsReader.get("VERTICAL_MARKET");
+					String groupCode = csvAccountsReader.get("ACCOUNT_GROUP_CODE");
+					String groupName = csvAccountsReader.get("ACCOUNT_GROUP_NAME");
 					
 					// Ignore the artificial companies, all, supplier, partners, customers
 					if( ! ( (id.equals("1")&&name.equals("All") ) || ( id.equals("A") && name.equals("Suppliers") ) || ( id.equals("B") && name.equals("Partners") ) || ( id.equals("C") && name.equals("Customers" ) ) ) )
@@ -235,6 +244,9 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 						CompanyType type = CompanyType.getCompanyTypeFromId(csvAccountsReader.get("PARENT (PARENT_GEN_ID)"));
 						Company c = new Company(id, name, type);
 						c.setCompanyRegistrationNumber(companyRegNo);
+						c.setVerticalMarket(verticalMarket);
+						if( groupCode.length()>0)
+							c.setAccountGroup(new AccountGroup(groupCode, groupName));
 						
 						String dunsString = csvAccountsReader.get("DUNS_NO");
 						if( dunsString.length()>0)
@@ -272,13 +284,13 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 	{
 		csvAccounts = getCsvWriter(workingFolder + accountsFileName);
 		csvAccounts.writeRecord(accountsFileHeaders);
-		csvAccounts.writeRecord(new String[] { allMemberId, "All",allMemberId,"","","","",""  });
+		csvAccounts.writeRecord(new String[] { allMemberId, "All",allMemberId,"","","","","","","",""  });
 		for(CompanyType ct : CompanyType.values())
 		{
 			if( ct!=CompanyType.UNKNOWN )
 			{
-				// { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS" };
-				csvAccounts.writeRecord(new String[] { ct.getId(), ct.getDescription(), allMemberId, "", "", "", "", "" });
+				// { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS";ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET };
+				csvAccounts.writeRecord(new String[] { ct.getId(), ct.getDescription(), allMemberId, "", "", "", "", "","","","" });
 			}
 		}
 		csvAccounts.flush();
@@ -351,6 +363,23 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 	
 	private void writeAllCompanies()
 	{
+		// if files already exist, rename them.
+		// should use java.nio.file.Files from java 1.7
+		archiveFiles();
+		// Write headers
+		try
+		{
+			initialiseAccounts();
+			initialiseFactData();
+			// Stop copying dataset - it's static currently
+			// if you uncomment this, look for the archive of this file also
+			//initialiseDataset();
+		}
+		catch(IOException e)
+		{
+			logger.severe(e.getMessage());
+		}
+
 		for(Company c : allCompanies)
 		{
 			writeAccountsFile(c);

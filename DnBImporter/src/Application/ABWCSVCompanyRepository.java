@@ -24,9 +24,9 @@ public class ABWCSVCompanyRepository implements ICompanyRepository
 	}
 	
 	@Override
-	public Company getCompanyById(String Id)
+	public Company getCompanyById(String id)
 	{
-		return null;
+		return getAllCompanies().getCompanyFromId(id);
 	}
 	
 	@Override
@@ -48,7 +48,7 @@ public class ABWCSVCompanyRepository implements ICompanyRepository
 	{
 		// No need to do anything here
 		// This is abw data and they don't have duns numbers !
-		return null;
+		return getAllCompanies().getCompanyFromDunsNumber(dunsNumber);
 	}
 
 	@Override

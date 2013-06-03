@@ -80,13 +80,22 @@ public class EntryPoint
 			handler.RegisterCompanies();
 			logger.info("Finished RegistrationHandler");
 		}
-		// if daily update selected then ...
-		if(args.getIsUpdate() == true)
+		if(args.getIsABWUpdate() == true)
 		{
-			logger.info("Starting Update");
-			UpdateHandler handler = new UpdateHandler(companyRepo, dnbRepo, settings);
+			logger.info("Starting ABW Update");
+			ICompanyRepository companySourceRepo = new ABWXlsxCompanyRepository(args.getAbwUpdateFolder());
+			ABWUpdateHandler abwHandler = new ABWUpdateHandler(companyRepo, companySourceRepo, settings);
+			abwHandler.getUpdates();
+			logger.info("Finihed ABW Update");
+		}
+
+		// if daily update selected then ...
+		if(args.getIsDnBUpdate() == true)
+		{
+			logger.info("Starting DnB Update");
+			DnBUpdateHandler handler = new DnBUpdateHandler(companyRepo, dnbRepo, settings);
 			handler.getUpdates();
-			logger.info("Finihed Update");
+			logger.info("Finihed DnB Update");
 		}
 		// Save settings
 		settingsRepo.saveSettings(settings);

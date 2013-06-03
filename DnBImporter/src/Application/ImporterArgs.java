@@ -6,9 +6,11 @@ public class ImporterArgs
 	private String userName="";
 	private String password="";
 	private Boolean isInitailUpload = false;
-	private Boolean isUpdate = false;
+	private Boolean isDnBUpdate = false;
+	private Boolean isABWUpdate = false;
 	private String importSourceFile = "";
 	private String importSource = "";
+	private String abwUpdateFolder = "";
 	
 	public ImporterArgs(String[] args)
 	{
@@ -49,7 +51,13 @@ public class ImporterArgs
 			}
 			else if(args[i].equalsIgnoreCase("-x"))
 			{
-				isUpdate = true;
+				isDnBUpdate = true;
+			}
+			else if(args[i].equalsIgnoreCase("-xabw"))
+			{
+				isABWUpdate = true;
+				i++;
+				abwUpdateFolder=args[i];
 			}
 		}
 	}
@@ -74,9 +82,9 @@ public class ImporterArgs
 		return password;
 	}
 	
-	public Boolean getIsUpdate()
+	public Boolean getIsDnBUpdate()
 	{
-		return isUpdate;
+		return isDnBUpdate;
 	}
 
 	public String getImportSourceFile() 
@@ -86,5 +94,13 @@ public class ImporterArgs
 
 	public String getImportSource() {
 		return importSource;
+	}
+
+	public Boolean getIsABWUpdate() {
+		return isABWUpdate;
+	}
+
+	public String getAbwUpdateFolder() {
+		return abwUpdateFolder;
 	}
 }

@@ -61,6 +61,13 @@ public class XmlHelper
 			return 0;
 		return Integer.valueOf(str);
 	}
+
+	public static double getDoubleFromXmlString(String str)
+	{
+		if(str.length()==0)
+			return 0;
+		return Double.valueOf(str);
+	}
 	
 	public static Date getDateFromXmlString(String str) throws ParseException
 	{

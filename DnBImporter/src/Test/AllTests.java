@@ -10,6 +10,6 @@ import org.junit.runners.Suite.SuiteClasses;
 				TestDnBData.class, TestDnBDataMapper.class, TestDnBDataUpdateMapper.class, 
 				TestDnBRating.class, TestDnBRegistrationCollection.class, TestImporterArgs.class, 
 				TestInitialUploadHandler.class, TestImporterSettings.class,
-				TestUpdateHandler.class, TestXmlHelper.class })
+				TestDnBUpdateHandler.class, TestXmlHelper.class, TestDatedValueCollection.class })
 
 public class AllTests {}

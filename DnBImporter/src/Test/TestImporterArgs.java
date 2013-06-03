@@ -11,7 +11,7 @@ public class TestImporterArgs {
 	@Test
 	public void testAll() {
 		
-		String[] args = new String[]{ "-iDnB", "c:/DnBImporter/", "-r", "-u", "user", "-p", "password" };
+		String[] args = new String[]{ "-iDnB", "c:/DnBImporter/", "-r", "-u", "user", "-p", "password", "-xabw", "testabwpath" };
 		ImporterArgs impArgs = new ImporterArgs(args);
 		
 		assertTrue("IsInitialUpload is true", impArgs.getIsInitialUpload());
@@ -19,11 +19,13 @@ public class TestImporterArgs {
 		assertTrue("IsRegistrationSelected is true", impArgs.getIsRegistrationSelected());
 		assertEquals("user name", "user", impArgs.getUserName());
 		assertEquals("password", "password", impArgs.getPassword());
-		assertFalse("IsUpdate is false", impArgs.getIsUpdate());
+		assertFalse("IsDnBUpdate is false", impArgs.getIsDnBUpdate());
 		assertEquals("Import Source is ", "c:/DnBImporter/", impArgs.getImportSourceFile());
+		assertTrue("IsABWUpdate is true", impArgs.getIsABWUpdate());
+		assertEquals("ABW update Source is ", "testabwpath", impArgs.getAbwUpdateFolder());
 		
 		impArgs = new ImporterArgs(new String[] { "-x" });
-		assertTrue("IsUpdate is true", impArgs.getIsUpdate());
+		assertTrue("IsUpdate is true", impArgs.getIsDnBUpdate());
 	}
 
 }

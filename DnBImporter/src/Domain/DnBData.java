@@ -85,8 +85,6 @@ public class DnBData
 		return dbRatingHistory;
 	}
 	
-	// Incomplete !!!
-	// For now just assume there's one. I'll worry about history when some turns up !
 	public DnBRating getCurrentRating()
 	{
 		if(dbRatingHistory.size()>0)

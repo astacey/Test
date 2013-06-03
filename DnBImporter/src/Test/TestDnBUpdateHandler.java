@@ -13,9 +13,9 @@ import org.junit.Test;
 import Test.TestRepositories.TestCompanyRepository;
 import Test.TestRepositories.TestDnBRepository;
 
-import Application.UpdateHandler;
+import Application.DnBUpdateHandler;
 
-public class TestUpdateHandler {
+public class TestDnBUpdateHandler {
 
 	@Test
 	public void testGetUpdates() 
@@ -34,7 +34,7 @@ public class TestUpdateHandler {
 		// check this is empty
 		assertEquals("Number of companies saved is 0", 0, companyRepo.getCompaniesSaved().size());
 		
-		UpdateHandler handler = new UpdateHandler(companyRepo, dnbRepo, settingsRepo.getSettings());
+		DnBUpdateHandler handler = new DnBUpdateHandler(companyRepo, dnbRepo, settingsRepo.getSettings());
 		handler.getUpdates();
 		
 		// should save 1 company

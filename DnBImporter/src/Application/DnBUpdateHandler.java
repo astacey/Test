@@ -12,16 +12,16 @@ import Domain.DnBData;
 import Domain.ICompanyRepository;
 import Domain.IDnBRepository;
 
-public class UpdateHandler 
+public class DnBUpdateHandler 
 {
-	private static Logger logger = Logger.getLogger(UpdateHandler.class.getName());
-	private ICompanyRepository companyRepository;
+	private static Logger logger = Logger.getLogger(DnBUpdateHandler.class.getName());
+	private ICompanyRepository u4baCompanyRepository;
 	private IDnBRepository dnbRepository;
 	private ImporterSettings settings;
 
-	public UpdateHandler(ICompanyRepository companyRepository, IDnBRepository dnbRepository, ImporterSettings settings)
+	public DnBUpdateHandler(ICompanyRepository u4baCompanyRepository, IDnBRepository dnbRepository, ImporterSettings settings)
 	{
-		this.companyRepository = companyRepository;
+		this.u4baCompanyRepository = u4baCompanyRepository;
 		this.dnbRepository = dnbRepository;
 		this.settings = settings;
 	}
@@ -53,7 +53,7 @@ public class UpdateHandler
 		}
 		while(startDate.before(endDate));
 		
-		companyRepository.commitAllChanges();
+		u4baCompanyRepository.commitAllChanges();
 		
 		// Save LastRunDate
 		settings.setLastRunDate(endDate);
@@ -69,7 +69,7 @@ public class UpdateHandler
 			int dunsNumber = data.getDunsNumber();
 			try
 			{
-				Company c = companyRepository.getCompanyByDuns(dunsNumber);
+				Company c = u4baCompanyRepository.getCompanyByDuns(dunsNumber);
 				if(c == null)
 				{
 					logger.warning("Received data for a duns that doesn't exist in the system. Investigate. Duns [" + String.valueOf(dunsNumber) + "]");
@@ -77,7 +77,7 @@ public class UpdateHandler
 				else
 				{
 					c.setDunnBradstreetData(data);
-					companyRepository.saveCompany(c);
+					u4baCompanyRepository.saveCompany(c);
 				}
 			}
 			catch(Exception e)
