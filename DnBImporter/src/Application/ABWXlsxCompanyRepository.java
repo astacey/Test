@@ -33,10 +33,10 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 	{
 		if( !sourceFolder.endsWith("/"))
 			sourceFolder+="/";
-		this.sourceFileMain = sourceFolder + "Customer Supplier Listing.CSV";
-		this.sourceFileOpenItems = sourceFolder + "Customer Supplier Open Items.CSV";
-		this.sourceFileTotalSpend = sourceFolder + "Customer Supplier Total Spend.CSV";
-		this.sourceFileAvgDays = sourceFolder + "Customer Supplier Avg Days.CSV";
+		this.sourceFileMain = sourceFolder + "CurrentBatch-Customer Supplier Listing.CSV";
+		this.sourceFileOpenItems = sourceFolder + "CurrentBatch-Customer Supplier Open Items.CSV";
+		this.sourceFileTotalSpend = sourceFolder + "CurrentBatch-Customer Supplier Total Spend.CSV";
+		this.sourceFileAvgDays = sourceFolder + "CurrentBatch-Customer Supplier Avg Days.CSV";
 	}
 	
 	@Override

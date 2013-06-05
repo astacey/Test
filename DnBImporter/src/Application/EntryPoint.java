@@ -82,6 +82,8 @@ public class EntryPoint
 		if(args.getIsABWUpdate() == true)
 		{
 			logger.info("Starting ABW Update");
+			ABWUpdateCSVPrepare csvPrep = new ABWUpdateCSVPrepare();
+			csvPrep.extractCsvFromExcel(args.getAbwUpdateFolder());
 			ICompanyRepository companySourceRepo = new ABWXlsxCompanyRepository(args.getAbwUpdateFolder());
 			ABWUpdateHandler abwHandler = new ABWUpdateHandler(companyRepo, companySourceRepo, settings);
 			abwHandler.getUpdates();

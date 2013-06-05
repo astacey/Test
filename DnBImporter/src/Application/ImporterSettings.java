@@ -13,12 +13,14 @@ public class ImporterSettings
 {
 	private Date lastRunDate;
 	private String csvLocation;
+	private int abwLastProcessed;
 
 	public ImporterSettings()
 	{
 		// Default to current eastern time
 		// shouldn't ever need the default
 		lastRunDate = Calendar.getInstance(TimeZone.getTimeZone("US/Eastern")).getTime();
+		abwLastProcessed = 0;
 	}
 	
 	public Date getLastRunDate() 
@@ -33,10 +35,9 @@ public class ImporterSettings
 	
 	public String toXml()
 	{
-		// xml later !!
 		return "<Settings><LastRunDate>" + getDateFormat().format(lastRunDate) + "</LastRunDate>"
-				+"<CSVLocation>" + csvLocation + "</CSVLocation></Settings>";
-		//return getDateFormat().format(lastRunDate);
+				+"<CSVLocation>" + csvLocation + "</CSVLocation>"
+				+"<ABWLastProcessed>" + abwLastProcessed + "</ABWLastProcessed></Settings>";
 	}
 
 	public void fromXml(String xml)
@@ -51,6 +52,8 @@ public class ImporterSettings
 					this.lastRunDate = getDateFormat().parse(root.getChildNodes().item(i).getTextContent());
 				else if( root.getChildNodes().item(i).getNodeName()=="CSVLocation")
 					this.csvLocation = root.getChildNodes().item(i).getTextContent();
+				else if( root.getChildNodes().item(i).getNodeName()=="ABWLastProcessed")
+					this.abwLastProcessed = XmlHelper.getIntegerFromXmlString(root.getChildNodes().item(i).getTextContent());
 			}
 		}
 		catch (ParseException e)
@@ -73,6 +76,14 @@ public class ImporterSettings
 
 	public void setCsvLocation(String csvLocation) {
 		this.csvLocation = csvLocation;
+	}
+
+	public int getAbwLastProcessed() {
+		return abwLastProcessed;
+	}
+
+	public void setAbwLastProcessed(int abwLastProcessed) {
+		this.abwLastProcessed = abwLastProcessed;
 	}
 }
 	
