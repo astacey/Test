@@ -15,11 +15,24 @@ public class DnBData
 	// Primary Name
 	private String name;
 	//D&B Ratings
-	private ArrayList<DnBRating> dbRatingHistory;
-	// D&BFailure Risk History
-	private ArrayList<DnBFailureRisk> failureRiskHistory;
+	private DnBRatingCollection dbRatingHistory;
+	// D&BFailure Risk Score History
+	// D&B’s Failure Risk (Financial Stress) Scores predict the probability of severe financial distress or failure. Score Interpretation Tables contain specific definitions and interpretation tables for the countries in which D&B calculates Failure Risk or Financial Stress Scores.
+	private IntegerDatedValueCollection failureRiskScoreHistory;
+	// D&B Failure Risk (Financial Stress) Score National Percentile
+	private IntegerDatedValueCollection failureRiskNationalPercentileHistory;
+	// D&B PAYDEX
+	/*
+	 * 	The D&B payment score (D&B® Paydex®) is a score that assesses the payment performance of a business. Based on the trade experiences in D&B’s database, the score corresponds to an
+		average days beyond terms or within terms enabling you to predict when your existing or potential customers are likely to pay. Derived from a dollar-weighted average of a company’s combined
+		individual payment experiences, it ranges from 0 – 100 with higher scores representing businesses which pay their bills more promptly. The D&B® Paydex® Interpretation Tables contain interpretation
+		tables for D&B’s payment score for specific countries.
+	 */
 	// D&B PAYDEX History
-	private ArrayList<DnBPaydex> paydexHistory;
+	private IntegerDatedValueCollection paydexScoreHistory;
+	// D&B PAYDEX NORM
+	// The industry median or average D&B® Paydex score for the subject’s Line of Business.
+	private IntegerDatedValueCollection paydexNormHistory;
 	// Primary SIC Code
 	private int primarySicCode;
 	// DnB Registration Details
@@ -32,9 +45,11 @@ public class DnBData
 	public DnBData(int dunsNumber)
 	{
 		//this.dunsNumber = dunsNumber;
-		this.dbRatingHistory = new ArrayList<DnBRating>();
-		this.failureRiskHistory = new ArrayList<DnBFailureRisk>();
-		this.paydexHistory = new ArrayList<DnBPaydex>();
+		this.dbRatingHistory = new DnBRatingCollection();
+		this.failureRiskScoreHistory = new IntegerDatedValueCollection();
+		this.failureRiskNationalPercentileHistory = new IntegerDatedValueCollection();
+		this.paydexScoreHistory = new IntegerDatedValueCollection();
+		this.paydexNormHistory = new IntegerDatedValueCollection();
 		this.dnbRegistrationDetails = new DnBRegistration(dunsNumber);
 		this.outOfBusiness = false;
 	}
@@ -46,12 +61,14 @@ public class DnBData
 				+"\nName : " + name;
 		if( getCurrentRating() != null )
 			thisData += "\nD&B Rating : " + getCurrentRating().getRating() ;
-		if( getCurrentFailureRisk() != null)
-			thisData += "\nD&B Failure Risk (Financial Stress) Score : " + String.valueOf(getCurrentFailureRisk().getFailureRisk())
-					+"\nD&B Failure Risk (Financial Stress) Score Ntional Percentile : " + String.valueOf(getCurrentFailureRisk().getFailureRiskNationalPercentile());
-		if( getCurrentPaydex() != null)
-			thisData += "\nD&B PAYDEX : " + String.valueOf(getCurrentPaydex().getPaydex())
-					+"\nD&B PAYDEX Norm: " + String.valueOf(getCurrentPaydex().getPaydexNorm());
+		if( failureRiskScoreHistory.size()>0)
+			thisData += "\nD&B Failure Risk (Financial Stress) Score : " + String.valueOf(failureRiskScoreHistory.getCurrent().getValue());
+		if( failureRiskNationalPercentileHistory.size()>0)
+			thisData += "\nD&B Failure Risk (Financial Stress) Score Ntional Percentile : " + String.valueOf(failureRiskNationalPercentileHistory.getCurrent().getValue());
+		if( paydexScoreHistory.size()>0)
+			thisData += "\nD&B PAYDEX : " + String.valueOf(paydexScoreHistory.getCurrent().getValue());
+		if( paydexNormHistory.size()>0)
+			thisData += "\nD&B PAYDEX Norm: " + String.valueOf(paydexNormHistory.getCurrent().getValue());
 		thisData += "\nPrimary SIC Code : " + primarySicCode;
 		
 		return thisData;
@@ -81,7 +98,23 @@ public class DnBData
 		this.primarySicCode = primarySicCode;
 	}
 
-	public ArrayList<DnBRating> getDbratingHistory() {
+	public IntegerDatedValueCollection getFailureRiskScoreHistory() {
+		return failureRiskScoreHistory;
+	}
+
+	public IntegerDatedValueCollection getFailureRiskPercentileHistory() {
+		return failureRiskNationalPercentileHistory;
+	}
+	
+	public IntegerDatedValueCollection getPaydexScoreHistory() {
+		return paydexScoreHistory;
+	}
+
+	public IntegerDatedValueCollection getPaydexNormHistory() {
+		return paydexNormHistory;
+	}
+
+	public DnBRatingCollection getDbratingHistory() {
 		return dbRatingHistory;
 	}
 	
@@ -94,35 +127,7 @@ public class DnBData
 		}
 		return null;
 	}
-
-	public ArrayList<DnBFailureRisk> getFailureRiskHistory() {
-		return failureRiskHistory;
-	}
-
-	public DnBFailureRisk getCurrentFailureRisk()
-	{
-		if(failureRiskHistory.size()>0)
-		{
-			Collections.sort(failureRiskHistory);
-			return failureRiskHistory.get(failureRiskHistory.size()-1);
-		}
-		return null;
-	}
-
-	public ArrayList<DnBPaydex> getPaydexHistory() {
-		return paydexHistory;
-	}
 	
-	public DnBPaydex getCurrentPaydex()
-	{
-		if(paydexHistory.size()>0)
-		{
-			Collections.sort(paydexHistory);
-			return paydexHistory.get(paydexHistory.size()-1);
-		}
-		return null;
-	}
-
 	public DnBRegistration getRegistrationDetails() {
 		return dnbRegistrationDetails;
 	}
@@ -133,5 +138,14 @@ public class DnBData
 
 	public void setOutOfBusiness(Boolean outOfBusiness) {
 		this.outOfBusiness = outOfBusiness;
+	}
+	
+	public void setCommitted()
+	{
+		this.failureRiskNationalPercentileHistory.setCommitted();
+		this.failureRiskScoreHistory.setCommitted();
+		this.paydexNormHistory.setCommitted();
+		this.paydexScoreHistory.setCommitted();
+		this.dbRatingHistory.setCommitted();
 	}
 }

@@ -3,24 +3,16 @@ package Application;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Logger;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 
-import Test.TestRepositories.TestCompanyRepository;
 import Domain.AccountGroup;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
-import Domain.DatedValue;
-import Domain.DatedValueCollection;
 import Domain.DnBData;
-import Domain.DnBFailureRisk;
-import Domain.DnBPaydex;
-import Domain.DnBRating;
 import Domain.DnBRegistrationStatus;
 import Domain.ICompanyRepository;
 /*
@@ -36,18 +28,10 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 	private final String accountsFileName = "accounts.csv";
 	private final String[] accountsFileHeaders = new String[] { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS", "ACCOUNT_GROUP_CODE","ACCOUNT_GROUP_NAME","VERTICAL_MARKET" };
 	private final String allMemberId = "1";
-	private final String factFileName = "fact_data.csv"; 
-	private final String[] factFileHeaders = new String[] {"VALUE", "TIME", "ACCOUNTS (GEN_ID)", "DATASET (GEN_ID)" };
+	private final String factFileName = "fact_data.csv";
+	private final String factFullFileName = "fact_data_full.csv";  
 	private final String datasetFileName = "dataset.csv";
 	private final String[] datasetFileHeaders = new String[] { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "FILTER_DESCRIPTION" };
-	private final String datasetRiskId = "Risk";
-	private final String datasetpaydexId = "P";
-	private final String datasetpaydexNormId = "PN";
-	private final String datasetFailureRiskId = "FR";
-	private final String datasetFailureRiskPercentileId = "FRP";
-	private final String datasetAvgDaysToPaymentId = "ADTP";
-	private final String datasetOpenBalanceId = "OB";
-	private final String datasetTotalSpendId = "S";
 	
 	private static Logger logger = Logger.getLogger(SupplierAppCSVCompanyRepository.class.getName());
 
@@ -94,8 +78,7 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 			{
 				unregistered.add(c);
 			}
-		}
-		
+		}		
 		return unregistered;
 	}
 
@@ -135,6 +118,8 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 	public void commitAllChanges()
 	{
 		writeAllCompanies();
+		// set committed
+		allCompanies.setCommitted();
 	}
 	
 	private void writeAccountsFile(Company c)
@@ -159,62 +144,16 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 			logger.severe(e.getMessage());
 		}
 	}
-	
-	private void writeFactDataFile(Company c)
-	{
-		try
-		{// "VALUE", "TIME", "ACCOUNTS (GEN_ID)", "DATASET (GEN_ID)"
-			if(c.hasDunnBradstreetData())
-			{
-				for(DnBRating r : c.getDunnBradstreetData().getDbratingHistory())
-				{
-					csvFactData.writeRecord(new String[] { String.valueOf(r.getRiskIndicator()), getFormattedStringForDate(r.getDate()), c.getId(), datasetRiskId });
-				}
-				csvFactData.flush();
-				for(DnBFailureRisk fr : c.getDunnBradstreetData().getFailureRiskHistory())
-				{
-					// Failure Risk
-					if(fr.getFailureRisk()>-1)
-						csvFactData.writeRecord(new String[] { String.valueOf(fr.getFailureRisk()), getFormattedStringForDate(fr.getDate()), c.getId(), datasetFailureRiskId });
-					// Failure Risk Percentile
-					if(fr.getFailureRiskNationalPercentile()>-1)
-						csvFactData.writeRecord(new String[] { String.valueOf(fr.getFailureRiskNationalPercentile()), getFormattedStringForDate(fr.getDate()), c.getId(), datasetFailureRiskPercentileId });
-				}
-				csvFactData.flush();
-				for(DnBPaydex p : c.getDunnBradstreetData().getPaydexHistory())
-				{
-					// Payex
-					if(p.getPaydex()>-1)
-						csvFactData.writeRecord(new String[] { String.valueOf(p.getPaydex()), getFormattedStringForDate(p.getDate()), c.getId(), datasetpaydexId });
-					// Payex Norm
-					if(p.getPaydexNorm()>-1)
-						csvFactData.writeRecord(new String[] { String.valueOf(p.getPaydexNorm()), getFormattedStringForDate(p.getDate()), c.getId(), datasetpaydexNormId });
-				}
-				csvFactData.flush();
-				writeDatedValueFactRow(c.getAverageDaysToPaymentCollection(), csvFactData, c.getId(), datasetAvgDaysToPaymentId);
-				writeDatedValueFactRow(c.getOpenBalanceCollection(), csvFactData, c.getId(), datasetOpenBalanceId);
-				writeDatedValueFactRow(c.getTotalSpendCollection(), csvFactData, c.getId(), datasetTotalSpendId);
-				csvFactData.flush();
-			}
-		}
-		catch(IOException e)
-		{
-			logger.severe(e.getMessage());
-		}
-	}
-	
-	private void writeDatedValueFactRow(DatedValueCollection values, CsvWriter csvWriter, String id, String datasetId) throws IOException
-	{
-		for(DatedValue dv : values)
-		{
-			csvWriter.writeRecord(new String[] { String.valueOf(dv.getValue()), getFormattedStringForDate(dv.getDate()), id, datasetId });
-		}
-	}
-	
+		
 	private void initialise()
 	{
-		// read in all existing companies
+		// read in all existing companies from main company csv
 		readAllCompanies();
+		// read fact data
+		SupplierAppCSVFactDataFull factFile = new SupplierAppCSVFactDataFull();
+		factFile.read(allCompanies, workingFolder + factFullFileName);
+		// Set all new companies to be committed, i.e. track changes from this point on
+		allCompanies.setCommitted();
 	}
 	
 	private void readAllCompanies()
@@ -222,8 +161,7 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 		allCompanies = new CompanyCollection();
 		try
 		{
-			CsvReader csvAccountsReader = new CsvReader(workingFolder + accountsFileName);
-			csvAccountsReader.setDelimiter(';');
+			CsvReader csvAccountsReader = getCsvReader(workingFolder + accountsFileName);
 			if(csvAccountsReader.readHeaders() == true)
 			{
 				while(csvAccountsReader.readRecord()==true)
@@ -279,7 +217,7 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 			logger.warning(e.getMessage());
 		}
 	}
-	
+		
 	private void initialiseAccounts() throws IOException
 	{
 		csvAccounts = getCsvWriter(workingFolder + accountsFileName);
@@ -296,24 +234,17 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 		csvAccounts.flush();
 	}
 	
-	private void initialiseFactData() throws IOException
-	{
-		csvFactData = getCsvWriter(workingFolder + factFileName);
-		csvFactData.writeRecord(factFileHeaders);
-		csvFactData.flush();
-	}
-	
 	private void initialiseDataset() throws IOException
 	{
 		csvDataset = getCsvWriter(workingFolder + datasetFileName);
 		csvDataset.writeRecord(datasetFileHeaders);
 		csvDataset.writeRecord(new String[] {"S","Spend","S","" });
 		csvDataset.writeRecord(new String[] {"R","Rating","R", ""});
-		csvDataset.writeRecord(new String[] {datasetpaydexId,"D&B PAYDEX",datasetpaydexId,"is less than" });
-		csvDataset.writeRecord(new String[] {datasetpaydexNormId,"D&B PAYDEX Norm",datasetpaydexNormId,"is less than" });
-		csvDataset.writeRecord(new String[] {datasetFailureRiskId,"D&B Failure Risk (Financial Stress) Score",datasetFailureRiskId,"is less than" });
-		csvDataset.writeRecord(new String[] {datasetFailureRiskPercentileId,"D&B Failure Risk (Financial Stress) Score National Percentile",datasetFailureRiskPercentileId,"is less than" });
-		csvDataset.writeRecord(new String[] {datasetRiskId, "D&B Risk Indicator",datasetRiskId,"is greater than" });
+		csvDataset.writeRecord(new String[] {SupplierAppCSVFile.DATASET_PAYDEX_CODE,"D&B PAYDEX",SupplierAppCSVFile.DATASET_PAYDEX_CODE,"is less than" });
+		csvDataset.writeRecord(new String[] {SupplierAppCSVFile.DATASET_PAYDEX_NORM_CODE,"D&B PAYDEX Norm",SupplierAppCSVFile.DATASET_PAYDEX_NORM_CODE,"is less than" });
+		csvDataset.writeRecord(new String[] {SupplierAppCSVFile.DATASET_FAILURE_RISK_CODE,"D&B Failure Risk (Financial Stress) Score",SupplierAppCSVFile.DATASET_FAILURE_RISK_CODE,"is less than" });
+		csvDataset.writeRecord(new String[] {SupplierAppCSVFile.DATASET_FAILURE_RISK_PERCENTILE_CODE,"D&B Failure Risk (Financial Stress) Score National Percentile",SupplierAppCSVFile.DATASET_FAILURE_RISK_PERCENTILE_CODE,"is less than" });
+		csvDataset.writeRecord(new String[] {SupplierAppCSVFile.DATASET_RISK_CODE, "D&B Risk Indicator",SupplierAppCSVFile.DATASET_RISK_CODE,"is greater than" });
 		csvDataset.flush();
 	}
 
@@ -354,11 +285,12 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 		csv.setDelimiter(';');		
 		return csv;
 	}
-	
-	private String getFormattedStringForDate(Date date)
+
+	private CsvReader getCsvReader(String filePath) throws FileNotFoundException
 	{
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		return dateFormatter.format(date);
+		CsvReader csv = new CsvReader(filePath);
+		csv.setDelimiter(';');		
+		return csv;
 	}
 	
 	private void writeAllCompanies()
@@ -370,22 +302,22 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 		try
 		{
 			initialiseAccounts();
-			initialiseFactData();
-			// Stop copying dataset - it's static currently
-			// if you uncomment this, look for the archive of this file also
-			//initialiseDataset();
 		}
 		catch(IOException e)
 		{
 			logger.severe(e.getMessage());
 		}
-
 		for(Company c : allCompanies)
 		{
 			writeAccountsFile(c);
-			writeFactDataFile(c);
 			// Nothing to do for dataset - all done in initialise
 		}
+		// Fact writing !
+		SupplierAppCSVFactDataFull factDataFile = new SupplierAppCSVFactDataFull();
+		// Write to incremental ( archive and initialise method has left us with file with only header row )
+		factDataFile.write(allCompanies, workingFolder + factFileName, true);
+		// write to full dataset, should append any new rows
+		factDataFile.write(allCompanies, workingFolder + factFullFileName, false);
 	}
 	
 	private Boolean getOutOfBusiness(String outOfBusiness)

@@ -14,8 +14,8 @@ import Domain.AccountGroup;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
-import Domain.DatedValue;
 import Domain.DnBData;
+import Domain.DoubleDatedValue;
 import Domain.ICompanyRepository;
 
 public class ABWXlsxCompanyRepository implements ICompanyRepository 
@@ -161,7 +161,12 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 						if(c!=null)
 						{
 							double val = XmlHelper.getDoubleFromXmlString(openAmount);
-							c.getOpenBalanceCollection().add(new DatedValue(Calendar.getInstance().getTime(), val));							
+							// We only add average days to payment if the value we just read is different to the current value
+							// this is to prevent a new fact every day, even when the data hasn't changed
+							if(c.getOpenBalance()!=null && c.getOpenBalance().getValue()-val >0.001)
+							{
+								c.getOpenBalanceCollection().add(new DoubleDatedValue(Calendar.getInstance().getTime(), val));
+							}
 						}
 					}
 				}
@@ -190,7 +195,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 			if(csvReader.readHeaders() == true)
 			{
 				while(csvReader.readRecord()==true)
-				{	
+				{
 					//apar_id,apar_name,address,place,province,Country_code,zip_code,telephone_1,comp_reg_no,acctype
 					// TODO : constants for each header ?
 					String id = csvReader.get("text apar_id");
@@ -208,7 +213,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 							{
 								Date date = getDate(period);
 								double val = XmlHelper.getDoubleFromXmlString(amount);
-								c.getTotalSpendCollection().add(new DatedValue(date, val));
+								c.getTotalSpendCollection().add(new DoubleDatedValue(date, val));
 							}
 							catch(ParseException pe)
 							{
@@ -256,7 +261,12 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 						if(c!=null)
 						{
 							double val = XmlHelper.getDoubleFromXmlString(avg);
-							c.getAverageDaysToPaymentCollection().add(new DatedValue(Calendar.getInstance().getTime(), val));							
+							// We only add average days to payment if the value we just read is different to the current value
+							// this is to prevent a new fact every day, even when the data hasn't changed
+							if(c.getAverageDaysToPayment()!=null && c.getAverageDaysToPayment().getValue()-val >0.001)
+							{
+								c.getAverageDaysToPaymentCollection().upsert(new DoubleDatedValue(Calendar.getInstance().getTime(), val));
+							}
 						}
 					}
 				}

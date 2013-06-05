@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import Domain.IDnBRepository;
 import Domain.ICompanyRepository;
-import Test.TestRepositories.TestCompanyRepository;
 
 
 public class EntryPoint 

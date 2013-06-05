@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Domain.DnBData;
-import Domain.DnBFailureRisk;
-import Domain.DnBPaydex;
 import Domain.DnBRating;
 import Domain.DnBRegistrationCollection;
 import Domain.IDnBRepository;
+import Domain.IntegerDatedValue;
 
 public class TestDnBRepository implements IDnBRepository 
 {
@@ -31,9 +30,11 @@ public class TestDnBRepository implements IDnBRepository
 		// Test class - always returns test data....
 		DnBData data = new DnBData(dunsNumber);
 		data.getDbratingHistory().add(new DnBRating("1A"));
-		data.getFailureRiskHistory().add(new DnBFailureRisk(1578, 100));
+		data.getFailureRiskScoreHistory().add(new IntegerDatedValue(new Date(), 1578)); 
+		data.getFailureRiskPercentileHistory().add(new IntegerDatedValue(new Date(), 100));
 		data.setName("Unit 4 - Test Class");
-		data.getPaydexHistory().add(new DnBPaydex(64, 75));
+		data.getPaydexScoreHistory().add(new IntegerDatedValue(new Date(), 64));
+		data.getPaydexNormHistory().add(new IntegerDatedValue(new Date(), 75));
 		data.setPrimarySicCode(7379);
 		return data;
 	}
@@ -44,7 +45,7 @@ public class TestDnBRepository implements IDnBRepository
 		
 		DnBData data = new DnBData(100);
 		data.setName("Unit 4 - Test Class");
-		data.getPaydexHistory().add(new DnBPaydex(77, -1));
+		data.getPaydexScoreHistory().add(new IntegerDatedValue(new Date(), 77));
 		ArrayList<DnBData> updates = new ArrayList<DnBData>();
 		updates.add(data);
 		return updates;

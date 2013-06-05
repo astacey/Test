@@ -14,9 +14,8 @@ import org.w3c.dom.NodeList;
 
 import Application.XmlHelper;
 import Domain.DnBData;
-import Domain.DnBFailureRisk;
-import Domain.DnBPaydex;
 import Domain.DnBRating;
+import Domain.IntegerDatedValue;
 
 public class DnBDataUpdateMapper 
 {
@@ -115,9 +114,13 @@ public class DnBDataUpdateMapper
 			}
 
 			if(failureRisk>-1)
-				data.getFailureRiskHistory().add(new DnBFailureRisk(failureRisk, failureRiskPercentile, changeDate));
+				data.getFailureRiskScoreHistory().upsert(new IntegerDatedValue(changeDate, failureRisk));
+			if(failureRiskPercentile>-1)
+				data.getFailureRiskPercentileHistory().upsert(new IntegerDatedValue(changeDate, failureRiskPercentile));
 			if(paydex>-1)
-				data.getPaydexHistory().add(new DnBPaydex(paydex, paydexNorm, changeDate));
+				data.getPaydexScoreHistory().upsert(new IntegerDatedValue(changeDate, paydex));
+			if(paydexNorm>-1)
+				data.getPaydexScoreHistory().upsert(new IntegerDatedValue(changeDate, paydexNorm));
 		}
 	}
 }

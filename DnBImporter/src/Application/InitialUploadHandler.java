@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import Domain.Company;
 import Domain.CompanyCollection;
-import Domain.CompanyType;
 import Domain.DnBData;
 import Domain.IDnBRepository;
 import Domain.ICompanyRepository;

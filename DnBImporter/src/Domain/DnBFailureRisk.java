@@ -1,13 +1,17 @@
 package Domain;
 
+/*
+ * OBSOLETE ???
+ * public class DnBFailureRisk implements Comparable<DnBFailureRisk>
+ *
+
 import java.util.Date;
 
-public class DnBFailureRisk implements Comparable<DnBFailureRisk>
 {
 		// D&B Failure Risk (Financial Stress) Score
 		/*
 		 * D&B’s Failure Risk (Financial Stress) Scores predict the probability of severe financial distress or failure. Score Interpretation Tables contain specific definitions and interpretation tables for the countries in which D&B calculates Failure Risk or Financial Stress Scores. 
-		 */
+		 /
 		private int failureRisk;
 		// D&B Failure Risk (Financial Stress) Score National Percentile
 		private int failureRiskNationalPercentile;
@@ -52,4 +56,6 @@ public class DnBFailureRisk implements Comparable<DnBFailureRisk>
 		{
 			return this.date.compareTo(failureRiskCompare.getDate());
 		}
+		
 }
+*/

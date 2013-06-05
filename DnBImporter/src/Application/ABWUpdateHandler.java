@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.ICompanyRepository;
-import Domain.IDnBRepository;
 
 public class ABWUpdateHandler 
 {

@@ -21,10 +21,10 @@ public class TestDnBDataMapper {
 		assertEquals("Check DUNS", 225314921, data.getDunsNumber());
 		assertEquals("Check name", "UNIT4 BUSINESS SOFTWARE & LTD", data.getName());
 		assertEquals("Check DB Rating", "5A1", data.getCurrentRating().getRating());
-		assertEquals("Check Failure Risk", 1578, data.getCurrentFailureRisk().getFailureRisk());
-		assertEquals("Check Failure Risk Percentile", 100, data.getCurrentFailureRisk().getFailureRiskNationalPercentile());
-		assertEquals("Check PAYDEX", 64, data.getCurrentPaydex().getPaydex());
-		assertEquals("Check PAYDEX Norm", 75, data.getCurrentPaydex().getPaydexNorm());
+		assertTrue("Check Failure Risk", 1578 == data.getFailureRiskScoreHistory().getCurrent().getValue());
+		assertTrue("Check Failure Risk Percentile", 100 == data.getFailureRiskPercentileHistory().getCurrent().getValue());
+		assertTrue("Check PAYDEX", 64 == data.getPaydexScoreHistory().getCurrent().getValue());
+		assertTrue("Check PAYDEX Norm", 75 == data.getPaydexNormHistory().getCurrent().getValue());
 		assertEquals("Check SIC Code", 7379, data.getPrimarySicCode());
 		assertEquals("Check Out of Business Indicator", true, data.getOutOfBusiness());
 	}

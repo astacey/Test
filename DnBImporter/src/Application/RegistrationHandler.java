@@ -29,7 +29,7 @@ public class RegistrationHandler
 		// Does this work ??
 		logger.setLevel(Level.FINE);
 		logger.info("Getting unregistered duns");
-		int active=0, pending=0, cancelled=0, failed=0;
+		int active=0, pending=0, failed=0;
 		
 		CompanyCollection unregisteredDuns = importRepository.getUnregisteredDunsCompanies();
 		

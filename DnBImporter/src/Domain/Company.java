@@ -15,11 +15,11 @@ public class Company
 	// Account Group ( from Agresso )	
 	private AccountGroup accountGroup;
 	// Total Spend
-	private DatedValueCollection totalSpend;
+	private DoubleDatedValueCollection totalSpend;
 	// Avg Days To Payment
-	private DatedValueCollection averageDaysToPayment;
+	private DoubleDatedValueCollection averageDaysToPayment;
 	// Open Balance
-	private DatedValueCollection openBalance; 
+	private DoubleDatedValueCollection openBalance; 
 	// D&B's data...
 	DnBData dunnBradstreetData;
 	
@@ -28,9 +28,9 @@ public class Company
 		this.id=id;
 		this.name=name;
 		this.type=type;
-		this.totalSpend=new DatedValueCollection();
-		this.averageDaysToPayment=new DatedValueCollection();
-		this.openBalance=new DatedValueCollection();
+		this.totalSpend=new DoubleDatedValueCollection();
+		this.averageDaysToPayment=new DoubleDatedValueCollection();
+		this.openBalance=new DoubleDatedValueCollection();
 	}
 	
 	@Override
@@ -111,33 +111,43 @@ public class Company
 		this.accountGroup = accountGroup;
 	}
 
-	public DatedValueCollection getTotalSpendCollection() {
+	public DoubleDatedValueCollection getTotalSpendCollection() {
 		return totalSpend;
 	}
 
-	public DatedValueCollection getAverageDaysToPaymentCollection() {
+	public DoubleDatedValueCollection getAverageDaysToPaymentCollection() {
 		return averageDaysToPayment;
 	}
 
-	public DatedValueCollection getOpenBalanceCollection() {
+	public DoubleDatedValueCollection getOpenBalanceCollection() {
 		return openBalance;
 	}
 	
 	// returns current openBalance
-	public DatedValue getOpenBalance()
+	public DoubleDatedValue getOpenBalance()
 	{
 		return this.openBalance.getCurrent();
 	}
 	
 	// returns current Avg Days To Payment
-	public DatedValue getAverageDaysToPayment()
+	public DoubleDatedValue getAverageDaysToPayment()
 	{
 		return this.averageDaysToPayment.getCurrent();
 	}
 	
 	// returns current Total Spend
-	public DatedValue getTotalSpend()
+	public DoubleDatedValue getTotalSpend()
 	{
 		return this.totalSpend.getCurrent();
+	}
+	
+	// set committed on all objects
+	public void setCommitted()
+	{
+		this.averageDaysToPayment.setCommitted();
+		this.totalSpend.setCommitted();
+		this.openBalance.setCommitted();
+		if(hasDunnBradstreetData())
+			getDunnBradstreetData().setCommitted();
 	}
 }

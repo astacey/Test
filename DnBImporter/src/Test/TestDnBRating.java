@@ -2,8 +2,6 @@ package Test;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
-
 import org.junit.Test;
 
 import Domain.DnBRating;
@@ -19,5 +17,8 @@ public class TestDnBRating {
 		data = new DnBRating("5A1");
 		
 		assertEquals("5A1 equals 1", 1, data.getRiskIndicator());
+		
+		data = new DnBRating("1");
+		assertEquals("1 equals 1", 1, data.getRiskIndicator());
 	}
 }

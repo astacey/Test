@@ -3,10 +3,9 @@ package Domain;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class DatedValueCollection extends ArrayList<DatedValue> 
+public class DatedValueCollection<T, T2 extends DatedValue<T>> extends ArrayList<T2> 
 {
-	
-	public DatedValue getCurrent()
+	public T2 getCurrent()
 	{
 		if(this.size()>0)
 		{
@@ -16,9 +15,9 @@ public class DatedValueCollection extends ArrayList<DatedValue>
 		return null;
 	}
 	
-	public void upsert(DatedValue dv)
+	public void upsert(T2 dv)
 	{
-		for(DatedValue existing : this)
+		for(T2 existing : this)
 		{
 			if(existing.compareTo(dv)==0)
 			{
@@ -30,11 +29,19 @@ public class DatedValueCollection extends ArrayList<DatedValue>
 		this.add(dv);
 	}
 
-	public void upsert(DatedValueCollection list)
+	public void upsert(DatedValueCollection<T, T2> list)
 	{
-		for(DatedValue dv : list)
+		for(T2 dv : list)
 		{
 			upsert(dv);
+		}
+	}
+	
+	public void setCommitted()
+	{
+		for(T2 dv : this)
+		{
+			dv.setCommitted();
 		}
 	}
 }

@@ -1,5 +1,9 @@
 package Domain;
 
+/*
+ * obsolete !!
+ *
+
 import java.util.Date;
 
 public class DnBPaydex implements Comparable<DnBPaydex>
@@ -10,7 +14,7 @@ public class DnBPaydex implements Comparable<DnBPaydex>
 			average days beyond terms or within terms enabling you to predict when your existing or potential customers are likely to pay. Derived from a dollar-weighted average of a company’s combined
 			individual payment experiences, it ranges from 0 – 100 with higher scores representing businesses which pay their bills more promptly. The D&B® Paydex® Interpretation Tables contain interpretation
 			tables for D&B’s payment score for specific countries.
-		 */
+		 *
 		private int paydex;
 		// D&B PAYDEX NORM
 		// The industry median or average D&B® Paydex score for the subject’s Line of Business.
@@ -56,4 +60,4 @@ public class DnBPaydex implements Comparable<DnBPaydex>
 		{
 			return this.date.compareTo(paydexCompare.getDate());
 		}
-}
+}*/

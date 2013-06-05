@@ -43,4 +43,12 @@ public class CompanyCollection extends ArrayList<Company>
 		}
 		return false;
 	}
+	
+	public void setCommitted()
+	{
+		for(Company c:this)
+		{
+			c.setCommitted();
+		}
+	}
 }

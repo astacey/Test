@@ -23,9 +23,9 @@ public class TestDnBDataUpdateMapper {
 		assertEquals("Length of data collection is 1", 1, data.size());
 		assertEquals("Name is PERFORM GROUP PLC", "PERFORM GROUP PLC", data.get(0).getName());
 		assertEquals("DBRating is empty", 0, data.get(0).getDbratingHistory().size());
-		assertEquals("FailureRisk is empty", 0, data.get(0).getFailureRiskHistory().size());
-		assertEquals("Paydex is 99", 99, data.get(0).getCurrentPaydex().getPaydex());
-		assertEquals("Paydex Norm is -1", -1, data.get(0).getCurrentPaydex().getPaydexNorm());
+		assertEquals("FailureRisk is empty", 0, data.get(0).getFailureRiskScoreHistory().size());
+		assertTrue("Paydex is 99", 99 == data.get(0).getPaydexScoreHistory().getCurrent().getValue());
+		assertEquals("Paydex Norm is empty", 0, data.get(0).getPaydexNormHistory().size());
 		assertEquals("Out of business indicator is true", true, data.get(0).getOutOfBusiness());
 	}
 	

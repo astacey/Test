@@ -2,21 +2,9 @@ package Test;
 
 import static org.junit.Assert.*;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Scanner;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-
-import sun.util.resources.CalendarData;
 
 import Application.SupplierAppCSVCompanyRepository;
 import Application.FileHelper;
@@ -26,8 +14,8 @@ public class TestSupplierAppCSVCompanyRepository
 {
 	// TODO : Need it to not depend on path ?
 	String folderLocation = "/home/astacey/SupplierDataTest";
-	String expectedAccountOutput = "GEN_ID;NAME;PARENT (PARENT_GEN_ID);AGR_NO;CH_NO;DUNS_NO;STATUS;DnB_STATUS\r\n1;All;1;;;;;\r\nA;Suppliers;1;;;;;\r\nB;Partners;1;;;;;\r\nC;Customers;1;;;;;\r\n1;Test & Company;C;1;;100;Active;Failed\r\n";
-	String expectedAccountInput = "GEN_ID;NAME;PARENT (PARENT_GEN_ID);AGR_NO;CH_NO;DUNS_NO;STATUS;DnB_STATUS\r\n1;All;1;;;;;\r\nA;Suppliers;1;;;;;\r\nB;Partners;1;;;;;\r\nC;Customers;1;;;;;\r\n";
+	String expectedAccountOutput = "GEN_ID;NAME;PARENT (PARENT_GEN_ID);AGR_NO;CH_NO;DUNS_NO;STATUS;DnB_STATUS;ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET\r\n1;All;1;;;;;;;;\r\nA;Suppliers;1;;;;;;;;\r\nB;Partners;1;;;;;;;;\r\nC;Customers;1;;;;;;;;\r\n1;Test & Company;C;1;;100;Active;Failed;;;\r\n";
+	String expectedAccountInput = "GEN_ID;NAME;PARENT (PARENT_GEN_ID);AGR_NO;CH_NO;DUNS_NO;STATUS;DnB_STATUS;ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET\r\n1;All;1;;;;;;;;\r\nA;Suppliers;1;;;;;;;;\r\nB;Partners;1;;;;;;;;\r\nC;Customers;1;;;;;;;;\r\n";
 	
 	@Test
 	public void testGetCompanyByDuns()
@@ -64,7 +52,7 @@ public class TestSupplierAppCSVCompanyRepository
 	@Test
 	public void testSaveCompany() 
 	{
-		String expectedFactOutput = "VALUE;TIME;ACCOUNTS (GEN_ID);DATASET (GEN_ID)\r\n1;2013-01-01;1;Risk\r\n99;2013-01-01;1;FR\r\n50;2013-01-01;1;FRP\r\n200;2013-01-01;1;P\r\n75;2013-01-01;1;PN\r\n";
+		String expectedFactOutput = "VALUE;TIME;ACCOUNTS (GEN_ID);DATASET (GEN_ID)\r\n1005.0;2013-04-01;1;OB\r\n1;2013-01-01;1;Risk\r\n99;2013-01-01;1;FR\r\n50;2013-01-01;1;FRP\r\n200;2013-01-01;1;P\r\n75;2013-01-01;1;PN\r\n";
 		FileHelper.writeFile(folderLocation + "/accounts.csv", expectedAccountInput);
 		
 		Company c = new Company("1", "Test & Company", CompanyType.CUSTOMER);
@@ -74,8 +62,12 @@ public class TestSupplierAppCSVCompanyRepository
 		Calendar cal = Calendar.getInstance();
 		cal.set(2013, 0, 1); // WTF ? why 0 ? I mean really wtf ?
 		c.getDunnBradstreetData().getDbratingHistory().add(new DnBRating("5A1", cal.getTime()));
-		c.getDunnBradstreetData().getFailureRiskHistory().add(new DnBFailureRisk(99, 50, cal.getTime()));
-		c.getDunnBradstreetData().getPaydexHistory().add(new DnBPaydex(200, 75, cal.getTime()));
+		c.getDunnBradstreetData().getFailureRiskScoreHistory().add(new IntegerDatedValue(cal.getTime(), 99));
+		c.getDunnBradstreetData().getFailureRiskPercentileHistory().add(new IntegerDatedValue(cal.getTime(), 50));
+		c.getDunnBradstreetData().getPaydexScoreHistory().add(new IntegerDatedValue(cal.getTime(), 200));
+		c.getDunnBradstreetData().getPaydexNormHistory().add(new IntegerDatedValue(cal.getTime(), 75));
+		cal.set(2013,3,1); // 3 meaning april - I mean WTF dude ?
+		c.getOpenBalanceCollection().upsert(new DoubleDatedValue(cal.getTime(), 1005.0));
 		
 		SupplierAppCSVCompanyRepository repo = new SupplierAppCSVCompanyRepository(folderLocation);
 		repo.saveCompany(c);
@@ -87,7 +79,8 @@ public class TestSupplierAppCSVCompanyRepository
 		
 		assertTrue("Expected account output file is incorrect", expectedAccountOutput.equalsIgnoreCase(actualAccountsOutput) );
 		String actualFactOutput = FileHelper.getStringFromFile(folderLocation + "/fact_data.csv");
-
+		System.out.print(expectedFactOutput);
+		System.out.print(actualFactOutput);
 		assertTrue("Expected fact output is incorrect", expectedFactOutput.equalsIgnoreCase(actualFactOutput));
 	}
 }

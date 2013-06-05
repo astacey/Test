@@ -11,9 +11,8 @@ import org.w3c.dom.NodeList;
 
 import Application.XmlHelper;
 import Domain.DnBData;
-import Domain.DnBFailureRisk;
-import Domain.DnBPaydex;
 import Domain.DnBRating;
+import Domain.IntegerDatedValue;
 
 public class DnBDataMapper 
 {
@@ -36,25 +35,21 @@ public class DnBDataMapper
 			{
 				DnBData data = new DnBData();
 				NodeList children = nodes.item(0).getChildNodes();
-				int failureRisk=-1;
-				int failureRiskPercentile=-1;
-				int paydex=-1;
-				int paydexNorm=-1;
 				
 				for(int j=0;j<children.getLength();j++)
 				{
 					if(children.item(j).getNodeName()=="DUNS_NBR")
 						data.setDunsNumber(XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent()));
 					else if(children.item(j).getNodeName()=="FAIL_SCR")
-						failureRisk = XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent());
+						data.getFailureRiskScoreHistory().upsert(new IntegerDatedValue(new Date(), XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent())));
 					else if(children.item(j).getNodeName()=="DNB_RATG")
 						data.getDbratingHistory().add(new DnBRating(children.item(j).getTextContent(), new Date() ));
 					else if(children.item(j).getNodeName()=="FAIL_SCR_NATL_PCTG")
-						failureRiskPercentile = XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent());
+						data.getFailureRiskPercentileHistory().upsert(new IntegerDatedValue(new Date(), XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent())));
 					else if(children.item(j).getNodeName()=="PAYD_SCR")
-						paydex = XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent());
+						data.getPaydexScoreHistory().upsert(new IntegerDatedValue(new Date(), XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent())));
 					else if(children.item(j).getNodeName()=="PAYD_NORM")
-						paydexNorm = XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent());
+						data.getPaydexNormHistory().upsert(new IntegerDatedValue(new Date(), XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent())));
 					else if(children.item(j).getNodeName()=="PRIM_SIC")
 						data.setPrimarySicCode(XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent()));
 					else if(children.item(j).getNodeName()=="PRIM_NME")
@@ -62,10 +57,6 @@ public class DnBDataMapper
 					else if(children.item(j).getNodeName()=="OUT_BUS_IND" && children.item(j).getTextContent().equalsIgnoreCase("y"))
 						data.setOutOfBusiness(true);
 				}
-				if(failureRisk>-1)
-					data.getFailureRiskHistory().add(new DnBFailureRisk(failureRisk, failureRiskPercentile, new Date()));
-				if(paydex>-1)
-					data.getPaydexHistory().add(new DnBPaydex(paydex, paydexNorm, new Date()));
 				return data;
 			}
 			else

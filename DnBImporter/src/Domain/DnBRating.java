@@ -15,6 +15,8 @@ public class DnBRating implements Comparable<DnBRating>
 	private String rating;
 	// Date the rating took effect
 	private Date date;
+	// flag to check if changes have been saved/committed
+	private Boolean isCommitted = false;
 
 	public DnBRating(String rating)
 	{
@@ -31,12 +33,17 @@ public class DnBRating implements Comparable<DnBRating>
 	}
 	public void setRating(String rating) {
 		this.rating = rating;
+		this.isCommitted = false;
 	}
 	public Date getDate() {
 		return date;
 	}
 	public void setDate(Date date) {
 		this.date = date;
+		this.isCommitted = false;
+	}
+	public Boolean getCommitted() {
+		return this.isCommitted;
 	}
 
 	// Returns the Risk Indicator portion of the D&B Rating
@@ -72,5 +79,10 @@ public class DnBRating implements Comparable<DnBRating>
 	public int compareTo(DnBRating dbRating) 
 	{
 		return this.date.compareTo(dbRating.getDate());
+	}
+	
+	public void setCommitted()
+	{
+		this.isCommitted = true;
 	}
 }

@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import org.junit.Test;
@@ -40,7 +38,7 @@ public class TestDnBUpdateHandler {
 		// should save 1 company
 		assertEquals("Number of companies saved is 1 per request to dnb, so 3", 3, companyRepo.getCompaniesSaved().size());
 		// 
-		assertEquals("Paydex of saved company should be 77", 77, companyRepo.getCompaniesSaved().get(0).getDunnBradstreetData().getCurrentPaydex().getPaydex());
+		assertTrue("Paydex of saved company should be 77", 77==companyRepo.getCompaniesSaved().get(0).getDunnBradstreetData().getPaydexScoreHistory().getCurrent().getValue());
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		formatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
