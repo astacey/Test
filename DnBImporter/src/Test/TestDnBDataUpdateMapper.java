@@ -2,7 +2,10 @@ package Test;
 
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+
+import javax.xml.xpath.XPathExpressionException;
 
 import org.junit.Test;
 
@@ -18,7 +21,16 @@ public class TestDnBDataUpdateMapper {
 		
 		DnBDataUpdateMapper mapper = new DnBDataUpdateMapper();
 		
-		ArrayList<DnBData> data = mapper.getDnBDataFromXml(testInput);
+		ArrayList<DnBData> data = new ArrayList<DnBData>();
+		try {
+			data = mapper.getDnBDataFromXml(testInput);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		assertEquals("Length of data collection is 1", 1, data.size());
 		assertEquals("Name is PERFORM GROUP PLC", "PERFORM GROUP PLC", data.get(0).getName());

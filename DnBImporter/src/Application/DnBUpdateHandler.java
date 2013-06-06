@@ -18,12 +18,14 @@ public class DnBUpdateHandler
 	private ICompanyRepository u4baCompanyRepository;
 	private IDnBRepository dnbRepository;
 	private ImporterSettings settings;
+	private SimpleDateFormat dateFormatter;
 
 	public DnBUpdateHandler(ICompanyRepository u4baCompanyRepository, IDnBRepository dnbRepository, ImporterSettings settings)
 	{
 		this.u4baCompanyRepository = u4baCompanyRepository;
 		this.dnbRepository = dnbRepository;
 		this.settings = settings;
+		initDateFormatter();
 	}
 	
 	/*
@@ -36,19 +38,20 @@ public class DnBUpdateHandler
 	 * what would it do with lastrundate
 	 * maybe just change the lastrundate to wind back, keep simple ?
 	 */
-	public void getUpdates()
+	public Boolean getUpdates()
 	{
 		// Get Updates
 		Date startDate = settings.getLastRunDate();
 		Date endDate = getEndDate();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
-		formatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
-		
 		do
 		{
 			Date nextDate = getNextDate(startDate, endDate);
-			logger.info("Getting updates for [" + formatter.format(startDate) + " EST] to [" + formatter.format(nextDate) + " EST]");
-			getUpdates(startDate, nextDate);
+			logger.info("Getting updates for [" + dateFormatter.format(startDate) + " EST] to [" + dateFormatter.format(nextDate) + " EST]");
+			if(getUpdates(startDate, nextDate) == false)
+			{
+				//Problem getting updates
+				return false;
+			}
 			startDate=nextDate;	
 		}
 		while(startDate.before(endDate));
@@ -57,13 +60,25 @@ public class DnBUpdateHandler
 		
 		// Save LastRunDate
 		settings.setLastRunDate(endDate);
+		return true;
 	}
 	
-	private void getUpdates(Date startDate, Date endDate)
+	private Boolean getUpdates(Date startDate, Date endDate)
 	{
-		ArrayList<DnBData> updates = dnbRepository.getCompanyUpdates(startDate, endDate);
+		Boolean gotUpdates = false;
+		ArrayList<DnBData> updates = new ArrayList<DnBData>();
+		try 
+		{
+			updates = dnbRepository.getCompanyUpdates(startDate, endDate);
+			gotUpdates = true;
+		} 
+		catch (Exception e1) 
+		{
+			logger.severe("ERROR: unable to get updates for dates [" + dateFormatter.format(startDate) + " EST] to [" + dateFormatter.format(endDate) + " EST].");
+			logger.severe(e1.getMessage());
+		}
 		
-		// Write data
+		// Write data - if error getting updates data will be empty
 		for(DnBData data : updates)
 		{
 			int dunsNumber = data.getDunsNumber();
@@ -87,6 +102,7 @@ public class DnBUpdateHandler
 				e.printStackTrace();
 			}
 		}
+		return gotUpdates;
 	}
 	
 	private Date getEndDate()
@@ -109,5 +125,11 @@ public class DnBUpdateHandler
 		if(cal.after(endCal))
 			return endDate;
 		return cal.getTime();
+	}
+	
+	private void initDateFormatter()
+	{
+		dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+		dateFormatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
 	}
 }

@@ -8,5 +8,5 @@ public interface IDnBRepository
 	Boolean registerCompany(int dunsNumber);
 	DnBRegistrationCollection getRegistrations();
 	DnBData getCompanyDetails(int dunsNumber);
-	ArrayList<DnBData> getCompanyUpdates(Date startDate, Date endDate);
+	ArrayList<DnBData> getCompanyUpdates(Date startDate, Date endDate) throws Exception;
 }

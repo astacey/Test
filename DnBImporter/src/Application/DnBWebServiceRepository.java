@@ -14,6 +14,7 @@ import WebServiceClients.GetCompanyDetailsClient;
 import WebServiceClients.GetNotificationsClient;
 import WebServiceClients.GetRegistrationListClient;
 
+import DBGetNotificationsClient.Exception_Exception;
 import DnBXmlMappers.DnBDataMapper;
 import DnBXmlMappers.DnBDataUpdateMapper;
 import DnBXmlMappers.DnBRegistrationListMapper;
@@ -92,7 +93,7 @@ public class DnBWebServiceRepository implements IDnBRepository
 	}
 	
 	@Override
-	public ArrayList<DnBData> getCompanyUpdates(Date startDate, Date endDate)
+	public ArrayList<DnBData> getCompanyUpdates(Date startDate, Date endDate) throws Exception
 	{
 		GetNotificationsClient client = new GetNotificationsClient(wsUserName, wsPassword);
 		ArrayList<DnBData> returnData = new ArrayList<DnBData>();
@@ -101,7 +102,16 @@ public class DnBWebServiceRepository implements IDnBRepository
 		String resultTicket = "";
 		do
 		{
-			String xmlResponseString = client.getNotifications(startDate, endDate, resultTicket);
+			String xmlResponseString;
+			try 
+			{
+				xmlResponseString = client.getNotifications(startDate, endDate, resultTicket);
+			} 
+			catch (Exception_Exception ee) 
+			{
+				Exception e = new Exception("Error getting response from get notifications.", ee);
+				throw(e);
+			}
 			logger.info(xmlResponseString);
 
 			ArrayList<DnBData> data = mapper.getDnBDataFromXml(xmlResponseString);

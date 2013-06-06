@@ -19,7 +19,7 @@ import Domain.IntegerDatedValue;
 
 public class DnBDataUpdateMapper 
 {
-	public ArrayList<DnBData> getDnBDataFromXml(String xml)
+	public ArrayList<DnBData> getDnBDataFromXml(String xml) throws ParseException, XPathExpressionException
 	{
 		/*
 		 * D&B Failure Risk (Financial Stress) - FAIL_SCR
@@ -32,8 +32,8 @@ public class DnBDataUpdateMapper
 		 */
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		ArrayList<DnBData> updateCollection = new ArrayList<DnBData>();
-		try
-		{
+		//try
+		//{
 			NodeList nodes = (NodeList) xpath.evaluate("//GLBLMNSVCMSGSRSV1/GETNTFCTRNRS/GETNTFCRS/USERRS/PFLRS/ArrayOfPFLRSItem/REGNRS/ArrayOfREGNRSItem", XmlHelper.getXmlDocument(xml), XPathConstants.NODESET);
 			for(int i=0;i<nodes.getLength();i++)
 			{
@@ -59,7 +59,7 @@ public class DnBDataUpdateMapper
 				}
 				updateCollection.add(data);
 			}
-		} 
+		/*} 
 		catch (XPathExpressionException e) 
 		{
 			e.printStackTrace();
@@ -67,7 +67,7 @@ public class DnBDataUpdateMapper
 		catch(ParseException pe)
 		{
 			pe.printStackTrace();
-		}
+		}*/
 		
 		return updateCollection;
 

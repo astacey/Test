@@ -4,6 +4,7 @@ import java.util.Date;
 import java.text.*;
 import Application.JaxBHelper;
 
+import DBGetNotificationsClient.Exception_Exception;
 import DBGetNotificationsClient.GLBLMNSVCMSGSRSV1;
 import DBGetNotificationsClient.GetNotificationsRequest;
 import DBGetNotificationsClient.GetNotificationsRequestData;
@@ -19,12 +20,12 @@ public class GetNotificationsClient extends DnBWebServiceClient
 		super(userName, password);
 	}
 	
-	public String getNotifications(Date fromDate, Date toDate)
+	public String getNotifications(Date fromDate, Date toDate) throws Exception_Exception
 	{
 		return getNotifications(fromDate, toDate, "");
 	}
 	
-	public String getNotifications(Date fromDate, Date toDate, String resultTicket)
+	public String getNotifications(Date fromDate, Date toDate, String resultTicket) throws Exception_Exception
 	{
 		// Note : Date period requested needs to be within the last 90 days or the service throws an error
 		//		: Date range cannot exceed 4 days or you get an error
@@ -50,14 +51,14 @@ public class GetNotificationsClient extends DnBWebServiceClient
 		
 		WspGetNotificationsPortType port = client.getDNBWebServicesProvidersGetNotificationsWspGetNotificationsPort();
 		
-		try
-		{
+		//try
+		//{
 			responseXml = JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, port.wsGetNotifications(request).getDGX().getGLBLMNSVCMSGSRSV1());
-		}
-		catch(Exception e)
-		{
-			responseXml = e.getMessage();
-		}
+		//}
+		//catch(Exception e)
+		//{
+		//	responseXml = e.getMessage();
+		//}
 		return responseXml;
 	}
 }
