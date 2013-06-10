@@ -11,6 +11,7 @@ public class ImporterArgs
 	private String importSourceFile = "";
 	private String importSource = "";
 	private String abwUpdateFolder = "";
+	private Boolean isPrepareABWCSV = false;
 	
 	public ImporterArgs(String[] args)
 	{
@@ -59,6 +60,12 @@ public class ImporterArgs
 				i++;
 				abwUpdateFolder=args[i];
 			}
+			else if(args[i].equalsIgnoreCase("-pabw"))
+			{
+				isPrepareABWCSV = true;
+				i++;
+				abwUpdateFolder=args[i];
+			}
 		}
 	}
 	
@@ -102,5 +109,9 @@ public class ImporterArgs
 
 	public String getAbwUpdateFolder() {
 		return abwUpdateFolder;
+	}
+
+	public Boolean getIsPrepareABWCSV() {
+		return isPrepareABWCSV;
 	}
 }

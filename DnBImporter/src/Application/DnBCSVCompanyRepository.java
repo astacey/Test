@@ -44,7 +44,7 @@ public class DnBCSVCompanyRepository implements ICompanyRepository
 	}
 
 	@Override
-	public Company getCompanyByDuns(int dunsNumber) 
+	public CompanyCollection getCompanyByDuns(int dunsNumber) 
 	{
 		// No need to do anything here
 		// This won't get called

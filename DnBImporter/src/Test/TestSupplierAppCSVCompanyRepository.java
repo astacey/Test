@@ -25,9 +25,9 @@ public class TestSupplierAppCSVCompanyRepository
 		SupplierAppCSVCompanyRepository repo = new SupplierAppCSVCompanyRepository(folderLocation);
 		if(repo.getCompanyByDuns(100)!=null)
 		{
-			assertEquals("Company with duns id 100 is not found ", "Test & Company", repo.getCompanyByDuns(100).getName());
+			assertEquals("Company with duns id 100 is not found ", "Test & Company", repo.getCompanyByDuns(100).get(0).getName());
 			//Check the companyType
-			assertEquals("Company Type is Customer", CompanyType.CUSTOMER, repo.getCompanyByDuns(100).getType());
+			assertEquals("Company Type is Customer", CompanyType.CUSTOMER, repo.getCompanyByDuns(100).get(0).getType());
 		}
 		else
 			fail("Company with duns id 100 is not found");

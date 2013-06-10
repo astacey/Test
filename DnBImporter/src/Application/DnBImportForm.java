@@ -26,6 +26,8 @@ import WebServiceClients.LookUpClient;
 
 public class DnBImportForm extends JFrame {
 
+	// increment if breaking change to serializaion
+	public static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtCompanyName;
 	private JTextArea txtResults;

@@ -14,6 +14,9 @@ import Application.XmlHelper;
 
 public class DnBRegistrationCollection extends ArrayList<DnBRegistration> 
 {
+	// increment if breaking change to serializaion
+	public static final long serialVersionUID = 1L;
+	
 	public DnBRegistration findByDuns(int dunsNumber)
 	{
 		for (DnBRegistration reg : this) 

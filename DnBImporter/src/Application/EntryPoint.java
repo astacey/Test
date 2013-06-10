@@ -59,6 +59,8 @@ public class EntryPoint
 		ImporterSettings settings = settingsRepo.getSettings();
 		ICompanyRepository companyRepo = new SupplierAppCSVCompanyRepository(settings.getCsvLocation());			
 
+		// Think this will become obsolete or be a specific DnB initial upload
+		// TODO: probably move the initial download of dnb data to the register function ?
 		if(args.getIsInitialUpload() == true)
 		{
 			ICompanyRepository companySourceRepo = new ABWCSVCompanyRepository(args.getImportSourceFile());
@@ -68,6 +70,21 @@ public class EntryPoint
 			InitialUploadHandler initial = new InitialUploadHandler(companyRepo, dnbRepo, settings, companySourceRepo);
 			initial.downloadAllCompanies();
 			logger.info("Finished Initial Upload");
+		}
+		if(args.getIsPrepareABWCSV() == true)
+		{
+			logger.info("Start preparing ABW CSV");
+			ABWUpdateCSVPrepare csvPrep = new ABWUpdateCSVPrepare();
+			csvPrep.extractCsvFromExcel(args.getAbwUpdateFolder());
+			logger.info("Finished preparing ABW CSV");
+		}
+		if(args.getIsABWUpdate() == true)
+		{
+			logger.info("Starting ABW Update");
+			ICompanyRepository companySourceRepo = new ABWXlsxCompanyRepository(args.getAbwUpdateFolder());
+			ABWUpdateHandler abwHandler = new ABWUpdateHandler(companyRepo, companySourceRepo);
+			abwHandler.getUpdates();
+			logger.info("Finihed ABW Update");
 		}
 		// if initial upload then we will need registering
 		// probably want registration to be run every day
@@ -79,17 +96,6 @@ public class EntryPoint
 			handler.RegisterCompanies();
 			logger.info("Finished RegistrationHandler");
 		}
-		if(args.getIsABWUpdate() == true)
-		{
-			logger.info("Starting ABW Update");
-			ABWUpdateCSVPrepare csvPrep = new ABWUpdateCSVPrepare();
-			csvPrep.extractCsvFromExcel(args.getAbwUpdateFolder());
-			ICompanyRepository companySourceRepo = new ABWXlsxCompanyRepository(args.getAbwUpdateFolder());
-			ABWUpdateHandler abwHandler = new ABWUpdateHandler(companyRepo, companySourceRepo, settings);
-			abwHandler.getUpdates();
-			logger.info("Finihed ABW Update");
-		}
-
 		// if daily update selected then ...
 		if(args.getIsDnBUpdate() == true)
 		{

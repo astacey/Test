@@ -14,6 +14,8 @@ import javax.xml.ws.WebFault;
 public class Exception_Exception
     extends java.lang.Exception
 {
+	// increment if breaking change to serializaion
+	public static final long serialVersionUID = 1L;
 
     /**
      * Java type that goes as soapenv:Fault detail element.

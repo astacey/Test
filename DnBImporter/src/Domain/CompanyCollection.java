@@ -4,17 +4,20 @@ import java.util.ArrayList;
 
 public class CompanyCollection extends ArrayList<Company>
 {
-
-	public Company getCompanyFromDunsNumber(int dunsNumber)
+	// increment if breaking change to serializaion
+	public static final long serialVersionUID = 1L;
+	
+	public CompanyCollection getCompaniesFromDunsNumber(int dunsNumber)
 	{
+		CompanyCollection matches = new CompanyCollection();
 		for(Company c : this)
 		{
 			if(c.hasDunnBradstreetData()&&c.getDunnBradstreetData().getDunsNumber()==dunsNumber)
 			{
-				return c;
+				matches.add(c);
 			}
 		}
-		return null;
+		return matches;
 	}
 	
 	public Company getCompanyFromId(String id)

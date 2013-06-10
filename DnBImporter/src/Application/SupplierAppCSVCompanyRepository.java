@@ -26,7 +26,7 @@ import Domain.ICompanyRepository;
 public class SupplierAppCSVCompanyRepository implements ICompanyRepository 
 {
 	private final String accountsFileName = "accounts.csv";
-	private final String[] accountsFileHeaders = new String[] { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS", "ACCOUNT_GROUP_CODE","ACCOUNT_GROUP_NAME","VERTICAL_MARKET" };
+	private final String[] accountsFileHeaders = new String[] { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS", "ACCOUNT_GROUP_CODE","ACCOUNT_GROUP_NAME","VERTICAL_MARKET", "EXPERIAN_NO" };
 	private final String allMemberId = "1";
 	private final String factFileName = "fact_data.csv";
 	private final String factFullFileName = "fact_data_full.csv";  
@@ -103,9 +103,9 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 	}
 
 	@Override
-	public Company getCompanyByDuns(int dunsNumber) 
+	public CompanyCollection getCompanyByDuns(int dunsNumber) 
 	{
-		return allCompanies.getCompanyFromDunsNumber(dunsNumber);
+		return allCompanies.getCompaniesFromDunsNumber(dunsNumber);
 	}
 	
 	@Override
@@ -134,9 +134,9 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 				accGroupCode = c.getAccountGroup().getCode();
 			}
 			if(c.hasDunnBradstreetData())
-				csvAccounts.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), String.valueOf(c.getDunnBradstreetData().getDunsNumber()), getOutOfBusinessString(c.getDunnBradstreetData().getOutOfBusiness()), c.getDunnBradstreetData().getRegistrationDetails().getStatus().getDescription(), accGroupCode, accGroupName, c.getVerticalMarket()});
+				csvAccounts.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), String.valueOf(c.getDunnBradstreetData().getDunsNumber()), getOutOfBusinessString(c.getDunnBradstreetData().getOutOfBusiness()), c.getDunnBradstreetData().getRegistrationDetails().getStatus().getDescription(), accGroupCode, accGroupName, c.getVerticalMarket(), ""});
 			else
-				csvAccounts.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), "", "Active", "", accGroupCode, accGroupName, c.getVerticalMarket()});
+				csvAccounts.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), "", "Active", "", accGroupCode, accGroupName, c.getVerticalMarket(), ""});
 			csvAccounts.flush();
 		}
 		catch(IOException e)

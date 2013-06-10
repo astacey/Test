@@ -18,7 +18,7 @@ public class ABWUpdateCSVPrepare
 		File currentExportFile = getLatestFile(folder);
 		try
 		{
-			String cmd = "cmd /c start ExecuteCSVExtract.bat \"" + currentExportFile.getAbsolutePath() + "\" \"" + folder + "CurrentBatch.csv\"";
+			String cmd = "cmd /c start /wait ExecuteCSVExtract.bat \"" + currentExportFile.getAbsolutePath() + "\" \"" + folder + "CurrentBatch.csv\"";
 			logger.info("Executing command - [" + cmd + "]");
 			Runtime.getRuntime().exec(cmd);
 		}

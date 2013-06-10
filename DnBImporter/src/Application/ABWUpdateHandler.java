@@ -12,13 +12,11 @@ public class ABWUpdateHandler
 	private static Logger logger = Logger.getLogger(ABWUpdateHandler.class.getName());
 	private ICompanyRepository u4baCompanyRepository;
 	private ICompanyRepository abwCompanyRepository;
-	private ImporterSettings settings;
 
-	public ABWUpdateHandler(ICompanyRepository u4baCompanyRepository, ICompanyRepository abwCompanyRepository, ImporterSettings settings)
+	public ABWUpdateHandler(ICompanyRepository u4baCompanyRepository, ICompanyRepository abwCompanyRepository)
 	{
 		this.u4baCompanyRepository = u4baCompanyRepository;
 		this.abwCompanyRepository = abwCompanyRepository;
-		this.settings = settings;
 	}
 	
 	/*

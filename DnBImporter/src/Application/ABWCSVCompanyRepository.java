@@ -44,11 +44,11 @@ public class ABWCSVCompanyRepository implements ICompanyRepository
 	}
 
 	@Override
-	public Company getCompanyByDuns(int dunsNumber) 
+	public CompanyCollection getCompanyByDuns(int dunsNumber) 
 	{
 		// No need to do anything here
 		// This is abw data and they don't have duns numbers !
-		return getAllCompanies().getCompanyFromDunsNumber(dunsNumber);
+		return getAllCompanies().getCompaniesFromDunsNumber(dunsNumber);
 	}
 
 	@Override

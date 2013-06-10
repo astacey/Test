@@ -8,6 +8,7 @@ import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import Domain.Company;
+import Domain.CompanyCollection;
 import Domain.DnBData;
 import Domain.ICompanyRepository;
 import Domain.IDnBRepository;
@@ -84,15 +85,18 @@ public class DnBUpdateHandler
 			int dunsNumber = data.getDunsNumber();
 			try
 			{
-				Company c = u4baCompanyRepository.getCompanyByDuns(dunsNumber);
-				if(c == null)
+				CompanyCollection companyMatches = u4baCompanyRepository.getCompanyByDuns(dunsNumber);
+				if(companyMatches.size()==0)
 				{
 					logger.warning("Received data for a duns that doesn't exist in the system. Investigate. Duns [" + String.valueOf(dunsNumber) + "]");
 				}
 				else
 				{
-					c.setDunnBradstreetData(data);
-					u4baCompanyRepository.saveCompany(c);
+					for(Company company : companyMatches)
+					{
+						company.setDunnBradstreetData(data);
+						u4baCompanyRepository.saveCompany(company);
+					}
 				}
 			}
 			catch(Exception e)

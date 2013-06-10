@@ -5,6 +5,9 @@ import java.util.Collections;
 
 public class DatedValueCollection<T, T2 extends DatedValue<T>> extends ArrayList<T2> 
 {
+	// increment if breaking change to serializaion
+	public static final long serialVersionUID = 1L;
+	
 	public T2 getCurrent()
 	{
 		if(this.size()>0)

@@ -7,7 +7,6 @@ import java.util.Date;
 import org.junit.Test;
 
 import Domain.DatedValue;
-import Domain.IntegerDatedValue;
 
 public class TestDatedValue 
 {

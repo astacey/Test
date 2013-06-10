@@ -1,6 +1,5 @@
 package Domain;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class DnBData 

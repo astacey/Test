@@ -55,9 +55,9 @@ public class TestCompanyRepository implements ICompanyRepository
 	}
 	
 	@Override
-	public Company getCompanyByDuns(int dunsNumber) 
+	public CompanyCollection getCompanyByDuns(int dunsNumber) 
 	{
-		return getAllCompanies().getCompanyFromDunsNumber(dunsNumber);
+		return getAllCompanies().getCompaniesFromDunsNumber(dunsNumber);
 	}
 
 	@Override

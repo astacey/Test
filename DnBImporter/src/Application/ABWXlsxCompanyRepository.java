@@ -65,8 +65,8 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 	}
 
 	@Override
-	public Company getCompanyByDuns(int dunsNumber) {
-		return getAllCompanies().getCompanyFromDunsNumber(dunsNumber);
+	public CompanyCollection getCompanyByDuns(int dunsNumber) {
+		return getAllCompanies().getCompaniesFromDunsNumber(dunsNumber);
 	}
 
 	@Override
