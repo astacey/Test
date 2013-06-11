@@ -16,15 +16,17 @@ public class ABWUpdateCSVPrepare
 		if( !folder.endsWith("/"))
 			folder+="/";
 		File currentExportFile = getLatestFile(folder);
+		String cmd = "";
 		try
 		{
-			String cmd = "cmd /c start /wait ExecuteCSVExtract.bat \"" + currentExportFile.getAbsolutePath() + "\" \"" + folder + "CurrentBatch.csv\"";
+			cmd = "cmd /c start /wait ExecuteCSVExtract.bat \"" + currentExportFile.getAbsolutePath() + "\" \"" + folder + "CurrentBatch.csv\"";
 			logger.info("Executing command - [" + cmd + "]");
 			Runtime.getRuntime().exec(cmd);
 		}
 		catch(Exception e)
 		{
 			logger.warning(e.getMessage());
+			throw new RuntimeException("Error executing command [" + cmd + "]", e);
 		}
 	}
 	

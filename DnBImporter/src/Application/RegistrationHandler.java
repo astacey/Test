@@ -1,5 +1,4 @@
 package Application;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import Domain.*;
@@ -14,8 +13,6 @@ public class RegistrationHandler
 	{
 		this.importRepository = importRepository;
 		this.dnbRepository = dnbRepository;
-		// For now...
-		logger.setLevel(Level.FINE);
 	}
 	
 	// Register all companies that are not currently registered with D&B
@@ -26,8 +23,6 @@ public class RegistrationHandler
 	// 4. register any that are left
 	public void RegisterCompanies()
 	{
-		// Does this work ??
-		logger.setLevel(Level.FINE);
 		logger.info("Getting unregistered duns");
 		int active=0, pending=0, failed=0;
 		

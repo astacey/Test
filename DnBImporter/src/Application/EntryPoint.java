@@ -28,12 +28,20 @@ public class EntryPoint
 			}
 			catch (IOException e) 
 			{
-				e.printStackTrace();
-				throw new RuntimeException("Problems with creating the log files");
+				logger.severe(e.getMessage());
+				throw new RuntimeException("Problems with creating the log files", e);
 			}
-			logger.info("Starting runCommand");
-			runCommandLine(impArgs);
-			logger.info("Finished runCommand");
+			try 
+			{
+				logger.info("Starting runCommand");
+				runCommandLine(impArgs);
+				logger.info("Finished runCommand");
+			}
+			catch (Exception e) 
+			{
+				logger.severe(e.getMessage());
+				throw new RuntimeException("Error executing command", e);
+			}
 		}
 	}
 	

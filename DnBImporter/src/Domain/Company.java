@@ -43,7 +43,7 @@ public class Company
 	}
 	
 	/**
-	 * @return the name
+	 * @return the name 
 	 */
 	public String getName() {
 		return name;

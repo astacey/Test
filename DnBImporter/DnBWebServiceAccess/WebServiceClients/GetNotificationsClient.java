@@ -40,7 +40,6 @@ public class GetNotificationsClient extends DnBWebServiceClient
 		data.setDetectionDateTo(dateFormatter.format(toDate));
 		if(resultTicket.length()>0)
 			data.setResultTicket(helper.createGetNotificationsRequestDataResultTicket(resultTicket));
-//		data.setDnBDUNSNumber(helper.createGetNotificationsRequestDataDnBDUNSNumber("210084058"));
 		
 		GetNotificationsRequest request = new GetNotificationsRequest();
 		request.setUserId(userName);

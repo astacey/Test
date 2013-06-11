@@ -262,10 +262,13 @@ public class DnBImportForm extends JFrame {
 	
 	private void getRegistrationsActivity()
 	{
-		GetRegistrationActivityClient activityClient = new GetRegistrationActivityClient();
+		Date from = GetDateFromString(txtDateFrom.getText());
+		Date to = GetDateFromString(txtDateTo.getText());
+		
+		GetRegistrationActivityClient activityClient = new GetRegistrationActivityClient(txtUserName.getText(), txtPassword.getText());
 		try
 		{
-			txtResults.setText(activityClient.getRegistrationActivity());
+			txtResults.setText(activityClient.getRegistrationActivity(from, to));
 		}
 		catch(Exception e)
 		{
@@ -292,7 +295,7 @@ public class DnBImportForm extends JFrame {
 		String postCode = txtPostCode.getText();
 		if( companyName.length() > 0)
 		{
-			LookUpClient lookUpRequest = new LookUpClient();
+			LookUpClient lookUpRequest = new LookUpClient(txtUserName.getText(), txtPassword.getText());
 			try
 			{
 				txtResults.setText(lookUpRequest.performLookUp(companyName, postCode));

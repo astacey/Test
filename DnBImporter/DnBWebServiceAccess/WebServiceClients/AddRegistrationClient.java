@@ -4,6 +4,7 @@ import Application.JaxBHelper;
 import DBAddRegistrationClient.AddRegistrationData;
 import DBAddRegistrationClient.AddRegistrationRequest;
 import DBAddRegistrationClient.AddRegistrationResponse;
+import DBAddRegistrationClient.Exception_Exception;
 import DBAddRegistrationClient.GLBLMNSVCMSGSRSV1;
 import DBAddRegistrationClient.WspAddRegistration;
 import DBAddRegistrationClient.WspAddRegistrationPortType;
@@ -16,7 +17,7 @@ public class AddRegistrationClient extends DnBWebServiceClient
 		super(userName, password);
 	}
 	
-	public String addRegistration(String dunsNumber)
+	public String addRegistration(String dunsNumber) throws Exception_Exception
 	{
 		String responseXml = "";
 		
@@ -34,16 +35,9 @@ public class AddRegistrationClient extends DnBWebServiceClient
 		
 		WspAddRegistrationPortType port = client.getDNBWebServicesProvidersAddRegistrationWspAddRegistrationPort();
 		
-		try
-		{
-			AddRegistrationResponse response = port.wsAddRegistration(request);
-			responseXml = JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, response.getDGX().getGLBLMNSVCMSGSRSV1());
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+		AddRegistrationResponse response = port.wsAddRegistration(request);
+		responseXml = JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, response.getDGX().getGLBLMNSVCMSGSRSV1());
+
 		return responseXml;
 	}
-	
 }

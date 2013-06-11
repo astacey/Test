@@ -1,6 +1,10 @@
 package WebServiceClients;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import Application.JaxBHelper;
 
+import DBGetRegistrationActivityClient.Exception_Exception;
 import DBGetRegistrationActivityClient.GLBLMNSVCMSGSRSV1;
 import DBGetRegistrationActivityClient.GetRegistrationActivityData;
 import DBGetRegistrationActivityClient.GetRegistrationActivityRequest;
@@ -9,34 +13,34 @@ import DBGetRegistrationActivityClient.WspGetRegistrationActivity;
 import DBGetRegistrationActivityClient.WspGetRegistrationActivityPortType;
 
 
-public class GetRegistrationActivityClient 
+public class GetRegistrationActivityClient  extends DnBWebServiceClient 
 {
-	public String getRegistrationActivity()
+	public GetRegistrationActivityClient(String userName, String password)
+	{
+		super(userName, password);
+	}
+	
+	public String getRegistrationActivity(Date fromDate, Date toDate) throws Exception_Exception
 	{
 		String responseXml = "";
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		
 		GetRegistrationActivityRequest request = new GetRegistrationActivityRequest();
-		request.setUserId("unit4test");
-		request.setPassword("ed1r1ver");
+		request.setUserId(userName);
+		request.setPassword(password);
 		
 		GetRegistrationActivityData data = new GetRegistrationActivityData();
-		data.setActivityDateFrom("2013-01-01T00:00:00");
-		data.setActivityDateTo("2013-12-01T00:00:00");
+		data.setActivityDateFrom(dateFormatter.format(fromDate));
+		data.setActivityDateTo(dateFormatter.format(toDate));
 		
 		request.setGetRegistrationActivityData(data);
 		
 		WspGetRegistrationActivity client = new WspGetRegistrationActivity();
 		WspGetRegistrationActivityPortType port = client.getDNBWebServicesProvidersGetRegistrationActivityWspGetRegistrationActivityPort();
 		
-		try
-		{
-			GetRegistrationActivityResponse response = port.wsGetRegistrationActivity(request);
-			responseXml = JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, response.getDGX().getGLBLMNSVCMSGSRSV1());
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+		GetRegistrationActivityResponse response = port.wsGetRegistrationActivity(request);
+		responseXml = JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, response.getDGX().getGLBLMNSVCMSGSRSV1());
+
 		return responseXml;
 	}
 }

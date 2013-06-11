@@ -12,7 +12,7 @@ import Domain.ICompanyRepository;
 
 public class InitialUploadHandler 
 {
-	private static Logger logger = Logger.getLogger(RegistrationHandler.class.getName());
+	private static Logger logger = Logger.getLogger(InitialUploadHandler.class.getName());
 	private ICompanyRepository companyU4BARepository;
 	private ICompanyRepository companySourceRepository;
 	private IDnBRepository dnbRepository;

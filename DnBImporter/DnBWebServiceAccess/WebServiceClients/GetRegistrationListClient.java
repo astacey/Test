@@ -31,15 +31,9 @@ public class GetRegistrationListClient extends DnBWebServiceClient
 		WspGetRegistrationList client = new WspGetRegistrationList();
 		WspGetRegistrationListPortType port = client.getDNBWebServicesProvidersGetRegistrationListWspGetRegistrationListPort();
 		
-		try
-		{
-			GetRegistrationListResponse response = port.wsGetRegistrationList(request);
-			responseXml = response.getResponse(); //JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, response.getResponse());
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+		GetRegistrationListResponse response = port.wsGetRegistrationList(request);
+		responseXml = response.getResponse(); //JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, response.getResponse());
+
 		return responseXml;
 	}
 	

@@ -11,7 +11,12 @@ import DBWebClient.WspLookUp;
 import DBWebClient.WspLookUpPortType;
 
 
-public class LookUpClient {
+public class LookUpClient extends DnBWebServiceClient
+{
+	public LookUpClient(String userName, String password)
+	{
+		super(userName, password);
+	}
 
 	public String performLookUp(String companyName, String postCode)
 	{
@@ -33,8 +38,8 @@ public class LookUpClient {
 		input.setCountryCode("GB");
 		
 		LookUpRequest request = new LookUpRequest();
-		request.setUserId("unit4test");
-		request.setPassword("ed1r1ver");
+		request.setUserId(userName);
+		request.setPassword(password);
 		request.setLookUpInput(input);
 		
 		return request;
