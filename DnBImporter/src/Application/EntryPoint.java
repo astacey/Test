@@ -89,7 +89,7 @@ public class EntryPoint
 		if(args.getIsABWUpdate() == true)
 		{
 			logger.info("Starting ABW Update");
-			ICompanyRepository companySourceRepo = new ABWXlsxCompanyRepository(args.getAbwUpdateFolder());
+			ICompanyRepository companySourceRepo = new ABWXlsxCompanyRepository(args.getAbwUpdateFolder(), args.getClientFilter());
 			ABWUpdateHandler abwHandler = new ABWUpdateHandler(companyRepo, companySourceRepo);
 			abwHandler.getUpdates();
 			logger.info("Finihed ABW Update");

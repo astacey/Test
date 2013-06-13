@@ -12,6 +12,7 @@ public class ImporterArgs
 	private String importSource = "";
 	private String abwUpdateFolder = "";
 	private Boolean isPrepareABWCSV = false;
+	private String clientFilter = "";
 	
 	public ImporterArgs(String[] args)
 	{
@@ -66,6 +67,11 @@ public class ImporterArgs
 				i++;
 				abwUpdateFolder=args[i];
 			}
+			else if(args[i].equalsIgnoreCase("-f"))
+			{
+				i++;
+				clientFilter = args[i];
+			}
 		}
 	}
 	
@@ -113,5 +119,9 @@ public class ImporterArgs
 
 	public Boolean getIsPrepareABWCSV() {
 		return isPrepareABWCSV;
+	}
+
+	public String getClientFilter() {
+		return clientFilter;
 	}
 }

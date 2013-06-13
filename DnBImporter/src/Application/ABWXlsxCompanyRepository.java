@@ -26,10 +26,15 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 	private String sourceFileOpenItems;
 	private String sourceFileTotalSpend;
 	private String sourceFileAvgDays;
+	private String clientFilter;
 	
 	private CompanyCollection allCompanies;
-	
+
 	public ABWXlsxCompanyRepository(String sourceFolder)
+	{
+		this(sourceFolder, "");
+	}
+	public ABWXlsxCompanyRepository(String sourceFolder, String clientFilter)
 	{
 		if( !sourceFolder.endsWith("/"))
 			sourceFolder+="/";
@@ -37,6 +42,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 		this.sourceFileOpenItems = sourceFolder + "CurrentBatch-Customer Supplier Open Items.CSV";
 		this.sourceFileTotalSpend = sourceFolder + "CurrentBatch-Customer Supplier Total Spend.CSV";
 		this.sourceFileAvgDays = sourceFolder + "CurrentBatch-Customer Supplier Avg Days.CSV";
+		this.clientFilter=clientFilter;
 	}
 	
 	@Override
@@ -102,7 +108,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 					String client = csvReader.get("client");
 					
 					// TODO: only import this client for now
-					if(client.equalsIgnoreCase("UKU4"))
+					if(clientFilter.length()==0 || client.equalsIgnoreCase(clientFilter))
 					{
 						CompanyType type = CompanyType.getCompanyTypeFromDescription(csvReader.get("acctype"));
 						Company c = new Company(id, name, type);
