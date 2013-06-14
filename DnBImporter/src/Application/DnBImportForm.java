@@ -15,6 +15,8 @@ import java.util.Locale;
 import javax.swing.JTextArea;
 import javax.swing.JTabbedPane;
 
+import DnBXmlMappers.DnBDataMapper;
+import Domain.DnBData;
 import WebServiceClients.AddRegistrationClient;
 import WebServiceClients.GetCompanyDetailsClient;
 import WebServiceClients.GetNotificationsClient;
@@ -30,7 +32,6 @@ public class DnBImportForm extends JFrame {
 	public static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtCompanyName;
-	private JTextArea txtResults;
 	private JLabel lblPostCode;
 	private JTextField txtPostCode;
 	private JLabel lblDunsNumber;
@@ -53,6 +54,8 @@ public class DnBImportForm extends JFrame {
 	private JTextField txtUserName;
 	private JTextField txtPassword;
 	private JTextField txtResultTicket;
+	private JTextArea txtResults;
+	private JTextArea txtFormattedResults;
 	
 	/**
 	 * Create the frame.
@@ -66,47 +69,8 @@ public class DnBImportForm extends JFrame {
 		contentPane.setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(24, 12, 586, 325);
+		tabbedPane.setBounds(24, 12, 586, 238);
 		contentPane.add(tabbedPane);
-		
-		JPanel panel = new JPanel();
-		tabbedPane.addTab("Simple", null, panel, null);
-		panel.setLayout(null);
-		
-		lblDunsNumber = new JLabel("DUNS Number :");
-		lblDunsNumber.setBounds(12, 123, 114, 15);
-		panel.add(lblDunsNumber);
-		
-		txtDuns = new JTextField();
-		txtDuns.setBounds(153, 121, 114, 19);
-		panel.add(txtDuns);
-		txtDuns.setColumns(10);
-		
-		btnGetData = new JButton("Get Data");
-		btnGetData.setBounds(386, 118, 117, 25);
-		panel.add(btnGetData);
-		
-		lblPostCode = new JLabel("Post Code :");
-		lblPostCode.setBounds(12, 54, 101, 15);
-		panel.add(lblPostCode);
-		
-		txtPostCode = new JTextField();
-		txtPostCode.setBounds(153, 52, 114, 19);
-		panel.add(txtPostCode);
-		txtPostCode.setColumns(10);
-		
-		JLabel lblCompanyName = new JLabel("Company Name : ");
-		lblCompanyName.setBounds(12, 17, 131, 15);
-		panel.add(lblCompanyName);
-		
-		txtCompanyName = new JTextField();
-		txtCompanyName.setBounds(153, 15, 203, 19);
-		panel.add(txtCompanyName);
-		txtCompanyName.setColumns(10);
-		
-		JButton btnRunLookup = new JButton("Run LookUp");
-		btnRunLookup.setBounds(386, 12, 137, 25);
-		panel.add(btnRunLookup);
 		
 		panel_1 = new JPanel();
 		tabbedPane.addTab("Registrations", null, panel_1, null);
@@ -159,32 +123,71 @@ public class DnBImportForm extends JFrame {
 		
 		txtDateFrom = new JTextField();
 		txtDateFrom.setText("04/05/2013");
-		txtDateFrom.setBounds(101, 176, 114, 19);
+		txtDateFrom.setBounds(101, 115, 114, 19);
 		panel_1.add(txtDateFrom);
 		txtDateFrom.setColumns(10);
 		
 		lblFrom = new JLabel("From");
-		lblFrom.setBounds(13, 178, 70, 15);
+		lblFrom.setBounds(13, 117, 70, 15);
 		panel_1.add(lblFrom);
 		
 		lblTo = new JLabel("To");
-		lblTo.setBounds(12, 205, 70, 15);
+		lblTo.setBounds(12, 144, 70, 15);
 		panel_1.add(lblTo);
 		
 		txtDateTo = new JTextField();
 		txtDateTo.setText("08/05/2013");
-		txtDateTo.setBounds(101, 203, 114, 19);
+		txtDateTo.setBounds(101, 142, 114, 19);
 		panel_1.add(txtDateTo);
 		txtDateTo.setColumns(10);
 		
 		txtResultTicket = new JTextField();
-		txtResultTicket.setBounds(101, 235, 114, 19);
+		txtResultTicket.setBounds(101, 174, 114, 19);
 		panel_1.add(txtResultTicket);
 		txtResultTicket.setColumns(10);
 		
 		JLabel lblResultticket = new JLabel("ResultTicket");
-		lblResultticket.setBounds(13, 237, 70, 15);
+		lblResultticket.setBounds(13, 176, 70, 15);
 		panel_1.add(lblResultticket);
+		
+		JPanel panel = new JPanel();
+		tabbedPane.addTab("Simple", null, panel, null);
+		panel.setLayout(null);
+		
+		lblDunsNumber = new JLabel("DUNS Number :");
+		lblDunsNumber.setBounds(12, 123, 114, 15);
+		panel.add(lblDunsNumber);
+		
+		txtDuns = new JTextField();
+		txtDuns.setBounds(153, 121, 114, 19);
+		panel.add(txtDuns);
+		txtDuns.setColumns(10);
+		
+		btnGetData = new JButton("Get Data");
+		btnGetData.setBounds(386, 118, 117, 25);
+		panel.add(btnGetData);
+		
+		lblPostCode = new JLabel("Post Code :");
+		lblPostCode.setBounds(12, 54, 101, 15);
+		panel.add(lblPostCode);
+		
+		txtPostCode = new JTextField();
+		txtPostCode.setBounds(153, 52, 114, 19);
+		panel.add(txtPostCode);
+		txtPostCode.setColumns(10);
+		
+		JLabel lblCompanyName = new JLabel("Company Name : ");
+		lblCompanyName.setBounds(12, 17, 131, 15);
+		panel.add(lblCompanyName);
+		
+		txtCompanyName = new JTextField();
+		txtCompanyName.setBounds(153, 15, 203, 19);
+		panel.add(txtCompanyName);
+		txtCompanyName.setColumns(10);
+		
+		JButton btnRunLookup = new JButton("Run LookUp");
+		btnRunLookup.setBounds(386, 12, 137, 25);
+		panel.add(btnRunLookup);
 		
 		panel_2 = new JPanel();
 		tabbedPane.addTab("Account Details", null, panel_2, null);
@@ -210,14 +213,23 @@ public class DnBImportForm extends JFrame {
 		panel_2.add(txtPassword);
 		txtPassword.setColumns(10);
 		
-		JLabel lblResults = new JLabel("Results :");
-		lblResults.setBounds(41, 364, 62, 15);
-		contentPane.add(lblResults);
+		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane_1.setBounds(24, 262, 642, 265);
+		contentPane.add(tabbedPane_1);
+		
+		JPanel panel_3 = new JPanel();
+		tabbedPane_1.addTab("Results", null, panel_3, null);
+		
+		txtFormattedResults = new JTextArea();
+		txtFormattedResults.setLineWrap(true);
+		panel_3.add(txtFormattedResults);
+		
+		JPanel panel_4 = new JPanel();
+		tabbedPane_1.addTab("Xml", null, panel_4, null);
 		
 		txtResults = new JTextArea();
 		txtResults.setLineWrap(true);
-		txtResults.setBounds(133, 364, 442, 125);
-		contentPane.add(txtResults);
+		panel_4.add(txtResults);
 		btnRunLookup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				runCompanyLookUp();
@@ -298,7 +310,8 @@ public class DnBImportForm extends JFrame {
 			LookUpClient lookUpRequest = new LookUpClient(txtUserName.getText(), txtPassword.getText());
 			try
 			{
-				txtResults.setText(lookUpRequest.performLookUp(companyName, postCode));
+				String res = lookUpRequest.performLookUp(companyName, postCode);
+				txtResults.setText(res);
 			}
 			catch(Exception e)
 			{
@@ -315,7 +328,12 @@ public class DnBImportForm extends JFrame {
 			GetCompanyDetailsClient request = new GetCompanyDetailsClient(txtUserName.getText(), txtPassword.getText());
 			try
 			{
-				txtResults.setText(request.getCompanyDetails(dunsNo));
+				String res = request.getCompanyDetails(dunsNo);
+				txtResults.setText(res);
+
+				DnBDataMapper mapper = new DnBDataMapper();
+				DnBData companyData = mapper.getDnBDataFromXml(res);
+				txtFormattedResults.setText(companyData.toString());
 			}
 			catch ( Exception e)
 			{
