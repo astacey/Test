@@ -167,12 +167,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 						if(c!=null)
 						{
 							double val = XmlHelper.getDoubleFromXmlString(openAmount);
-							// We only add average days to payment if the value we just read is different to the current value
-							// this is to prevent a new fact every day, even when the data hasn't changed
-							if(c.getOpenBalance()==null || c.getOpenBalance().getValue()-val >0.001)
-							{
-								c.getOpenBalanceCollection().add(new DoubleDatedValue(Calendar.getInstance().getTime(), val));
-							}
+							c.getOpenBalanceCollection().upsert(new DoubleDatedValue(Calendar.getInstance().getTime(), val));
 						}
 					}
 				}
@@ -219,7 +214,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 							{
 								Date date = getDate(period);
 								double val = XmlHelper.getDoubleFromXmlString(amount);
-								c.getTotalSpendCollection().add(new DoubleDatedValue(date, val));
+								c.getTotalSpendCollection().upsert(new DoubleDatedValue(date, val));
 							}
 							catch(ParseException pe)
 							{
@@ -267,12 +262,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 						if(c!=null)
 						{
 							double val = XmlHelper.getDoubleFromXmlString(avg);
-							// We only add average days to payment if the value we just read is different to the current value
-							// this is to prevent a new fact every day, even when the data hasn't changed
-							if(c.getAverageDaysToPayment()==null || c.getAverageDaysToPayment().getValue()-val >0.001)
-							{
-								c.getAverageDaysToPaymentCollection().upsert(new DoubleDatedValue(Calendar.getInstance().getTime(), val));
-							}
+							c.getAverageDaysToPaymentCollection().upsert(new DoubleDatedValue(Calendar.getInstance().getTime(), val));
 						}
 					}
 				}

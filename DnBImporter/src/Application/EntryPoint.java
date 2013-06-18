@@ -61,6 +61,16 @@ public class EntryPoint
 	
 	private static void runCommandLine(ImporterArgs args)
 	{
+		// Experian
+		if(args.getIsExperianUpdate())
+		{
+			logger.info("Starting Experian Update");
+			ExperianConnectionTest test = new ExperianConnectionTest();
+			test.test();
+			logger.info("Finished Experian Update");
+		}
+		else
+		{
 		IDnBRepository dnbRepo = new DnBWebServiceRepository( args.getUserName(), args.getPassword() );
 		IImporterSettingsRepository settingsRepo = new FileImporterSettingsRepository();
 		// get settings
@@ -114,5 +124,6 @@ public class EntryPoint
 		}
 		// Save settings
 		settingsRepo.saveSettings(settings);
+		}
 	}
 }

@@ -13,6 +13,7 @@ public class ImporterArgs
 	private String abwUpdateFolder = "";
 	private Boolean isPrepareABWCSV = false;
 	private String clientFilter = "";
+	private Boolean isExperianUpdate = false;
 	
 	public ImporterArgs(String[] args)
 	{
@@ -72,6 +73,10 @@ public class ImporterArgs
 				i++;
 				clientFilter = args[i];
 			}
+			else if(args[i].equalsIgnoreCase("-xexperian"))
+			{
+				isExperianUpdate=true;
+			}
 		}
 	}
 	
@@ -123,5 +128,9 @@ public class ImporterArgs
 
 	public String getClientFilter() {
 		return clientFilter;
+	}
+
+	public Boolean getIsExperianUpdate() {
+		return isExperianUpdate;
 	}
 }

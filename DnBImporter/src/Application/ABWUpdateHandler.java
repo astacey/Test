@@ -58,8 +58,16 @@ public class ABWUpdateHandler
 		target.setCompanyRegistrationNumber(source.getCompanyRegistrationNumber());
 		target.setName(source.getName());
 		target.setVerticalMarket(source.getVerticalMarket());
-		target.getOpenBalanceCollection().upsert(source.getOpenBalanceCollection());
-		target.getAverageDaysToPaymentCollection().upsert(source.getAverageDaysToPaymentCollection());
+		// We only add average days to payment or opening balance if the value we just read is different to the current value
+		// this is to prevent a new fact every day, even when the data hasn't changed
+		if(target.getOpenBalance()==null || source.getOpenBalance()==null || target.getOpenBalance().getValue()-source.getOpenBalance().getValue() >0.001)
+		{
+			target.getOpenBalanceCollection().upsert(source.getOpenBalanceCollection());
+		}
+		if(target.getAverageDaysToPayment()==null || source.getAverageDaysToPayment()==null || target.getAverageDaysToPayment().getValue()-source.getAverageDaysToPayment().getValue() >0.001)
+		{
+			target.getAverageDaysToPaymentCollection().upsert(source.getAverageDaysToPaymentCollection());
+		}
 		target.getTotalSpendCollection().upsert(source.getTotalSpendCollection());
 	}
 }
