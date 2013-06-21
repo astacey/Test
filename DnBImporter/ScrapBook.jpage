@@ -1,13 +1,0 @@
-
-
-String dateString = "01/05/2013";
-java.util.Date dt = new java.util.Date();dt = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT, java.util.Locale.UK).parse(dateString);
-
-java.text.SimpleDateFormat ft = new java.text.SimpleDateFormat("yyyy-MM-dd'T00:00:00'");
-
-System.out.print(ft.format(dt));
-
-
-
-TestWS
-

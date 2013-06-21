@@ -14,6 +14,12 @@ public class EntryPoint
 	// Entry point 
 	public static void main(String[] args) 
 	{
+		// TODO: move these into their own init experian class ?
+		System.setProperty("javax.net.ssl.keyStoreType", "jks");
+		System.setProperty("javax.net.ssl.keyStore", "/home/astacey/Experian/UNITUnit4U01U.jks");
+		System.setProperty("javax.net.ssl.keyStorePassword", "Caste11");
+		System.setProperty("javax.net.debug","all");
+		
 		if(args.length == 0)
 		{
 			// if no arguments, launch the GUI
@@ -61,16 +67,6 @@ public class EntryPoint
 	
 	private static void runCommandLine(ImporterArgs args)
 	{
-		// Experian
-		if(args.getIsExperianUpdate())
-		{
-			logger.info("Starting Experian Update");
-			ExperianConnectionTest test = new ExperianConnectionTest();
-			test.test();
-			logger.info("Finished Experian Update");
-		}
-		else
-		{
 		IDnBRepository dnbRepo = new DnBWebServiceRepository( args.getUserName(), args.getPassword() );
 		IImporterSettingsRepository settingsRepo = new FileImporterSettingsRepository();
 		// get settings
@@ -122,8 +118,15 @@ public class EntryPoint
 			handler.getUpdates();
 			logger.info("Finihed DnB Update");
 		}
+		// Experian
+		if(args.getIsExperianUpdate())
+		{
+			logger.info("Starting Experian Update");
+			ExperianConnectionTest test = new ExperianConnectionTest();
+			test.test();
+			logger.info("Finished Experian Update");
+		}		
 		// Save settings
-		settingsRepo.saveSettings(settings);
-		}
+		settingsRepo.saveSettings(settings);		
 	}
 }

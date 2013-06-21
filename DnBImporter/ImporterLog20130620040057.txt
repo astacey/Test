@@ -1,0 +1,20 @@
+20-Jun-2013 16:00:57 Application.EntryPoint main
+INFO: Starting runCommand
+20-Jun-2013 16:00:59 Application.EntryPoint runCommandLine
+INFO: Starting Experian Update
+20-Jun-2013 16:00:59 com.sun.xml.internal.ws.model.RuntimeModeler getRequestWrapperClass
+INFO: Dynamically creating request wrapper Class TokenService.LoginWithCertificate
+20-Jun-2013 16:00:59 com.sun.xml.internal.ws.model.RuntimeModeler getResponseWrapperClass
+INFO: Dynamically creating response wrapper bean Class TokenService.LoginWithCertificateResponse
+20-Jun-2013 16:00:59 com.sun.xml.internal.ws.model.RuntimeModeler getRequestWrapperClass
+INFO: Dynamically creating request wrapper Class TokenService.STS
+20-Jun-2013 16:00:59 com.sun.xml.internal.ws.model.RuntimeModeler getResponseWrapperClass
+INFO: Dynamically creating response wrapper bean Class TokenService.STSResponse
+20-Jun-2013 16:00:59 com.sun.xml.internal.ws.model.RuntimeModeler getRequestWrapperClass
+INFO: Dynamically creating request wrapper Class TokenService.LoginWithUsernamePassword
+20-Jun-2013 16:00:59 com.sun.xml.internal.ws.model.RuntimeModeler getResponseWrapperClass
+INFO: Dynamically creating response wrapper bean Class TokenService.LoginWithUsernamePasswordResponse
+20-Jun-2013 16:01:00 Application.EntryPoint runCommandLine
+INFO: Finished Experian Update
+20-Jun-2013 16:01:00 Application.EntryPoint main
+INFO: Finished runCommand

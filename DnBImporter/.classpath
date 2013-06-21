@@ -2,10 +2,15 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="DnBWebServiceAccess"/>
+	<classpathentry kind="src" path="ExperianWebServiceAccess"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="/home/astacey/commons-lang3-3.1.jar"/>
 	<classpathentry kind="lib" path="/home/astacey/workspace/javacsv.jar"/>
 	<classpathentry kind="lib" path="/home/astacey/commons-codec-1.8/commons-codec-1.8.jar"/>
+	<classpathentry kind="lib" path="/home/astacey/apache-cxf-2.7.5/modules/cxf-api-2.7.5.jar"/>
+	<classpathentry kind="lib" path="/home/astacey/apache-cxf-2.7.5/modules/cxf-rt-bindings-soap-2.7.5.jar"/>
+	<classpathentry kind="lib" path="/home/astacey/jaxws-ri/lib/jaxws-rt.jar"/>
+	<classpathentry kind="lib" path="/home/astacey/jaxws-ri/lib/jaxws-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

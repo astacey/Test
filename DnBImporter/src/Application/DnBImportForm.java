@@ -14,10 +14,14 @@ import java.util.Locale;
 
 import javax.swing.JTextArea;
 import javax.swing.JTabbedPane;
+import javax.xml.soap.SOAPException;
 
 import DnBXmlMappers.DnBDataMapper;
 import Domain.DnBData;
+import ExperianBusinessTargetWS.BusinessTargetOutput;
+import ExperianBusinessTargetWS.SearchResults;
 import WebServiceClients.AddRegistrationClient;
+import WebServiceClients.ExperianBusinessTargetClient;
 import WebServiceClients.GetCompanyDetailsClient;
 import WebServiceClients.GetNotificationsClient;
 import WebServiceClients.GetRegistrationActivityClient;
@@ -56,6 +60,10 @@ public class DnBImportForm extends JFrame {
 	private JTextField txtResultTicket;
 	private JTextArea txtResults;
 	private JTextArea txtFormattedResults;
+	private JPanel panel_5;
+	private JLabel label;
+	private JTextField txtExperianCompanyName;
+	private JButton button;
 	
 	/**
 	 * Create the frame.
@@ -69,11 +77,11 @@ public class DnBImportForm extends JFrame {
 		contentPane.setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(24, 12, 586, 238);
+		tabbedPane.setBounds(27, 12, 586, 238);
 		contentPane.add(tabbedPane);
 		
 		panel_1 = new JPanel();
-		tabbedPane.addTab("Registrations", null, panel_1, null);
+		tabbedPane.addTab("DnB Registrations", null, panel_1, null);
 		panel_1.setLayout(null);
 		
 		lblNewLabel = new JLabel("DUNS No :");
@@ -151,7 +159,7 @@ public class DnBImportForm extends JFrame {
 		panel_1.add(lblResultticket);
 		
 		JPanel panel = new JPanel();
-		tabbedPane.addTab("Simple", null, panel, null);
+		tabbedPane.addTab("DnB Simple", null, panel, null);
 		panel.setLayout(null);
 		
 		lblDunsNumber = new JLabel("DUNS Number :");
@@ -190,7 +198,7 @@ public class DnBImportForm extends JFrame {
 		panel.add(btnRunLookup);
 		
 		panel_2 = new JPanel();
-		tabbedPane.addTab("Account Details", null, panel_2, null);
+		tabbedPane.addTab("DnB Account Details", null, panel_2, null);
 		panel_2.setLayout(null);
 		
 		lblUserName = new JLabel("User Name :");
@@ -212,6 +220,28 @@ public class DnBImportForm extends JFrame {
 		txtPassword.setBounds(133, 66, 114, 19);
 		panel_2.add(txtPassword);
 		txtPassword.setColumns(10);
+		
+		panel_5 = new JPanel();
+		tabbedPane.addTab("New tab", null, panel_5, null);
+		panel_5.setLayout(null);
+		
+		label = new JLabel("Company Name : ");
+		label.setBounds(30, 10, 122, 15);
+		panel_5.add(label);
+		
+		txtExperianCompanyName = new JTextField();
+		txtExperianCompanyName.setBounds(153, 8, 114, 19);
+		txtExperianCompanyName.setColumns(10);
+		panel_5.add(txtExperianCompanyName);
+		
+		button = new JButton("Run LookUp");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				runExperianCompanyLookup();
+			}
+		});
+		button.setBounds(354, 5, 118, 25);
+		panel_5.add(button);
 		
 		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane_1.setBounds(24, 262, 642, 265);
@@ -316,6 +346,38 @@ public class DnBImportForm extends JFrame {
 			catch(Exception e)
 			{
 				txtResults.setText(e.getMessage());
+			}
+		}
+	}
+	
+	private void runExperianCompanyLookup()
+	{
+		String companyName = txtExperianCompanyName.getText();
+		if(companyName.length() > 0)
+		{
+			ExperianBusinessTargetClient client = new ExperianBusinessTargetClient();
+			try
+			{
+				BusinessTargetOutput output = client.runBusinessTargetSearch(companyName);
+				if(output.getError()!=null)
+					txtResults.setText(output.getError().getMessage());
+				else
+				{
+					String results = "";
+					for(SearchResults res : output.getSearchResults())
+					{
+						results += "Business Ref : " + res.getBusinessRef()
+								 + "Name : " + res.getName()
+								 + "Legal Status : " + res.getLegalStatus()
+								 + "Address 1 : " + res.getBusinessLocation().getLocationLine1()
+								 + "Post Code : " + res.getBusinessLocation().getPostcode();
+					}
+					txtResults.setText(results);
+				}
+			}
+			catch(SOAPException soape)
+			{
+				txtResults.setText("SOAP EXCEPTION : " + soape.getMessage());
 			}
 		}
 	}

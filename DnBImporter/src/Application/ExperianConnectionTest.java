@@ -12,10 +12,6 @@ public class ExperianConnectionTest {
 			
 		public void test()
 		{
-			System.setProperty("javax.net.ssl.keyStoreType", "pkcs12");
-			System.setProperty("javax.net.ssl.keyStore", "/home/astacey/Experian/ExportedExperianCertificate.pfx");
-			System.setProperty("javax.net.ssl.keyStorePassword", "Caste11");
-			System.setProperty("javax.net.debug","ssl,handshake,record");
 			
 			TokenService tssrv = new TokenService();
 			TokenServiceSoap tssoap = tssrv.getTokenServiceSoap();
