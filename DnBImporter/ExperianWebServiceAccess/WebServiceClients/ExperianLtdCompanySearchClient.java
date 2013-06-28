@@ -2,17 +2,20 @@ package WebServiceClients;
 
 import java.util.logging.Logger;
 
+import javax.xml.soap.SOAPException;
 import javax.xml.ws.BindingProvider;
 
 import ExperianLtdCompanySearchWS.*;
 
-public class ExperianLtdCompanySearchClient 
+import com.sun.xml.ws.developer.WSBindingProvider;
+
+public class ExperianLtdCompanySearchClient extends ExperianWebService
 {
 	private static Logger logger = Logger.getLogger(ExperianLtdCompanySearchClient.class.getName());
 	
 	private static final String serviceUrl = "https://biwebservices.uat.uk.experian.com/experian/wbsv/generic/bi/v100/LtdCompanySearch.svc";
 	
-	public LtdCompanyData getCompany(String id)
+	public LtdCompanyData getCompany(String id) throws SOAPException
 	{
 		LtdCompanyRequest input = new LtdCompanyRequest(); 
 		input.setRegNumber(id);		
@@ -22,6 +25,7 @@ public class ExperianLtdCompanySearchClient
 		BindingProvider bindingProvider = (BindingProvider) client;
 		bindingProvider.getRequestContext().put( BindingProvider.ENDPOINT_ADDRESS_PROPERTY, serviceUrl);
 		
+		addTokenToRequest((WSBindingProvider)client);
 		LtdCompanyData output = client.limitedCompanyData(input);
 		return output;
 	}

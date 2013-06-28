@@ -1,12 +1,8 @@
-package Test;
-
-import static org.junit.Assert.*;
+package ApplicationUI;
 
 import org.junit.Test;
 
 import WebServiceClients.TokenServiceClient;
-
-import ExperianTokenService.*;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.*;
@@ -20,7 +16,6 @@ public class TestExperianClient {
 	private static final String XMLNS_WSU = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
 	private static final String XSD_WSSE = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
 	
-	@Test
 	public void test()
 	{
 		System.setProperty("javax.net.ssl.keyStoreType", "jks");
@@ -57,8 +52,6 @@ public class TestExperianClient {
         MessageFactory messageFactory = MessageFactory.newInstance();
         SOAPMessage soapMessage = messageFactory.createMessage();
         SOAPPart soapPart = soapMessage.getSOAPPart();
-
-        String serverURI = "http://ws.cdyne.com/";
 
         // SOAP Envelope
         SOAPEnvelope envelope = soapPart.getEnvelope();

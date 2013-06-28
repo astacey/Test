@@ -1,4 +1,4 @@
-package Application;
+package ApplicationUI;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,15 +18,23 @@ import javax.xml.soap.SOAPException;
 
 import DnBXmlMappers.DnBDataMapper;
 import Domain.DnBData;
+import Domain.ExperianLegalStatus;
 import ExperianBusinessTargetWS.BusinessTargetOutput;
 import ExperianBusinessTargetWS.SearchResults;
+import ExperianLtdCompanySearchWS.LtdCompanyData;
+import ExperianNonLtdBusinessSearchWS.NonLtdBusinessData;
 import WebServiceClients.AddRegistrationClient;
+import WebServiceClients.ExperianAlertsAddRemoveClient;
 import WebServiceClients.ExperianBusinessTargetClient;
+import WebServiceClients.ExperianLtdCompanySearchClient;
+import WebServiceClients.ExperianNonLtdBusinessSearch;
 import WebServiceClients.GetCompanyDetailsClient;
 import WebServiceClients.GetNotificationsClient;
 import WebServiceClients.GetRegistrationActivityClient;
 import WebServiceClients.GetRegistrationListClient;
 import WebServiceClients.LookUpClient;
+import javax.swing.JScrollPane;
+import java.awt.Dimension;
 
 
 
@@ -58,12 +66,20 @@ public class DnBImportForm extends JFrame {
 	private JTextField txtUserName;
 	private JTextField txtPassword;
 	private JTextField txtResultTicket;
-	private JTextArea txtResults;
 	private JTextArea txtFormattedResults;
 	private JPanel panel_5;
 	private JLabel label;
 	private JTextField txtExperianCompanyName;
-	private JButton button;
+	private JButton btnLookup;
+	private JTextArea txtResults;
+	private JTextField txtExperianRef;
+	private JButton btnGetNonltd;
+	private JButton btnAddReg;
+	private JButton btnRemove;
+	private JLabel lblLimited;
+	private JLabel lblNonlimited;
+	private JButton btnDelRegNonLtd;
+	private JButton btnAddRegNonLtd;
 	
 	/**
 	 * Create the frame.
@@ -222,7 +238,7 @@ public class DnBImportForm extends JFrame {
 		txtPassword.setColumns(10);
 		
 		panel_5 = new JPanel();
-		tabbedPane.addTab("New tab", null, panel_5, null);
+		tabbedPane.addTab("Experian Simple", null, panel_5, null);
 		panel_5.setLayout(null);
 		
 		label = new JLabel("Company Name : ");
@@ -230,36 +246,117 @@ public class DnBImportForm extends JFrame {
 		panel_5.add(label);
 		
 		txtExperianCompanyName = new JTextField();
-		txtExperianCompanyName.setBounds(153, 8, 114, 19);
+		txtExperianCompanyName.setBounds(153, 8, 177, 19);
 		txtExperianCompanyName.setColumns(10);
 		panel_5.add(txtExperianCompanyName);
 		
-		button = new JButton("Run LookUp");
-		button.addActionListener(new ActionListener() {
+		btnLookup = new JButton("LookUp");
+		btnLookup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				runExperianCompanyLookup();
 			}
 		});
-		button.setBounds(354, 5, 118, 25);
-		panel_5.add(button);
+		btnLookup.setBounds(340, 8, 100, 19);
+		panel_5.add(btnLookup);
+		
+		JLabel lblExperianReference = new JLabel("Experian ref : ");
+		lblExperianReference.setBounds(30, 60, 122, 15);
+		panel_5.add(lblExperianReference);
+		
+		txtExperianRef = new JTextField();
+		txtExperianRef.setColumns(10);
+		txtExperianRef.setBounds(153, 58, 177, 19);
+		panel_5.add(txtExperianRef);
+		
+		JButton btnGetDetails = new JButton("Get");
+		btnGetDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				getExperianLtdDetails();
+			}
+		});
+		btnGetDetails.setBounds(340, 58, 100, 19);
+		panel_5.add(btnGetDetails);
+		
+		btnGetNonltd = new JButton("Get");
+		btnGetNonltd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getExperianNonLtdDetails();
+			}
+		});
+		btnGetNonltd.setBounds(450, 58, 100, 19);
+		panel_5.add(btnGetNonltd);
+		
+		btnAddReg = new JButton("Add Reg");
+		btnAddReg.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				experianRegistration(ExperianLegalStatus.LIMITED, "a");
+			}
+		});
+		btnAddReg.setBounds(340, 79, 100, 19);
+		panel_5.add(btnAddReg);
+		
+		btnRemove = new JButton("Del Reg");
+		btnRemove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				experianRegistration(ExperianLegalStatus.LIMITED, "r");
+			}
+		});
+		btnRemove.setBounds(340, 101, 100, 19);
+		panel_5.add(btnRemove);
+		
+		lblLimited = new JLabel("Limited");
+		lblLimited.setBounds(340, 38, 70, 15);
+		panel_5.add(lblLimited);
+		
+		lblNonlimited = new JLabel("NonLimited");
+		lblNonlimited.setBounds(451, 38, 99, 15);
+		panel_5.add(lblNonlimited);
+		
+		btnDelRegNonLtd = new JButton("Del Reg");
+		btnDelRegNonLtd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				experianRegistration(ExperianLegalStatus.NONLIMITED, "r");
+			}
+		});
+		btnDelRegNonLtd.setBounds(450, 101, 100, 19);
+		panel_5.add(btnDelRegNonLtd);
+		
+		btnAddRegNonLtd = new JButton("Add Reg");
+		btnAddRegNonLtd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				experianRegistration(ExperianLegalStatus.NONLIMITED, "a");
+			}
+		});
+		btnAddRegNonLtd.setBounds(450, 79, 100, 19);
+		panel_5.add(btnAddRegNonLtd);
 		
 		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane_1.setBounds(24, 262, 642, 265);
 		contentPane.add(tabbedPane_1);
 		
 		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(null);
 		tabbedPane_1.addTab("Results", null, panel_3, null);
 		
 		txtFormattedResults = new JTextArea();
 		txtFormattedResults.setLineWrap(true);
-		panel_3.add(txtFormattedResults);
+		
+		JScrollPane scrollPane1 = new JScrollPane(txtFormattedResults);
+		scrollPane1.setBounds(0, 0, 642, 250);
+		panel_3.add(scrollPane1);
 		
 		JPanel panel_4 = new JPanel();
+		panel_4.setLayout(null);
 		tabbedPane_1.addTab("Xml", null, panel_4, null);
-		
+				
 		txtResults = new JTextArea();
 		txtResults.setLineWrap(true);
-		panel_4.add(txtResults);
+
+		JScrollPane scrollPane = new JScrollPane(txtResults);
+		scrollPane.setBounds(0, 0, 642, 250);
+		panel_4.add(scrollPane);
+		
 		btnRunLookup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				runCompanyLookUp();
@@ -367,15 +464,101 @@ public class DnBImportForm extends JFrame {
 					for(SearchResults res : output.getSearchResults())
 					{
 						results += "Business Ref : " + res.getBusinessRef()
-								 + "Name : " + res.getName()
-								 + "Legal Status : " + res.getLegalStatus()
-								 + "Address 1 : " + res.getBusinessLocation().getLocationLine1()
-								 + "Post Code : " + res.getBusinessLocation().getPostcode();
+								 + "\nName : " + res.getName()
+								 + "\nLegal Status : " + res.getLegalStatus()
+								 + "\nAddress 1 : " + res.getBusinessLocation().getLocationLine1()
+								 + "\nPost Code : " + res.getBusinessLocation().getPostcode()
+								 + "\n---------------------------------------------------\n";
 					}
-					txtResults.setText(results);
+					txtFormattedResults.setText(results);
 				}
 			}
 			catch(SOAPException soape)
+			{
+				txtResults.setText("SOAP EXCEPTION : " + soape.getMessage());
+			}
+		}
+	}
+	
+	private void getExperianLtdDetails()
+	{
+		String ref = txtExperianRef.getText();
+		if(ref.length()>0)
+		{
+			ExperianLtdCompanySearchClient client = new ExperianLtdCompanySearchClient();
+			try 
+			{
+				LtdCompanyData lcd = client.getCompany(ref);
+				String results = "";
+				results += "Business Ref : " + lcd.getRegNumber()
+						 + "\nName : " + lcd.getCommercialName()
+						 + "\nDelphi Score : " + lcd.getCommercialDelphi().getCommDelphiScore()
+						 + "\nAverage Days beyond Terms 3m : " + String.valueOf(lcd.getPaymentPerformance().getPaymentFull().getAvgDBT3Mnths())
+						 + "\nIndustry Averge Days beyond terms 3m : " + String.valueOf(lcd.getPaymentPerformance().getPaymentFull().getIndAvgDBT3Mnths())
+						 + "\n---------------------------------------------------\n";
+				txtFormattedResults.setText(results);
+				
+				RawExperianLtdCompanyClient rawClient = new RawExperianLtdCompanyClient();
+				txtResults.setText(rawClient.getXml(ref));
+			} 
+			catch (SOAPException soape) 
+			{
+				txtResults.setText("SOAP EXCEPTION : " + soape.getMessage());
+			}
+		}
+	}
+	
+	private void experianRegistration(ExperianLegalStatus status, String action)
+	{
+		String ref = txtExperianRef.getText();
+		if(ref.length()>0)
+		{
+			ExperianAlertsAddRemoveClient client = new ExperianAlertsAddRemoveClient();
+			try 
+			{
+				if(action.equalsIgnoreCase("a"))
+				{
+					if(client.addAlert(ref, status))
+						txtFormattedResults.setText("registered - " + ref);
+					else
+						txtFormattedResults.setText("failed to register - " + ref);
+				}
+				else if(action.equalsIgnoreCase("r"))
+				{
+					if(client.removeAlert(ref, status))
+						txtFormattedResults.setText("unregistered - " + ref);
+					else
+						txtFormattedResults.setText("failed to unregister - " + ref);
+				}
+			} 
+			catch (SOAPException soape) 
+			{
+				txtResults.setText("SOAP EXCEPTION : " + soape.getMessage());
+			}
+		}
+	}
+	
+	private void getExperianNonLtdDetails()
+	{
+		String ref = txtExperianRef.getText();
+		if(ref.length()>0)
+		{
+			ExperianNonLtdBusinessSearch client = new ExperianNonLtdBusinessSearch();
+			try 
+			{
+				NonLtdBusinessData lcd = client.getCompany(ref);
+				String results = "";
+				results += "Business Ref : " + lcd.getNonLimitedKey()
+						 + "\nName : " + lcd.getBusinessName()
+						 + "\nDelphi Score : " + lcd.getCommercialDelphi().getCommDelphiScore()
+						 //+ "\nAverage Days beyond Terms 3m : " + String.valueOf(lcd.getPaymentPerformance().getPaymentFull().getAvgDBT3Mnths())
+						 + "\n---------------------------------------------------\n";
+				txtFormattedResults.setText(results);
+
+				RawExperianNonLtdBusinessClient rawClient = new RawExperianNonLtdBusinessClient();
+				txtResults.setText(rawClient.getXml(ref));
+			} 
+			catch (SOAPException soape) 
 			{
 				txtResults.setText("SOAP EXCEPTION : " + soape.getMessage());
 			}

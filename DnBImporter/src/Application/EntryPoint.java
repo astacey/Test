@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import ApplicationUI.DnBImportForm;
 import Domain.IDnBRepository;
 import Domain.ICompanyRepository;
 
