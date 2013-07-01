@@ -2,7 +2,6 @@ package WebServiceClients;
 
 import java.util.logging.Logger;
 
-import javax.xml.soap.SOAPException;
 import javax.xml.ws.BindingProvider;
 
 import com.sun.xml.ws.developer.WSBindingProvider;

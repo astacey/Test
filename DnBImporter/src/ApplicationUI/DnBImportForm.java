@@ -36,7 +36,6 @@ import WebServiceClients.GetRegistrationActivityClient;
 import WebServiceClients.GetRegistrationListClient;
 import WebServiceClients.LookUpClient;
 import javax.swing.JScrollPane;
-import java.awt.Dimension;
 
 
 

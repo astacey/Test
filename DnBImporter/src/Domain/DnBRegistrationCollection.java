@@ -42,7 +42,7 @@ public class DnBRegistrationCollection extends ArrayList<DnBRegistration>
 					if(children.item(j).getNodeName()=="DUNS_NBR")
 						reg.setDunsNo(Integer.valueOf(children.item(j).getTextContent().toString()));
 					else if(children.item(j).getNodeName()=="STAT_DESC")
-						reg.setStatus(DnBRegistrationStatus.fromString(children.item(j).getTextContent().toString()));
+						reg.setStatus(RegistrationStatus.fromString(children.item(j).getTextContent().toString()));
 				}
 				this.add(reg);
 			}

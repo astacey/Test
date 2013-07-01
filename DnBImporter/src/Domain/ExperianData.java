@@ -17,6 +17,8 @@ public class ExperianData
 	private IntegerDatedValueCollection daysBeyondTerms;
 	// Days beyond terms Industry Average
 	private IntegerDatedValueCollection daysBeyondTermsIndustryAverage;
+	// registration Status
+	private RegistrationStatus registrationStatus;
 	
 	public ExperianData(String id, String name, ExperianLegalStatus legalStatus)
 	{
@@ -27,6 +29,7 @@ public class ExperianData
 		this.delphiScoresIndustryAverage=new IntegerDatedValueCollection();
 		this.daysBeyondTerms = new IntegerDatedValueCollection();
 		this.daysBeyondTermsIndustryAverage=new IntegerDatedValueCollection();
+		this.registrationStatus=RegistrationStatus.UNREGISTERED;
 	}
 	
 	public String getId() {
@@ -67,6 +70,14 @@ public class ExperianData
 
 	public IntegerDatedValueCollection getDaysBeyondTermsIndustryAverage() {
 		return daysBeyondTermsIndustryAverage;
+	}
+
+	public RegistrationStatus getRegistrationStatus() {
+		return registrationStatus;
+	}
+
+	public void setRegistrationStatus(RegistrationStatus registrationStatus) {
+		this.registrationStatus = registrationStatus;
 	}
 	
 }

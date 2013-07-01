@@ -7,7 +7,7 @@ import org.junit.Test;
 import Test.TestRepositories.TestCompanyRepository;
 import Test.TestRepositories.TestDnBRepository;
 
-import Application.InitialUploadHandler;
+import Application.DnBInitialUploadHandler;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
@@ -30,7 +30,7 @@ public class TestInitialUploadHandler {
 		assertEquals("Number of companies saved is 0", 0, companyRepo.getCompaniesSaved().size());
 		
 		// First try importing companies that already have duns data, will not import
-		InitialUploadHandler handlerToTest = new InitialUploadHandler(companyRepo, dnbRepo, settingsRepo.getSettings(), companyRepo);
+		DnBInitialUploadHandler handlerToTest = new DnBInitialUploadHandler(companyRepo, dnbRepo, settingsRepo.getSettings(), companyRepo);
 		handlerToTest.downloadAllCompanies();
 		assertEquals("Number of companies saved is 0", 0, companyRepo.getCompaniesSaved().size());
 		
@@ -38,14 +38,14 @@ public class TestInitialUploadHandler {
 		TestCompanyRepository companySourceRepo = new TestCompanyRepository();
 		companySourceRepo.setTestSet(new int[]{100, 200}); // this set's up the 2 companies with d&b data
 		
-		handlerToTest = new InitialUploadHandler(companyRepo, dnbRepo, settingsRepo.getSettings(), companySourceRepo);
+		handlerToTest = new DnBInitialUploadHandler(companyRepo, dnbRepo, settingsRepo.getSettings(), companySourceRepo);
 		handlerToTest.downloadAllCompanies();
 		assertEquals("Number of companies saved is 2", 2, companyRepo.getCompaniesSaved().size());
 		
 		// import 3 companies that don't already exist at all
 		companyRepo.resetSavedCompanies();
 		companySourceRepo.setTestSet(new int[]{1,2,3});
-		handlerToTest = new InitialUploadHandler(companyRepo, dnbRepo, settingsRepo.getSettings(), companySourceRepo);
+		handlerToTest = new DnBInitialUploadHandler(companyRepo, dnbRepo, settingsRepo.getSettings(), companySourceRepo);
 		handlerToTest.downloadAllCompanies();
 		assertEquals("Number of companies saved is 3", 3, companyRepo.getCompaniesSaved().size());
 	}

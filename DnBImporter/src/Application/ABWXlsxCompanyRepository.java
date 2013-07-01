@@ -16,6 +16,8 @@ import Domain.CompanyCollection;
 import Domain.CompanyType;
 import Domain.DnBData;
 import Domain.DoubleDatedValue;
+import Domain.ExperianData;
+import Domain.ExperianLegalStatus;
 import Domain.ICompanyRepository;
 
 public class ABWXlsxCompanyRepository implements ICompanyRepository 
@@ -95,6 +97,8 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 			CsvReader csvReader = new CsvReader(sourceFileMain);
 			if(csvReader.readHeaders() == true)
 			{
+				Boolean hasdnbNumber = containsHeader("DUNS_NO", csvReader.getHeaders());
+				Boolean hasExperianNumber = containsHeader("EXPERIAN_NO", csvReader.getHeaders());
 				while(csvReader.readRecord()==true)
 				{	
 					//apar_id,apar_name,address,place,province,Country_code,zip_code,telephone_1,comp_reg_no,acctype
@@ -117,13 +121,23 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 						if( groupCode.length()>0)
 							c.setAccountGroup(new AccountGroup(groupCode, groupName));
 						
+						// TODO : should I delete D&B data if the duns column exists, but data is empty - Dangerous ?
 						String dunsString = csvReader.get("DUNS_NO");
-						if( dunsString.length()>0)
+						if(hasdnbNumber && dunsString.length()>0)
 						{
 							int dunsNumber = Integer.parseInt(dunsString);
 							DnBData data = new DnBData(dunsNumber);
-							
 							c.setDunnBradstreetData(data);
+						}
+
+						// TODO : should I delete Experian data if the experian ref column exists, but is empty - Dangerous ?
+						String experianRef = csvReader.get("EXPERIAN_NO");
+						if( hasExperianNumber && experianRef.length()>0 )
+						{
+							String legalStatus = csvReader.get("LEGAL_STATUS");
+							ExperianLegalStatus ls = ExperianLegalStatus.getExperianLegalStatusFromId(legalStatus);
+							
+							c.setExperianData(new ExperianData(experianRef, "", ls));
 						}
 						this.allCompanies.add(c);
 					}
@@ -143,6 +157,16 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 		{
 			logger.warning(e.getMessage());
 		}
+	}
+	
+	private Boolean containsHeader(String header, String[] headers)
+	{
+		for(int i=0;i<headers.length;i++)
+		{
+			if(headers[i].equalsIgnoreCase(header))
+				return true;
+		}
+		return false;
 	}
 	
 	private void readOpenItems()

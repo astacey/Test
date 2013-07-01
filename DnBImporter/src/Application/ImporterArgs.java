@@ -3,6 +3,7 @@ package Application;
 public class ImporterArgs 
 {
 	private Boolean isRegistrationSelected = false;
+	private Boolean isExperianRegistrationSelected = false;
 	private String userName="";
 	private String password="";
 	private Boolean isInitailUpload = false;
@@ -14,6 +15,11 @@ public class ImporterArgs
 	private Boolean isPrepareABWCSV = false;
 	private String clientFilter = "";
 	private Boolean isExperianUpdate = false;
+	private Boolean isBulkMapping = false;
+	private String bulkMappingFile ="";
+	private String masterId = "";
+	private String mappingId ="";
+	private String mappingType ="";
 	
 	public ImporterArgs(String[] args)
 	{
@@ -24,9 +30,13 @@ public class ImporterArgs
 	{
 		for(int i = 0;i<args.length;i++)
 		{
-			if(args[i].equalsIgnoreCase("-r"))
+			if(args[i].equalsIgnoreCase("-rdnb"))
 			{
 				isRegistrationSelected = true;
+			}
+			else if(args[i].equalsIgnoreCase("-rexperian"))
+			{
+				isExperianRegistrationSelected = true;
 			}
 			else if(args[i].equalsIgnoreCase("-u"))
 			{
@@ -77,10 +87,37 @@ public class ImporterArgs
 			{
 				isExperianUpdate=true;
 			}
+			else if(args[i].equalsIgnoreCase("-bm"))//Bulk Mapping
+			{
+				isBulkMapping=true;
+				i++;
+				this.bulkMappingFile=args[i];
+			}
+			else if(args[i].equalsIgnoreCase("-masterid"))
+			{
+				i++;
+				this.masterId=args[i];
+			}
+			else if(args[i].equalsIgnoreCase("-mappingid"))
+			{
+				i++;
+				this.mappingId=args[i];
+			}
+			else if(args[i].equalsIgnoreCase("-mappingtype"))
+			{
+				i++;
+				this.mappingType=args[i];
+				if(!this.mappingType.equalsIgnoreCase("experian")
+						&& !this.mappingType.equalsIgnoreCase("dnb"))
+				{
+					RuntimeException e = new RuntimeException("Invalid mapping type. Allowed values are currently \nexperian\ndnb");
+					throw(e);
+				}
+			}
 		}
 	}
 	
-	public Boolean getIsRegistrationSelected()
+	public Boolean getIsDnBRegistrationSelected()
 	{
 		return isRegistrationSelected;
 	}
@@ -132,5 +169,29 @@ public class ImporterArgs
 
 	public Boolean getIsExperianUpdate() {
 		return isExperianUpdate;
+	}
+
+	public Boolean getIsBulkMapping() {
+		return isBulkMapping;
+	}
+
+	public String getMasterId() {
+		return masterId;
+	}
+
+	public String getMappingId() {
+		return mappingId;
+	}
+
+	public String getMappingType() {
+		return mappingType;
+	}
+
+	public String getBulkMappingFile() {
+		return bulkMappingFile;
+	}
+
+	public Boolean getIsExperianRegistrationSelected() {
+		return isExperianRegistrationSelected;
 	}
 }

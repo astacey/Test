@@ -41,21 +41,21 @@ public class DnBRegistrationHandler
 				DnBRegistration reg = regs.findByDuns(duns);
 				// if no record then add
 				// if cancelled, then add ???
-				if( reg == null || reg.getStatus()==DnBRegistrationStatus.CANCELLED || reg.getStatus()==DnBRegistrationStatus.FAILED)
+				if( reg == null || reg.getStatus()==RegistrationStatus.CANCELLED || reg.getStatus()==RegistrationStatus.FAILED)
 				{
 					logger.info("Registering duns - " + duns);
 					if( dnbRepository.registerCompany(duns) == true)
 					{
 						logger.info("Registered duns - " + duns);
 						// Save status as PENDING - don't bother checking the return value, it'll always be pending ( unless error ).
-						unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setStatus(DnBRegistrationStatus.PENDING);
+						unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setStatus(RegistrationStatus.PENDING);
 						pending++;
 					}
 					else
 					{
 						logger.warning("Failed to register duns - " + duns);
 						// Save status as failed
-						unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setStatus(DnBRegistrationStatus.FAILED);
+						unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setStatus(RegistrationStatus.FAILED);
 						failed++;
 						// Check the company out of business indicator to see if it should be flagged as inactive
 						DnBData dnbData = dnbRepository.getCompanyDetails(duns);
@@ -67,9 +67,9 @@ public class DnBRegistrationHandler
 				{
 					// Save status
 					unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setStatus(reg.getStatus());
-					if(reg.getStatus()==DnBRegistrationStatus.ACTIVE)
+					if(reg.getStatus()==RegistrationStatus.ACTIVE)
 						active++;
-					if(reg.getStatus()==DnBRegistrationStatus.PENDING)
+					if(reg.getStatus()==RegistrationStatus.PENDING)
 						pending++;
 					logger.info("Skipped registration for duns - " + duns + ", status is currently - " + reg.getStatus().toString());
 				}

@@ -19,7 +19,7 @@ public class EntryPoint
 		System.setProperty("javax.net.ssl.keyStoreType", "jks");
 		System.setProperty("javax.net.ssl.keyStore", "/home/astacey/Experian/UNITUnit4U01U.jks");
 		System.setProperty("javax.net.ssl.keyStorePassword", "Caste11");
-		System.setProperty("javax.net.debug","all");
+//		System.setProperty("javax.net.debug","all");
 		
 		if(args.length == 0)
 		{
@@ -28,7 +28,6 @@ public class EntryPoint
 		}
 		else
 		{
-			ImporterArgs impArgs = new ImporterArgs(args);
 			try 
 			{
 				ImporterLogging.setup();
@@ -40,6 +39,7 @@ public class EntryPoint
 			}
 			try 
 			{
+				ImporterArgs impArgs = new ImporterArgs(args);
 				logger.info("Starting runCommand");
 				runCommandLine(impArgs);
 				logger.info("Finished runCommand");
@@ -66,7 +66,7 @@ public class EntryPoint
 		});
 	}
 	
-	private static void runCommandLine(ImporterArgs args)
+	private static void runCommandLine(ImporterArgs args) throws Exception
 	{
 		IDnBRepository dnbRepo = new DnBWebServiceRepository( args.getUserName(), args.getPassword() );
 		IImporterSettingsRepository settingsRepo = new FileImporterSettingsRepository();
@@ -74,6 +74,13 @@ public class EntryPoint
 		ImporterSettings settings = settingsRepo.getSettings();
 		ICompanyRepository companyRepo = new SupplierAppCSVCompanyRepository(settings.getCsvLocation());			
 
+		if(args.getIsBulkMapping() == true)
+		{
+			logger.info("Starting Bulk Upload");
+			BulkMappingUpload bmu = new BulkMappingUpload(companyRepo, args.getBulkMappingFile(), args.getMasterId(), args.getMappingId(), args.getMappingType());
+			bmu.uploadMappings();
+			logger.info("Finished Bulk Upload");
+		}
 		// Think this will become obsolete or be a specific DnB initial upload
 		// TODO: probably move the initial download of dnb data to the register function ?
 		if(args.getIsInitialUpload() == true)
@@ -82,7 +89,7 @@ public class EntryPoint
 			if( args.getImportSource().equalsIgnoreCase("DnB") )
 				companySourceRepo = new DnBCSVCompanyRepository(args.getImportSourceFile());
 			logger.info("Starting Initial Upload, source = " + companySourceRepo.toString());
-			InitialUploadHandler initial = new InitialUploadHandler(companyRepo, dnbRepo, settings, companySourceRepo);
+			DnBInitialUploadHandler initial = new DnBInitialUploadHandler(companyRepo, dnbRepo, settings, companySourceRepo);
 			initial.downloadAllCompanies();
 			logger.info("Finished Initial Upload");
 		}
@@ -104,12 +111,18 @@ public class EntryPoint
 		// if initial upload then we will need registering
 		// probably want registration to be run every day
 		// uncomment out the getIsUpdate() once I've got registration status management working
-		if(args.getIsRegistrationSelected() == true )//|| args.getIsInitialUpload() == true ) //|| args.getIsUpdate() == true) 
+		if(args.getIsDnBRegistrationSelected() == true )//|| args.getIsInitialUpload() == true ) //|| args.getIsUpdate() == true) 
 		{
-			logger.info("Starting RegistrationHandler");
+			logger.info("Starting DnB Registration");
 			DnBRegistrationHandler handler = new DnBRegistrationHandler(companyRepo, dnbRepo);
 			handler.RegisterCompanies();
-			logger.info("Finished RegistrationHandler");
+			logger.info("Finished DnB Registration");
+		}
+		if(args.getIsExperianRegistrationSelected() == true ) 
+		{
+			logger.info("Starting Experian Registration");
+			//TODO : fill it up !
+			logger.info("Finished Registration registration");
 		}
 		// if daily update selected then ...
 		if(args.getIsDnBUpdate() == true)
@@ -123,10 +136,9 @@ public class EntryPoint
 		if(args.getIsExperianUpdate())
 		{
 			logger.info("Starting Experian Update");
-			ExperianConnectionTest test = new ExperianConnectionTest();
-			test.test();
+			//TODO : gogogogogo
 			logger.info("Finished Experian Update");
-		}		
+		}
 		// Save settings
 		settingsRepo.saveSettings(settings);		
 	}

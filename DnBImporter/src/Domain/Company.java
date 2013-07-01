@@ -22,6 +22,8 @@ public class Company
 	private DoubleDatedValueCollection openBalance; 
 	// D&B's data...
 	DnBData dunnBradstreetData;
+	// Experian data
+	ExperianData experianData;
 	
 	public Company(String id, String name, CompanyType type)
 	{
@@ -40,6 +42,49 @@ public class Company
 		if(dunnBradstreetData!=null)
 			company += dunnBradstreetData.toString();
 		return company;
+	}
+	
+	public Boolean uploadCompanyMapping(String id, String mappingType)
+	{
+		if(mappingType.equalsIgnoreCase("experian"))
+			return uploadExperianMapping(id);
+		else if(mappingType.equalsIgnoreCase("dnb"))
+			return uploadDnBMapping(id);
+		return false;
+	}
+	
+	private Boolean uploadExperianMapping(String id)
+	{
+		// If no existing mapping or mapping is different, then set up new experian details
+		if(experianData==null)
+		{
+			experianData = new ExperianData(id, "", ExperianLegalStatus.UNKNOWN);
+			return true;
+		}
+		else if(!experianData.getId().equalsIgnoreCase(id))
+		{
+			//TODO : Not sure what else we need to do, but all existing experian data needs to be wiped if remapped
+			experianData = new ExperianData(id, "", ExperianLegalStatus.UNKNOWN);
+			return true;
+		}
+		return false;
+	}
+	
+	private Boolean uploadDnBMapping(String id)
+	{
+		// If no existing mapping or mapping is different, then set up new experian details
+		if(dunnBradstreetData==null)
+		{
+			dunnBradstreetData = new DnBData(Integer.parseInt(id));
+			return true;
+		}
+		else if(dunnBradstreetData.getDunsNumber()!=Integer.parseInt(id))
+		{
+			//TODO : Not sure what else we need to do, but all existing experian data needs to be wiped if remapped
+			dunnBradstreetData = new DnBData(Integer.parseInt(id));
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -149,5 +194,17 @@ public class Company
 		this.openBalance.setCommitted();
 		if(hasDunnBradstreetData())
 			getDunnBradstreetData().setCommitted();
+	}
+
+	public Boolean hasExperianData(){
+		return (this.experianData!=null);
+	}
+	
+	public ExperianData getExperianData() {
+		return experianData;
+	}
+
+	public void setExperianData(ExperianData experianData) {
+		this.experianData = experianData;
 	}
 }

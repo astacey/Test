@@ -2,7 +2,7 @@ package Domain;
 
 public enum ExperianLegalStatus 
 {
-	LIMITED("L","Limited"), NONLIMITED("N","Non Limited");
+	LIMITED("L","Limited"), NONLIMITED("N","Non Limited"), UNKNOWN("U", "Unknown");
 	
 	private String description;
 	private String id;
@@ -30,6 +30,16 @@ public enum ExperianLegalStatus
 			if(s.getId().equalsIgnoreCase(id))
 				return s;
 		}
-		return ExperianLegalStatus.NONLIMITED; // Default - good idea ? Should I have UNKNOWN in there ?
+		return ExperianLegalStatus.UNKNOWN;
+	}
+
+	public static ExperianLegalStatus getExperianLegalStatusFromDescription(String description)
+	{
+		for(ExperianLegalStatus s : ExperianLegalStatus.values())
+		{
+			if(s.getId().equalsIgnoreCase(description))
+				return s;
+		}
+		return ExperianLegalStatus.UNKNOWN;
 	}
 }

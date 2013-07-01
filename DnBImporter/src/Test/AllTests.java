@@ -12,6 +12,6 @@ import org.junit.runners.Suite.SuiteClasses;
 				TestInitialUploadHandler.class, TestImporterSettings.class,
 				TestDnBUpdateHandler.class, TestXmlHelper.class, TestDatedValueCollection.class, TestDatedValue.class,
 				TestSupplierAppCSVFactDataFull.class,
-				TestExperianDataMapper.class })
+				TestExperianDataMapper.class, TestCompany.class })
 
 public class AllTests {}

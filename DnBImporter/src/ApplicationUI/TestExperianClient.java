@@ -1,7 +1,5 @@
 package ApplicationUI;
 
-import org.junit.Test;
-
 import WebServiceClients.TokenServiceClient;
 
 import javax.xml.namespace.QName;

@@ -10,15 +10,15 @@ import Domain.DnBData;
 import Domain.IDnBRepository;
 import Domain.ICompanyRepository;
 
-public class InitialUploadHandler 
+public class DnBInitialUploadHandler 
 {
-	private static Logger logger = Logger.getLogger(InitialUploadHandler.class.getName());
+	private static Logger logger = Logger.getLogger(DnBInitialUploadHandler.class.getName());
 	private ICompanyRepository companyU4BARepository;
 	private ICompanyRepository companySourceRepository;
 	private IDnBRepository dnbRepository;
 	private ImporterSettings settings;
 	
-	public InitialUploadHandler(ICompanyRepository companyU4BARepository, IDnBRepository dnbRepository, ImporterSettings settings, ICompanyRepository companySourceRepository)
+	public DnBInitialUploadHandler(ICompanyRepository companyU4BARepository, IDnBRepository dnbRepository, ImporterSettings settings, ICompanyRepository companySourceRepository)
 	{
 		this.companyU4BARepository = companyU4BARepository;
 		this.companySourceRepository = companySourceRepository;

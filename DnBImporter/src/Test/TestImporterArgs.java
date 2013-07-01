@@ -16,7 +16,7 @@ public class TestImporterArgs {
 		
 		assertTrue("IsInitialUpload is true", impArgs.getIsInitialUpload());
 		assertEquals("import source is dnb", "DnB", impArgs.getImportSource());		
-		assertTrue("IsRegistrationSelected is true", impArgs.getIsRegistrationSelected());
+		assertTrue("IsRegistrationSelected is true", impArgs.getIsDnBRegistrationSelected());
 		assertEquals("user name", "user", impArgs.getUserName());
 		assertEquals("password", "password", impArgs.getPassword());
 		assertFalse("IsDnBUpdate is false", impArgs.getIsDnBUpdate());

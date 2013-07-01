@@ -14,8 +14,8 @@ public class TestSupplierAppCSVCompanyRepository
 {
 	// TODO : Need it to not depend on path ?
 	String folderLocation = "/home/astacey/SupplierDataTest";
-	String expectedAccountOutput = "GEN_ID;NAME;PARENT (PARENT_GEN_ID);AGR_NO;CH_NO;DUNS_NO;STATUS;DnB_STATUS;ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET\r\n1;All;1;;;;;;;;\r\nA;Suppliers;1;;;;;;;;\r\nB;Partners;1;;;;;;;;\r\nC;Customers;1;;;;;;;;\r\n1;Test & Company;C;1;;100;Active;Failed;;;\r\n";
-	String expectedAccountInput = "GEN_ID;NAME;PARENT (PARENT_GEN_ID);AGR_NO;CH_NO;DUNS_NO;STATUS;DnB_STATUS;ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET\r\n1;All;1;;;;;;;;\r\nA;Suppliers;1;;;;;;;;\r\nB;Partners;1;;;;;;;;\r\nC;Customers;1;;;;;;;;\r\n";
+	String expectedAccountOutput = "GEN_ID;NAME;PARENT (PARENT_GEN_ID);AGR_NO;CH_NO;DUNS_NO;STATUS;DnB_STATUS;ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET;EXPERIAN_NO;EXPERIAN_LEGAL_STATUS;EXPERIAN_REGISTRATION_STATUS\r\n1;All;1;;;;;;;;;;\r\nA;Suppliers;1;;;;;;;;;;\r\nB;Partners;1;;;;;;;;;;\r\nC;Customers;1;;;;;;;;;;\r\n1;Test & Company;C;1;;100;Active;FAILED;;;;0100;Non Limited;Active\r\n";
+	String expectedAccountInput =  "GEN_ID;NAME;PARENT (PARENT_GEN_ID);AGR_NO;CH_NO;DUNS_NO;STATUS;DnB_STATUS;ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET;EXPERIAN_NO;EXPERIAN_LEGAL_STATUS;EXPERIAN_REGISTRATION_STATUS\r\n1;All;1;;;;;;;;;;\r\nA;Suppliers;1;;;;;;;;;;\r\nB;Partners;1;;;;;;;;;;\r\nC;Customers;1;;;;;;;;;;\r\n";
 	
 	@Test
 	public void testGetCompanyByDuns()
@@ -46,7 +46,7 @@ public class TestSupplierAppCSVCompanyRepository
 		//Check the companyType
 		assertEquals("Company Type is Customer", CompanyType.CUSTOMER, companies.get(0).getType());
 		//Check the registration status
-		assertEquals("Registration Status is Failed", DnBRegistrationStatus.FAILED, companies.get(0).getDunnBradstreetData().getRegistrationDetails().getStatus());
+		assertEquals("Registration Status is Failed", RegistrationStatus.FAILED, companies.get(0).getDunnBradstreetData().getRegistrationDetails().getStatus());
 	}
 	
 	@Test
@@ -57,7 +57,10 @@ public class TestSupplierAppCSVCompanyRepository
 		
 		Company c = new Company("1", "Test & Company", CompanyType.CUSTOMER);
 		c.setDunnBradstreetData(new DnBData(100));
-		c.getDunnBradstreetData().getRegistrationDetails().setStatus(DnBRegistrationStatus.FAILED);
+		c.getDunnBradstreetData().getRegistrationDetails().setStatus(RegistrationStatus.FAILED);
+		
+		c.setExperianData(new ExperianData("0100", "test", ExperianLegalStatus.NONLIMITED));
+		c.getExperianData().setRegistrationStatus(RegistrationStatus.ACTIVE);
 		
 		Calendar cal = Calendar.getInstance();
 		cal.set(2013, 0, 1); // WTF ? why 0 ? I mean really wtf ?

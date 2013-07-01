@@ -3,14 +3,14 @@ package Domain;
 public class DnBRegistration 
 {
 	private int dunsNo;
-	private DnBRegistrationStatus status;
+	private RegistrationStatus status;
 	
 	public DnBRegistration(){this(0);}
 	
 	public DnBRegistration(int dunsNo)
 	{
 		this.dunsNo=dunsNo;
-		this.status=DnBRegistrationStatus.UNREGISTERED;
+		this.status=RegistrationStatus.UNREGISTERED;
 	}
 	
 	public int getDunsNo() {
@@ -19,10 +19,10 @@ public class DnBRegistration
 	public void setDunsNo(int dunsNo) {
 		this.dunsNo = dunsNo;
 	}
-	public DnBRegistrationStatus getStatus() {
+	public RegistrationStatus getStatus() {
 		return status;
 	}
-	public void setStatus(DnBRegistrationStatus status) {
+	public void setStatus(RegistrationStatus status) {
 		this.status = status;
 	}
 	

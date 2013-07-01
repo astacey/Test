@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
+import Application.FileHelper;
 import Application.SupplierAppCSVFactDataFull;
 import Domain.Company;
 import Domain.CompanyCollection;
@@ -18,6 +19,8 @@ public class TestSupplierAppCSVFactDataFull
 	@Test
 	public void testReadRecords() 
 	{
+		String fullFactInput = "VALUE;TIME;ACCOUNTS (GEN_ID);DATASET (GEN_ID)\n1005.0;2013-04-01;1;OB\n1;2013-01-01;1;Risk\n99;2013-01-01;1;FR\n50;2013-01-01;1;FRP\n200;2013-01-01;1;P\n75;2013-01-01;1;PN\n1000;2013-01-01;1;S\n5;2013-01-01;1;ADTP\n8;2013-03-01;1;ADTP\n500;2013-05-01;1;OB\n";
+		FileHelper.writeFile(folderLocation + "/fact_data_full.csv", fullFactInput);
 		SupplierAppCSVFactDataFull csv = new SupplierAppCSVFactDataFull();
 		
 		CompanyCollection companies = new CompanyCollection();

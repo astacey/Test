@@ -11,7 +11,7 @@ import Domain.CompanyType;
 import Domain.DnBData;
 import Domain.DnBRegistration;
 import Domain.DnBRegistrationCollection;
-import Domain.DnBRegistrationStatus;
+import Domain.RegistrationStatus;
 import Test.TestRepositories.TestCompanyRepository;
 import Test.TestRepositories.TestDnBRepository;
 
@@ -26,10 +26,10 @@ public class TestRegistrationHandler {
 		//Test Data
 		DnBRegistrationCollection regs = new DnBRegistrationCollection();
 		DnBRegistration reg = new DnBRegistration(100);
-		reg.setStatus(DnBRegistrationStatus.FAILED);
+		reg.setStatus(RegistrationStatus.FAILED);
 		regs.add(reg);
 		reg = new DnBRegistration(200);
-		reg.setStatus(DnBRegistrationStatus.ACTIVE);
+		reg.setStatus(RegistrationStatus.ACTIVE);
 		regs.add(reg);
 		dnbRepo.setTestRegistrations(regs);
 		
@@ -49,11 +49,11 @@ public class TestRegistrationHandler {
 		handler.RegisterCompanies();
 	
 		// Company 1 should be Pending
-		assertEquals("Company 1 should be Pending", DnBRegistrationStatus.PENDING, companyRepo.getCompanyById("100").getDunnBradstreetData().getRegistrationDetails().getStatus());
+		assertEquals("Company 1 should be Pending", RegistrationStatus.PENDING, companyRepo.getCompanyById("100").getDunnBradstreetData().getRegistrationDetails().getStatus());
 		// Company 2 should be Active
-		assertEquals("Company 2 should be Active", DnBRegistrationStatus.ACTIVE, companyRepo.getCompanyById("200").getDunnBradstreetData().getRegistrationDetails().getStatus());		
+		assertEquals("Company 2 should be Active", RegistrationStatus.ACTIVE, companyRepo.getCompanyById("200").getDunnBradstreetData().getRegistrationDetails().getStatus());		
 		// Company 3 should be Pending
-		assertEquals("Company 3 should be Pending", DnBRegistrationStatus.PENDING, companyRepo.getCompanyById("300").getDunnBradstreetData().getRegistrationDetails().getStatus());		
+		assertEquals("Company 3 should be Pending", RegistrationStatus.PENDING, companyRepo.getCompanyById("300").getDunnBradstreetData().getRegistrationDetails().getStatus());		
 		// Saved companies = 3
 		assertEquals("Saved companies = 3", 3, companyRepo.getCompaniesSaved().size());
 	}
