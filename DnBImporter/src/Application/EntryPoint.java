@@ -107,7 +107,7 @@ public class EntryPoint
 		if(args.getIsRegistrationSelected() == true )//|| args.getIsInitialUpload() == true ) //|| args.getIsUpdate() == true) 
 		{
 			logger.info("Starting RegistrationHandler");
-			RegistrationHandler handler = new RegistrationHandler(companyRepo, dnbRepo);
+			DnBRegistrationHandler handler = new DnBRegistrationHandler(companyRepo, dnbRepo);
 			handler.RegisterCompanies();
 			logger.info("Finished RegistrationHandler");
 		}

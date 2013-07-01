@@ -16,17 +16,17 @@ public class ExperianAlertsAddRemoveClient extends ExperianWebService
 	
 	private static final String serviceUrl = "https://biwebservices.uat.uk.experian.com/experian/wbsv/generic/bi/v100/AlertsAddRemove.svc";
 	
-	public Boolean addAlert(String ref, ExperianLegalStatus status) throws SOAPException
+	public Boolean addAlert(String ref, ExperianLegalStatus status) throws Exception
 	{
 		return performAction(ref, status, "A");
 	}
 	
-	public Boolean removeAlert(String ref, ExperianLegalStatus status) throws SOAPException
+	public Boolean removeAlert(String ref, ExperianLegalStatus status) throws Exception
 	{
 		return performAction(ref, status, "R");
 	}
 	
-	private Boolean performAction(String ref, ExperianLegalStatus status, String action) throws SOAPException
+	private Boolean performAction(String ref, ExperianLegalStatus status, String action) throws Exception
 	{
 		AlertsAddRemoveInput input = new AlertsAddRemoveInput();
 		input.setAction(action);
@@ -41,6 +41,7 @@ public class ExperianAlertsAddRemoveClient extends ExperianWebService
 			bus.setNonLimitedKey(ref);
 		}
 		input.setBusiness(bus);
+		input.setSubjectScheme("03");
 		
 		AlertsAddRemove aar = new AlertsAddRemove();
 		ExperianUKBIServicesCoreIServices aarClient = aar.getAddRemoveAlertBusiness();
@@ -54,9 +55,19 @@ public class ExperianAlertsAddRemoveClient extends ExperianWebService
 		
 		AlertsAddRemoveOutput output = aarClient.addRemoveAlertBusiness(input);
 		
-		if(output.getConfirmation()!=null
-				&& output.getConfirmation().getActionConfirmation().equalsIgnoreCase(action)) // A = added, X=error, U=updated, R=removed 
-			return true;
+		if(output.getConfirmation()!=null)
+		{
+			if(output.getConfirmation().getActionConfirmation().equalsIgnoreCase(action)) // A = added, X=error, U=updated, R=removed 	
+				return true;
+			else if(output.getConfirmation().getActionConfirmation().equalsIgnoreCase("x")) // error
+			{
+				Exception e = new Exception("Error in AlertsAddRemoveRequest, Code : " + output.getConfirmation().getAlertsErrorCode());
+				throw(e);
+			}
+		}
+		else if(output.getError()!=null)
+			logger.severe("Failed to register " + ref + ", due to error - " + output.getError().getErrorCode() + " : " + output.getError().getMessage());
+		
 		return false;
 	}
 }

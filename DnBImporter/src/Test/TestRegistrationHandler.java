@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import Application.RegistrationHandler;
+import Application.DnBRegistrationHandler;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
@@ -45,7 +45,7 @@ public class TestRegistrationHandler {
 		testComps.add(c);
 		companyRepo.setTestCompanies(testComps);
 		
-		RegistrationHandler handler = new RegistrationHandler(companyRepo, dnbRepo);
+		DnBRegistrationHandler handler = new DnBRegistrationHandler(companyRepo, dnbRepo);
 		handler.RegisterCompanies();
 	
 		// Company 1 should be Pending

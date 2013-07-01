@@ -3,13 +3,13 @@ import java.util.logging.Logger;
 
 import Domain.*;
 
-public class RegistrationHandler 
+public class DnBRegistrationHandler 
 {
-	private static Logger logger = Logger.getLogger(RegistrationHandler.class.getName());
+	private static Logger logger = Logger.getLogger(DnBRegistrationHandler.class.getName());
 	private ICompanyRepository importRepository;
 	private IDnBRepository dnbRepository;
 	
-	public RegistrationHandler(ICompanyRepository importRepository, IDnBRepository dnbRepository)
+	public DnBRegistrationHandler(ICompanyRepository importRepository, IDnBRepository dnbRepository)
 	{
 		this.importRepository = importRepository;
 		this.dnbRepository = dnbRepository;
