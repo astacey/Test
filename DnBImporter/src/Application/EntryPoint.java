@@ -135,11 +135,12 @@ public class EntryPoint
 			handler.getUpdates();
 			logger.info("Finihed DnB Update");
 		}
-		// Experian
+		// Experian updates
 		if(args.getIsExperianUpdate())
 		{
 			logger.info("Starting Experian Update");
-			//TODO : gogogogogo
+			ExperianUpdateHandler handler = new ExperianUpdateHandler(companyRepo, experianRepo, settings);
+			handler.getUpdates();
 			logger.info("Finished Experian Update");
 		}
 		// Save settings

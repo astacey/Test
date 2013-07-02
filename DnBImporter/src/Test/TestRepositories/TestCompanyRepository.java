@@ -85,8 +85,24 @@ public class TestCompanyRepository implements ICompanyRepository
 	{
 		return getAllCompanies().getCompanyFromId(id);
 	}
+
+	@Override
+	public CompanyCollection getCompaniesForInitialUpdateExperian() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CompanyCollection getCompaniesForInitialUpdateDnB() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
-	
+	@Override
+	public CompanyCollection getCompaniesByExperianReference(String reference) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	// List of Big companies given to me by Mike at D&B
 	private int[] testSet = new int[]{293432092,
@@ -484,4 +500,5 @@ public class TestCompanyRepository implements ICompanyRepository
 	public void setTestCompanies(CompanyCollection companies) {
 		this.testCompanies = companies;
 	}
+
 }

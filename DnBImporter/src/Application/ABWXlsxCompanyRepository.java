@@ -97,6 +97,24 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 		return null;
 	}
 
+	@Override
+	public CompanyCollection getCompaniesForInitialUpdateExperian() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CompanyCollection getCompaniesForInitialUpdateDnB() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CompanyCollection getCompaniesByExperianReference(String reference) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private void readAllCompaniesFromXlsx()
 	{
 		this.allCompanies = new CompanyCollection();

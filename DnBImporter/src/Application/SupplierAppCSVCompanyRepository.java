@@ -123,6 +123,51 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 		// set committed
 		allCompanies.setCommitted();
 	}
+
+	@Override
+	public CompanyCollection getCompaniesForInitialUpdateExperian() 
+	{
+		CompanyCollection comps= new CompanyCollection();
+		for(Company c : allCompanies)
+		{
+			if( c.hasExperianData()
+					&& c.getExperianData().getRegistrationStatus()==RegistrationStatus.REGISTERED)
+			{
+				comps.add(c);
+			}
+		}
+		return comps;
+	}
+
+	@Override
+	public CompanyCollection getCompaniesForInitialUpdateDnB() 
+	{
+		CompanyCollection comps= new CompanyCollection();
+		for(Company c : allCompanies)
+		{
+			if( c.hasDunnBradstreetData()
+					&& c.getDunnBradstreetData().getRegistrationDetails().getStatus()==RegistrationStatus.REGISTERED)
+			{
+				comps.add(c);
+			}
+		}
+		return comps;
+	}
+
+	@Override
+	public CompanyCollection getCompaniesByExperianReference(String reference) 
+	{
+		CompanyCollection comps= new CompanyCollection();
+		for(Company c : allCompanies)
+		{
+			if(c.hasExperianData()
+					&& c.getExperianData().getId().equalsIgnoreCase(reference))
+			{
+				comps.add(c);
+			}
+		}
+		return comps;
+	}
 		
 	private void initialise()
 	{

@@ -42,7 +42,7 @@ public class DnBUpdateHandler
 	public Boolean getUpdates()
 	{
 		// Get Updates
-		Date startDate = settings.getLastRunDate();
+		Date startDate = settings.getLastRunDateDnB();
 		Date endDate = getEndDate();
 		do
 		{
@@ -60,7 +60,7 @@ public class DnBUpdateHandler
 		u4baCompanyRepository.commitAllChanges();
 		
 		// Save LastRunDate
-		settings.setLastRunDate(endDate);
+		settings.setLastRunDateDnB(endDate);
 		return true;
 	}
 	

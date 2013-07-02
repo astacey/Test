@@ -30,7 +30,7 @@ public class TestImporterSettingsRepository implements
 	
 	public void setLastRunDate(Date date)
 	{
-		settings.setLastRunDate(date);
+		settings.setLastRunDateDnB(date);
 	}
 
 }

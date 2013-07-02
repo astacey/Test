@@ -11,31 +11,24 @@ import org.w3c.dom.Node;
 
 public class ImporterSettings 
 {
-	private Date lastRunDate;
+	private Date lastRunDateDnB;
 	private String csvLocation;
 	private int abwLastProcessed;
+	private Date lastRunDateExperian;
 
 	public ImporterSettings()
 	{
 		// Default to current eastern time
 		// shouldn't ever need the default
-		lastRunDate = Calendar.getInstance(TimeZone.getTimeZone("US/Eastern")).getTime();
+		lastRunDateDnB = Calendar.getInstance(TimeZone.getTimeZone("US/Eastern")).getTime();
+		lastRunDateExperian = Calendar.getInstance().getTime();
 		abwLastProcessed = 0;
 	}
-	
-	public Date getLastRunDate() 
-	{
-		return lastRunDate;
-	}
-
-	public void setLastRunDate(Date lastRunDate) 
-	{
-		this.lastRunDate = lastRunDate;
-	}
-	
+		
 	public String toXml()
 	{
-		return "<Settings><LastRunDate>" + getDateFormat().format(lastRunDate) + "</LastRunDate>"
+		return "<Settings><LastRunDateDnB>" + getDateFormat().format(lastRunDateDnB) + "</LastRunDateDnB>"
+				+"<LastRunDateExperian>" + getDateFormat().format(lastRunDateExperian) + "</LastRunDateExperian>"
 				+"<CSVLocation>" + csvLocation + "</CSVLocation>"
 				+"<ABWLastProcessed>" + abwLastProcessed + "</ABWLastProcessed></Settings>";
 	}
@@ -48,8 +41,12 @@ public class ImporterSettings
 			Node root = doc.getFirstChild();
 			for(int i=0;i<root.getChildNodes().getLength();i++)
 			{
-				if( root.getChildNodes().item(i).getNodeName()=="LastRunDate")
-					this.lastRunDate = getDateFormat().parse(root.getChildNodes().item(i).getTextContent());
+				if( root.getChildNodes().item(i).getNodeName()=="LastRunDate") // Legacy support !! get rid of this in a few cycles time
+					this.lastRunDateDnB = getDateFormat().parse(root.getChildNodes().item(i).getTextContent());
+				else if( root.getChildNodes().item(i).getNodeName()=="LastRunDateDnB")
+					this.lastRunDateDnB = getDateFormat().parse(root.getChildNodes().item(i).getTextContent());
+				else if( root.getChildNodes().item(i).getNodeName()=="LastRunDateExperian")
+					this.lastRunDateExperian = getDateFormatExperian().parse(root.getChildNodes().item(i).getTextContent());
 				else if( root.getChildNodes().item(i).getNodeName()=="CSVLocation")
 					this.csvLocation = root.getChildNodes().item(i).getTextContent();
 				else if( root.getChildNodes().item(i).getNodeName()=="ABWLastProcessed")
@@ -70,6 +67,12 @@ public class ImporterSettings
 		return formatter;
 	}
 
+	private SimpleDateFormat getDateFormatExperian()
+	{
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		return formatter;
+	}
+	
 	public String getCsvLocation() {
 		return csvLocation;
 	}
@@ -84,6 +87,24 @@ public class ImporterSettings
 
 	public void setAbwLastProcessed(int abwLastProcessed) {
 		this.abwLastProcessed = abwLastProcessed;
+	}
+
+	public Date getLastRunDateDnB() 
+	{
+		return lastRunDateDnB;
+	}
+
+	public void setLastRunDateDnB(Date lastRunDate) 
+	{
+		this.lastRunDateDnB = lastRunDate;
+	}
+	
+	public Date getLastRunDateExperian() {
+		return lastRunDateExperian;
+	}
+
+	public void setLastRunDateExperian(Date lastRunDateExperian) {
+		this.lastRunDateExperian = lastRunDateExperian;
 	}
 }
 	

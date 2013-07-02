@@ -77,7 +77,7 @@ public class DnBInitialUploadHandler
 		//Commit
 		companyU4BARepository.commitAllChanges();
 		// Save Last Run Date, so that incremental updates knows when to pick up from
-		settings.setLastRunDate(cal.getTime());
+		settings.setLastRunDateDnB(cal.getTime());
 
 		logger.info("Initial upload : Read " + String.valueOf(companies.size()) + " source companies. " + String.valueOf(countImported) + " companies imported, " + String.valueOf(countImportedWithDuns) + " duns data imported.");
 

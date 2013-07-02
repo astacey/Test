@@ -49,7 +49,7 @@ public class TestDnBUpdateHandler {
 		System.out.println(formatter.format(new Date()));
 		System.out.println(formatter.format(Calendar.getInstance(TimeZone.getTimeZone("US/Eastern")).getTime()));
 */
-		assertEquals("Settings date incremented", formatter.format(Calendar.getInstance(TimeZone.getTimeZone("US/Eastern")).getTime()), formatter.format(settingsRepo.getSettings().getLastRunDate()));
+		assertEquals("Settings date incremented", formatter.format(Calendar.getInstance(TimeZone.getTimeZone("US/Eastern")).getTime()), formatter.format(settingsRepo.getSettings().getLastRunDateDnB()));
 		
 		
 		

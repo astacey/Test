@@ -62,7 +62,7 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 					if( experianRef.length()>0)
 					{
 						String ls = csvReader.get("EXPERIAN_LEGAL_STATUS");
-						ExperianData expData = new ExperianData(id, "", ExperianLegalStatus.getExperianLegalStatusFromDescription(ls));
+						ExperianData expData = new ExperianData(experianRef, "", ExperianLegalStatus.getExperianLegalStatusFromDescription(ls));
 						String rs = csvReader.get("EXPERIAN_REGISTRATION_STATUS");
 						expData.setRegistrationStatus(RegistrationStatus.fromString(rs));
 						

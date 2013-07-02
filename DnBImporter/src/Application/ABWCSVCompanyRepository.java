@@ -70,6 +70,24 @@ public class ABWCSVCompanyRepository implements ICompanyRepository
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public CompanyCollection getCompaniesForInitialUpdateExperian() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CompanyCollection getCompaniesForInitialUpdateDnB() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CompanyCollection getCompaniesByExperianReference(String reference) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	private CompanyCollection readAllCompaniesFromFile()
 	{
