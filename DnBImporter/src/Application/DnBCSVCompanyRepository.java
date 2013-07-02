@@ -62,6 +62,12 @@ public class DnBCSVCompanyRepository implements ICompanyRepository
 	{
 		// Won't implement as far as I can see, this is a source repository only.
 	}
+
+	@Override
+	public CompanyCollection getUnregisteredExperianCompanies() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	private CompanyCollection readAllCompaniesFromFile()
 	{

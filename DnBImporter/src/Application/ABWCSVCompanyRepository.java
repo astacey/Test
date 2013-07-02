@@ -64,6 +64,12 @@ public class ABWCSVCompanyRepository implements ICompanyRepository
 		// Won't implement as far as I can see, this i a source repository only.
 		// only reason to save I can see is if I need to write back to source ?? or manage Last Changed Dates ?
 	}
+
+	@Override
+	public CompanyCollection getUnregisteredExperianCompanies() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	private CompanyCollection readAllCompaniesFromFile()
 	{

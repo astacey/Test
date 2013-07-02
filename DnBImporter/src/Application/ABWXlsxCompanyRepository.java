@@ -48,7 +48,8 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 	}
 	
 	@Override
-	public CompanyCollection getUnregisteredDunsCompanies() {
+	public CompanyCollection getUnregisteredDunsCompanies() 
+	{
 		// If it's abw then they're all unregistered ???
 		// this method probably not used here 
 		return null;
@@ -87,6 +88,13 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 	public void commitAllChanges() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public CompanyCollection getUnregisteredExperianCompanies() 
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private void readAllCompaniesFromXlsx()

@@ -15,16 +15,16 @@ import Domain.DnBData;
 
 public class TestSupplierAppCSVFactDataFull 
 {
-	String folderLocation = "/home/astacey/SupplierDataTest";
+	String folderLocation = AllTests.getTestFolder();
 	@Test
 	public void testReadRecords() 
 	{
 		String fullFactInput = "VALUE;TIME;ACCOUNTS (GEN_ID);DATASET (GEN_ID)\n1005.0;2013-04-01;1;OB\n1;2013-01-01;1;Risk\n99;2013-01-01;1;FR\n50;2013-01-01;1;FRP\n200;2013-01-01;1;P\n75;2013-01-01;1;PN\n1000;2013-01-01;1;S\n5;2013-01-01;1;ADTP\n8;2013-03-01;1;ADTP\n500;2013-05-01;1;OB\n";
-		FileHelper.writeFile(folderLocation + "/fact_data_full.csv", fullFactInput);
+		FileHelper.writeFile(folderLocation + "fact_data_full.csv", fullFactInput);
 		SupplierAppCSVFactDataFull csv = new SupplierAppCSVFactDataFull();
 		
 		CompanyCollection companies = new CompanyCollection();
-		csv.read(companies, folderLocation + "/fact_data_full.csv");
+		csv.read(companies, folderLocation + "fact_data_full.csv");
 		
 		assertEquals("no companies read ( because collection is empty", 0, companies.size());
 		
@@ -32,7 +32,8 @@ public class TestSupplierAppCSVFactDataFull
 		companies.get(0).setDunnBradstreetData(new DnBData(100));
 		companies.add(new Company("2", "Doesn't matter", CompanyType.CUSTOMER));
 		companies.get(1).setDunnBradstreetData(new DnBData(200));	
-		csv.read(companies, folderLocation + "/fact_data_full.csv");
+
+		csv.read(companies, folderLocation + "fact_data_full.csv");
 		
 		assertEquals("Company 2 - no facts should be read", 0, companies.get(1).getAverageDaysToPaymentCollection().size());
 		assertEquals("Company 2 - no facts should be read", 0, companies.get(1).getTotalSpendCollection().size());

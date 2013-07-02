@@ -49,8 +49,8 @@ public class BulkMappingUpload
 				{
 					if(c.uploadCompanyMapping(mappedId, mappingType))
 						mapped++;
+					companyRepo.saveCompany(c);
 				}
-				companyRepo.saveCompany(c);
 			}
 		}
 		companyRepo.commitAllChanges();

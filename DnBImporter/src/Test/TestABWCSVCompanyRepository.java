@@ -11,12 +11,12 @@ import Domain.CompanyType;
 
 public class TestABWCSVCompanyRepository 
 {
-	String folderLocation = "/home/astacey/SupplierDataTest";
+	String folderLocation = AllTests.getTestFolder();
 	@Test
 	public void testGetAllCompanies() 
 	{
 		String inputFile = "apar_id,apar_name,address,place,province,Country_code,zip_code,telephone_1,comp_reg_no,acctype\n500927,1st Aid Fire,Companies House                         14 Mansfield Road,Gosport,Hampshire,GB,PO13 9SY       ,0870 2245626/27,7586711,Supplier\nS2460,Aareon (NCPC Ltd),\"Building 500,                           Abbey Park                              Stareton\",Kenilworth,,GB,CV8 2LY        ,,3990481,Customer";
-		String sourceFile = folderLocation + "/ImportSource.csv";
+		String sourceFile = folderLocation + "ImportSource.csv";
 		FileHelper.writeFile(sourceFile, inputFile);
 		
 		ABWCSVCompanyRepository compRepo = new ABWCSVCompanyRepository(sourceFile);

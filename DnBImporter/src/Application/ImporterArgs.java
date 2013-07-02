@@ -114,6 +114,11 @@ public class ImporterArgs
 					throw(e);
 				}
 			}
+			else
+			{
+				RuntimeException e = new RuntimeException("Invalid argument " + args[i]);
+				throw(e);
+			}
 		}
 	}
 	

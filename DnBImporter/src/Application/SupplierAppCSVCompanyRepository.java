@@ -44,10 +44,14 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 		{
 			// Only return companies that 
 			// have a duns number 
-			// and that don't have registration tatus of Active
+			// and that don't have registration tatus of Active or registered
 			// and that aren't flagged as out of business by d&b 
 			if(c.getDunnBradstreetData()!=null 
-					&& c.getDunnBradstreetData().getRegistrationDetails().getStatus()!=RegistrationStatus.ACTIVE
+					&& (
+							c.getDunnBradstreetData().getRegistrationDetails().getStatus()!=RegistrationStatus.ACTIVE
+							&&
+							c.getDunnBradstreetData().getRegistrationDetails().getStatus()!=RegistrationStatus.REGISTERED
+						)
 					&& c.getDunnBradstreetData().getOutOfBusiness() == false)
 			{
 				unregistered.add(c);
@@ -56,6 +60,30 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 		return unregistered;
 	}
 
+	@Override
+	public CompanyCollection getUnregisteredExperianCompanies() 
+	{
+		CompanyCollection unregistered = new CompanyCollection();
+		
+		for(Company c : allCompanies)
+		{
+			// Only return companies that 
+			// have experian data 
+			// and that don't have registration status of Active or Registered
+			if(c.getExperianData()!=null 
+					&& (
+							c.getExperianData().getRegistrationStatus()!=RegistrationStatus.ACTIVE
+							&&
+							c.getExperianData().getRegistrationStatus()!=RegistrationStatus.REGISTERED
+						)
+				)
+			{
+				unregistered.add(c);
+			}
+		}		
+		return unregistered;
+	}
+	
 	@Override
 	public CompanyCollection getAllCompanies() 
 	{

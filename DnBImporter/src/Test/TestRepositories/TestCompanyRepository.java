@@ -31,6 +31,26 @@ public class TestCompanyRepository implements ICompanyRepository
 	}
 	
 	@Override
+	public CompanyCollection getUnregisteredExperianCompanies()
+	{
+		CompanyCollection unregistered = new CompanyCollection();
+		for(Company c : testCompanies)
+		{
+			if(c.getExperianData()!=null 
+					&& (
+							c.getExperianData().getRegistrationStatus()!=RegistrationStatus.ACTIVE
+							&&
+							c.getExperianData().getRegistrationStatus()!=RegistrationStatus.REGISTERED
+						)
+				)
+			{
+				unregistered.add(c);
+			}
+		}
+		return unregistered;
+	}
+	
+	@Override
 	public CompanyCollection getAllCompanies()
 	{
 		if( testCompanies.size() == 0 )
@@ -65,6 +85,8 @@ public class TestCompanyRepository implements ICompanyRepository
 	{
 		return getAllCompanies().getCompanyFromId(id);
 	}
+	
+	
 	
 	// List of Big companies given to me by Mike at D&B
 	private int[] testSet = new int[]{293432092,

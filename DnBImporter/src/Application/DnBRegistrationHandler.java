@@ -66,11 +66,19 @@ public class DnBRegistrationHandler
 				else
 				{
 					// Save status
-					unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setStatus(reg.getStatus());
 					if(reg.getStatus()==RegistrationStatus.ACTIVE)
+					{
+						// if it comes back as active, set status to registered. This lets the update routine know that it should download the full snapshot of data for this company
+						// , prior to checking for updates. The update routine will then set the status to active and we're up and running 
+						unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setStatus(RegistrationStatus.REGISTERED);
 						active++;
-					if(reg.getStatus()==RegistrationStatus.PENDING)
-						pending++;
+					}
+					else
+					{
+						unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setStatus(reg.getStatus());
+						if(reg.getStatus()==RegistrationStatus.PENDING)
+							pending++;
+					}
 					logger.info("Skipped registration for duns - " + duns + ", status is currently - " + reg.getStatus().toString());
 				}
 				importRepository.saveCompany(unregisteredCompany);

@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import ApplicationUI.DnBImportForm;
 import Domain.IDnBRepository;
 import Domain.ICompanyRepository;
+import Domain.IExperianRepository;
 
 
 public class EntryPoint 
@@ -69,6 +70,7 @@ public class EntryPoint
 	private static void runCommandLine(ImporterArgs args) throws Exception
 	{
 		IDnBRepository dnbRepo = new DnBWebServiceRepository( args.getUserName(), args.getPassword() );
+		IExperianRepository experianRepo = new ExperianWebServcieRepository();
 		IImporterSettingsRepository settingsRepo = new FileImporterSettingsRepository();
 		// get settings
 		ImporterSettings settings = settingsRepo.getSettings();
@@ -121,8 +123,9 @@ public class EntryPoint
 		if(args.getIsExperianRegistrationSelected() == true ) 
 		{
 			logger.info("Starting Experian Registration");
-			//TODO : fill it up !
-			logger.info("Finished Registration registration");
+			ExperianRegistrationHandler handler = new ExperianRegistrationHandler(companyRepo, experianRepo);
+			handler.RegisterCompanies();
+			logger.info("Finished Experian registration");
 		}
 		// if daily update selected then ...
 		if(args.getIsDnBUpdate() == true)

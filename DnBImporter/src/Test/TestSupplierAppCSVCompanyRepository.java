@@ -13,14 +13,14 @@ import Domain.*;
 public class TestSupplierAppCSVCompanyRepository 
 {
 	// TODO : Need it to not depend on path ?
-	String folderLocation = "/home/astacey/SupplierDataTest";
+	String folderLocation = AllTests.getTestFolder();
 	String expectedAccountOutput = "GEN_ID;NAME;PARENT (PARENT_GEN_ID);AGR_NO;CH_NO;DUNS_NO;STATUS;DnB_STATUS;ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET;EXPERIAN_NO;EXPERIAN_LEGAL_STATUS;EXPERIAN_REGISTRATION_STATUS\r\n1;All;1;;;;;;;;;;\r\nA;Suppliers;1;;;;;;;;;;\r\nB;Partners;1;;;;;;;;;;\r\nC;Customers;1;;;;;;;;;;\r\n1;Test & Company;C;1;;100;Active;FAILED;;;;0100;Non Limited;Active\r\n";
-	String expectedAccountInput =  "GEN_ID;NAME;PARENT (PARENT_GEN_ID);AGR_NO;CH_NO;DUNS_NO;STATUS;DnB_STATUS;ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET;EXPERIAN_NO;EXPERIAN_LEGAL_STATUS;EXPERIAN_REGISTRATION_STATUS\r\n1;All;1;;;;;;;;;;\r\nA;Suppliers;1;;;;;;;;;;\r\nB;Partners;1;;;;;;;;;;\r\nC;Customers;1;;;;;;;;;;\r\n";
+	String expectedAccountInput = AllTests.getAccountsFileBaseString() ;
 	
 	@Test
 	public void testGetCompanyByDuns()
 	{
-		FileHelper.writeFile(folderLocation + "/accounts.csv", expectedAccountOutput);
+		FileHelper.writeFile(folderLocation + "accounts.csv", expectedAccountOutput);
 		
 		SupplierAppCSVCompanyRepository repo = new SupplierAppCSVCompanyRepository(folderLocation);
 		if(repo.getCompanyByDuns(100)!=null)
@@ -36,7 +36,7 @@ public class TestSupplierAppCSVCompanyRepository
 	@Test
 	public void testGetAllCompanies()
 	{
-		FileHelper.writeFile(folderLocation + "/accounts.csv", expectedAccountOutput);
+		FileHelper.writeFile(folderLocation + "accounts.csv", expectedAccountOutput);
 		
 		SupplierAppCSVCompanyRepository repo = new SupplierAppCSVCompanyRepository(folderLocation);
 		CompanyCollection companies = repo.getAllCompanies();
@@ -53,7 +53,7 @@ public class TestSupplierAppCSVCompanyRepository
 	public void testSaveCompany() 
 	{
 		String expectedFactOutput = "VALUE;TIME;ACCOUNTS (GEN_ID);DATASET (GEN_ID)\r\n1005.0;2013-04-01;1;OB\r\n1;2013-01-01;1;Risk\r\n99;2013-01-01;1;FR\r\n50;2013-01-01;1;FRP\r\n200;2013-01-01;1;P\r\n75;2013-01-01;1;PN\r\n";
-		FileHelper.writeFile(folderLocation + "/accounts.csv", expectedAccountInput);
+		FileHelper.writeFile(folderLocation + "accounts.csv", expectedAccountInput);
 		
 		Company c = new Company("1", "Test & Company", CompanyType.CUSTOMER);
 		c.setDunnBradstreetData(new DnBData(100));
@@ -76,12 +76,12 @@ public class TestSupplierAppCSVCompanyRepository
 		repo.saveCompany(c);
 		repo.commitAllChanges();
 		
-		String actualAccountsOutput = FileHelper.getStringFromFile(folderLocation + "/accounts.csv");
+		String actualAccountsOutput = FileHelper.getStringFromFile(folderLocation + "accounts.csv");
 		System.out.print(actualAccountsOutput);
 		System.out.print(expectedAccountOutput);
 		
 		assertTrue("Expected account output file is incorrect", expectedAccountOutput.equalsIgnoreCase(actualAccountsOutput) );
-		String actualFactOutput = FileHelper.getStringFromFile(folderLocation + "/fact_data.csv");
+		String actualFactOutput = FileHelper.getStringFromFile(folderLocation + "fact_data.csv");
 		System.out.print(expectedFactOutput);
 		System.out.print(actualFactOutput);
 		assertTrue("Expected fact output is incorrect", expectedFactOutput.equalsIgnoreCase(actualFactOutput));
