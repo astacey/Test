@@ -23,7 +23,6 @@ public class ExperianDataMapper
 
 	public ExperianData getExperianData(LtdCompanyData ltdCompanyData)
 	{
-		
 		ExperianData experianData = new ExperianData(ltdCompanyData.getRegNumber(), ltdCompanyData.getCommercialName(), ExperianLegalStatus.LIMITED);
 		
 		// Commercial Delphi Scores
@@ -37,14 +36,24 @@ public class ExperianDataMapper
 			}
 		}
 		// Commercial Delphi Industry Average Scores
-		if( ltdCompanyData.getCommercialDelphiHistory()!=null && ltdCompanyData.getCommercialDelphiHistory().getSectorScore()!=null)
+		if( ltdCompanyData.getCommercialDelphiHistory()!=null 
+				&& ltdCompanyData.getCommercialDelphiHistory().getSectorScore()!=null)
 		{
 			SectorScore sectorScore = ltdCompanyData.getCommercialDelphiHistory().getSectorScore();
-			for( int i=0;i<sectorScore.getScoreHistoryDate().size();i++)
+			if(sectorScore!=null
+					&& sectorScore.getIndHistoricalScore()!=null)
 			{
-				int industryAverageScore = XmlHelper.getIntegerFromXmlString(sectorScore.getIndHistoricalScore().getIndHistoricalAverageDelphiScore().get(i));
-				Date date = getCCYYMMDDDate(sectorScore.getScoreHistoryDate().get(i));
-				experianData.getDelphiScoresIndustryAverage().add(new IntegerDatedValue(date, industryAverageScore));
+				for( int i=0;i<sectorScore.getScoreHistoryDate().size();i++)
+				{
+					String industryAverageScoreString = sectorScore.getIndHistoricalScore().getIndHistoricalAverageDelphiScore().get(i);
+					CCYYMMDD dateObj = sectorScore.getScoreHistoryDate().get(i);
+					if(industryAverageScoreString!=null&&dateObj!=null)
+					{
+						int industryAverageScore = XmlHelper.getIntegerFromXmlString(industryAverageScoreString);
+						Date date = getCCYYMMDDDate(dateObj);
+						experianData.getDelphiScoresIndustryAverage().add(new IntegerDatedValue(date, industryAverageScore));
+					}
+				}
 			}
 		}
 		// Payment Performance
@@ -54,16 +63,22 @@ public class ExperianDataMapper
 			// DBT
 			for( CompDebitMonthly monthlyData : ltdCompanyData.getPaymentPerformance().getPaymentFull().getCompanyDBTMonthly())
 			{
-				int days = monthlyData.getCompanyDBT();
-				Date date = getCCYYMMDate(monthlyData.getCompanyExpMonth());
-				experianData.getDaysBeyondTerms().add(new IntegerDatedValue(date, days));
+				if(monthlyData.getCompanyDBT()!=null && monthlyData.getCompanyExpMonth() !=null)
+				{
+					int days = monthlyData.getCompanyDBT();
+					Date date = getCCYYMMDate(monthlyData.getCompanyExpMonth());
+					experianData.getDaysBeyondTerms().add(new IntegerDatedValue(date, days));
+				}
 			}
 			// DBT Industry Average
 			for( IndDebitMonthly monthlyData : ltdCompanyData.getPaymentPerformance().getPaymentFull().getIndDBTMonthly())
 			{
-				int days = monthlyData.getIndustryDBT();
-				Date date = getCCYYMMDate(monthlyData.getIndExpMonth());
-				experianData.getDaysBeyondTermsIndustryAverage().add(new IntegerDatedValue(date, days));
+				if(monthlyData.getIndustryDBT()!=null && monthlyData.getIndExpMonth() !=null)
+				{
+					int days = monthlyData.getIndustryDBT();
+					Date date = getCCYYMMDate(monthlyData.getIndExpMonth());
+					experianData.getDaysBeyondTermsIndustryAverage().add(new IntegerDatedValue(date, days));
+				}
 			}
 		}
 

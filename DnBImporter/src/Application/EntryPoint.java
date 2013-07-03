@@ -16,12 +16,7 @@ public class EntryPoint
 	// Entry point 
 	public static void main(String[] args) 
 	{
-		// TODO: move these into their own init experian class ?
-		System.setProperty("javax.net.ssl.keyStoreType", "jks");
-		System.setProperty("javax.net.ssl.keyStore", "/home/astacey/Experian/UNITUnit4U01U.jks");
-		System.setProperty("javax.net.ssl.keyStorePassword", "Caste11");
-//		System.setProperty("javax.net.debug","all");
-		
+
 		if(args.length == 0)
 		{
 			// if no arguments, launch the GUI
@@ -74,7 +69,8 @@ public class EntryPoint
 		IImporterSettingsRepository settingsRepo = new FileImporterSettingsRepository();
 		// get settings
 		ImporterSettings settings = settingsRepo.getSettings();
-		ICompanyRepository companyRepo = new SupplierAppCSVCompanyRepository(settings.getCsvLocation());			
+		ICompanyRepository companyRepo = new SupplierAppCSVCompanyRepository(settings.getCsvLocation());
+		ExperianInitialise expInit = new ExperianInitialise();
 
 		if(args.getIsBulkMapping() == true)
 		{
@@ -123,6 +119,7 @@ public class EntryPoint
 		if(args.getIsExperianRegistrationSelected() == true ) 
 		{
 			logger.info("Starting Experian Registration");
+			expInit.Initialise(args.getJksFile(), args.getJksPassword());
 			ExperianRegistrationHandler handler = new ExperianRegistrationHandler(companyRepo, experianRepo);
 			handler.RegisterCompanies();
 			logger.info("Finished Experian registration");
@@ -139,6 +136,7 @@ public class EntryPoint
 		if(args.getIsExperianUpdate())
 		{
 			logger.info("Starting Experian Update");
+			expInit.Initialise(args.getJksFile(), args.getJksPassword());
 			ExperianUpdateHandler handler = new ExperianUpdateHandler(companyRepo, experianRepo, settings);
 			handler.getUpdates();
 			logger.info("Finished Experian Update");

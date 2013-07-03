@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTabbedPane;
 import javax.xml.soap.SOAPException;
 
+import Application.ExperianInitialise;
 import DnBXmlMappers.DnBDataMapper;
 import Domain.DnBData;
 import Domain.ExperianLegalStatus;
@@ -88,6 +89,12 @@ public class DnBImportForm extends JFrame {
 	private JButton btnGetAlerts;
 	private JLabel lblPostCode_1;
 	private JTextField txtExperianPostCode;
+	private JLabel lblDbAccountData;
+	private JLabel lblExperianAccountData;
+	private JLabel lblJksFile;
+	private JLabel label_4;
+	private JTextField txtJKSPassword;
+	private JTextField txtJKSFile;
 	
 	/**
 	 * Create the frame.
@@ -222,28 +229,56 @@ public class DnBImportForm extends JFrame {
 		panel.add(btnRunLookup);
 		
 		panel_2 = new JPanel();
-		tabbedPane.addTab("DnB Account Details", null, panel_2, null);
+		tabbedPane.addTab("Account Details", null, panel_2, null);
 		panel_2.setLayout(null);
 		
 		lblUserName = new JLabel("User Name :");
-		lblUserName.setBounds(26, 24, 109, 15);
+		lblUserName.setBounds(26, 35, 109, 15);
 		panel_2.add(lblUserName);
 		
 		lblPassword = new JLabel("Password :");
-		lblPassword.setBounds(26, 68, 87, 15);
+		lblPassword.setBounds(26, 64, 87, 15);
 		panel_2.add(lblPassword);
 		
 		txtUserName = new JTextField();
 		txtUserName.setText("unit4test");
-		txtUserName.setBounds(133, 22, 114, 19);
+		txtUserName.setBounds(133, 33, 114, 19);
 		panel_2.add(txtUserName);
 		txtUserName.setColumns(10);
 		
 		txtPassword = new JTextField();
 		txtPassword.setText("ed1r1ver");
-		txtPassword.setBounds(133, 66, 114, 19);
+		txtPassword.setBounds(133, 62, 114, 19);
 		panel_2.add(txtPassword);
 		txtPassword.setColumns(10);
+		
+		lblDbAccountData = new JLabel("D&B Account Data");
+		lblDbAccountData.setBounds(80, 8, 167, 15);
+		panel_2.add(lblDbAccountData);
+		
+		lblExperianAccountData = new JLabel("Experian Account Data");
+		lblExperianAccountData.setBounds(303, 8, 167, 15);
+		panel_2.add(lblExperianAccountData);
+		
+		lblJksFile = new JLabel("JKS File:");
+		lblJksFile.setBounds(283, 33, 109, 15);
+		panel_2.add(lblJksFile);
+		
+		label_4 = new JLabel("Password :");
+		label_4.setBounds(283, 62, 87, 15);
+		panel_2.add(label_4);
+		
+		txtJKSPassword = new JTextField();
+		txtJKSPassword.setText("Caste11");
+		txtJKSPassword.setColumns(10);
+		txtJKSPassword.setBounds(390, 60, 114, 19);
+		panel_2.add(txtJKSPassword);
+		
+		txtJKSFile = new JTextField();
+		txtJKSFile.setText("/home/astacey/Experian/UNITUnit4U01U.jks");
+		txtJKSFile.setColumns(10);
+		txtJKSFile.setBounds(349, 31, 220, 19);
+		panel_2.add(txtJKSFile);
 		
 		panel_5 = new JPanel();
 		tabbedPane.addTab("Experian", null, panel_5, null);
@@ -495,6 +530,7 @@ public class DnBImportForm extends JFrame {
 	
 	private void runExperianCompanyLookup()
 	{
+		initExperian();
 		String companyName = txtExperianCompanyName.getText();
 		String postCode = txtExperianPostCode.getText();
 		if(companyName.length() > 0)
@@ -529,6 +565,7 @@ public class DnBImportForm extends JFrame {
 	
 	private void getExperianLtdDetails()
 	{
+		initExperian();
 		String ref = txtExperianRef.getText();
 		if(ref.length()>0)
 		{
@@ -564,6 +601,7 @@ public class DnBImportForm extends JFrame {
 	
 	private void experianRegistration(ExperianLegalStatus status, String action)
 	{
+		initExperian();
 		String ref = txtExperianRef.getText();
 		if(ref.length()>0)
 		{
@@ -598,6 +636,7 @@ public class DnBImportForm extends JFrame {
 	
 	private void getExperianNonLtdDetails()
 	{
+		initExperian();
 		String ref = txtExperianRef.getText();
 		if(ref.length()>0)
 		{
@@ -632,6 +671,7 @@ public class DnBImportForm extends JFrame {
 	
 	private void getExperianAlerts()
 	{
+		initExperian();
 		ExperianAlertsRequestClient client = new ExperianAlertsRequestClient();
 		Date from = GetDateFromString(txtExperianFrom.getText());
 		Date to = GetDateFromString(txtExperianTo.getText());
@@ -709,5 +749,11 @@ public class DnBImportForm extends JFrame {
 				txtResults.setText(e.getMessage());				
 			}
 		}
+	}
+	
+	private void initExperian()
+	{
+		ExperianInitialise init = new ExperianInitialise();
+		init.Initialise(txtJKSFile.getText(), txtJKSPassword.getText());
 	}
 }

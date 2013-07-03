@@ -37,7 +37,7 @@ public enum ExperianLegalStatus
 	{
 		for(ExperianLegalStatus s : ExperianLegalStatus.values())
 		{
-			if(s.getId().equalsIgnoreCase(description))
+			if(s.getDescription().equalsIgnoreCase(description))
 				return s;
 		}
 		return ExperianLegalStatus.UNKNOWN;

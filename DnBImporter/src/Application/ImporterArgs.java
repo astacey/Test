@@ -20,6 +20,8 @@ public class ImporterArgs
 	private String masterId = "";
 	private String mappingId ="";
 	private String mappingType ="";
+	private String jksFile = "";
+	private String jksPassword="";
 	
 	public ImporterArgs(String[] args)
 	{
@@ -114,6 +116,16 @@ public class ImporterArgs
 					throw(e);
 				}
 			}
+			else if(args[i].equalsIgnoreCase("-jksfile"))
+			{
+				i++;
+				this.jksFile=args[i];
+			}
+			else if(args[i].equalsIgnoreCase("-jkspass"))
+			{
+				i++;
+				this.jksPassword=args[i];
+			}
 			else
 			{
 				RuntimeException e = new RuntimeException("Invalid argument " + args[i]);
@@ -198,5 +210,13 @@ public class ImporterArgs
 
 	public Boolean getIsExperianRegistrationSelected() {
 		return isExperianRegistrationSelected;
+	}
+
+	public String getJksFile() {
+		return jksFile;
+	}
+
+	public String getJksPassword() {
+		return jksPassword;
 	}
 }

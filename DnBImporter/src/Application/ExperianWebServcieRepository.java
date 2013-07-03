@@ -67,7 +67,7 @@ public class ExperianWebServcieRepository implements IExperianRepository
 	}
 
 	@Override
-	public ArrayList<ExperianData> getCompanyUpdates(Date startDate, Date endDate) throws Exception 
+	public ArrayList<ExperianData> getCompanyUpdates(Date startDate, Date endDate) throws Exception
 	{
 		ArrayList<ExperianData> updates = new ArrayList<ExperianData>();
 		ExperianAlertsRequestClient client = new ExperianAlertsRequestClient();
