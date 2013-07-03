@@ -51,7 +51,7 @@ public class TestRegistrationHandler {
 		// Company 1 should be Pending
 		assertEquals("Company 1 should be Pending", RegistrationStatus.PENDING, companyRepo.getCompanyById("100").getDunnBradstreetData().getRegistrationDetails().getStatus());
 		// Company 2 should be Active
-		assertEquals("Company 2 should be Active", RegistrationStatus.ACTIVE, companyRepo.getCompanyById("200").getDunnBradstreetData().getRegistrationDetails().getStatus());		
+		assertEquals("Company 2 should be Registered", RegistrationStatus.REGISTERED, companyRepo.getCompanyById("200").getDunnBradstreetData().getRegistrationDetails().getStatus());		
 		// Company 3 should be Pending
 		assertEquals("Company 3 should be Pending", RegistrationStatus.PENDING, companyRepo.getCompanyById("300").getDunnBradstreetData().getRegistrationDetails().getStatus());		
 		// Saved companies = 3

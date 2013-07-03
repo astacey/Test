@@ -61,6 +61,18 @@ public class SupplierAppCSVFactDataFull extends SupplierAppCSVFile
 						else if(dataset.equalsIgnoreCase(DATASET_PAYDEX_NORM_CODE)
 								&& checkDBDataExists(c, csvFactsReader.getRawRecord())==true)
 							c.getDunnBradstreetData().getPaydexNormHistory().upsert(new IntegerDatedValue(date, Integer.valueOf(val)));
+						else if(dataset.equalsIgnoreCase(DATASET_EXPERIAN_DELPHI)
+								&& checkExperianDataExists(c, csvFactsReader.getRawRecord())==true)
+							c.getExperianData().getDelphiScores().upsert(new IntegerDatedValue(date, Integer.valueOf(val)));
+						else if(dataset.equalsIgnoreCase(DATASET_EXPERIAN_DELPHI_INDUSTRY)
+								&& checkExperianDataExists(c, csvFactsReader.getRawRecord())==true)
+							c.getExperianData().getDelphiScoresIndustryAverage().upsert(new IntegerDatedValue(date, Integer.valueOf(val)));
+						else if(dataset.equalsIgnoreCase(DATASET_EXPERIAN_DAYS_BEYOND_TERMS)
+								&& checkExperianDataExists(c, csvFactsReader.getRawRecord())==true)
+							c.getExperianData().getDaysBeyondTerms().upsert(new IntegerDatedValue(date, Integer.valueOf(val)));
+						else if(dataset.equalsIgnoreCase(DATASET_EXPERIAN_DAYS_BEYOND_TERMS_INDUSTRY)
+								&& checkExperianDataExists(c, csvFactsReader.getRawRecord())==true)
+							c.getExperianData().getDaysBeyondTermsIndustryAverage().upsert(new IntegerDatedValue(date, Integer.valueOf(val)));
 					}
 					else
 					{
@@ -111,6 +123,18 @@ public class SupplierAppCSVFactDataFull extends SupplierAppCSVFile
 					// Payex Norm
 					writeFactIntegerCollection(csvWriter, c.getDunnBradstreetData().getPaydexNormHistory(), c.getId(), DATASET_PAYDEX_NORM_CODE, isIncremental);
 				}
+				// Experian Data
+				if( c.hasExperianData())
+				{
+					// Delphi
+					writeFactIntegerCollection(csvWriter, c.getExperianData().getDelphiScores(), c.getId(), DATASET_EXPERIAN_DELPHI, isIncremental);
+					// Delphi Industry Average
+					writeFactIntegerCollection(csvWriter, c.getExperianData().getDelphiScoresIndustryAverage(), c.getId(), DATASET_EXPERIAN_DELPHI_INDUSTRY, isIncremental);
+					// Days Beyond Terms
+					writeFactIntegerCollection(csvWriter, c.getExperianData().getDaysBeyondTerms(), c.getId(), DATASET_EXPERIAN_DAYS_BEYOND_TERMS, isIncremental);
+					// Dats Beyond Terms - Industry Average
+					writeFactIntegerCollection(csvWriter, c.getExperianData().getDaysBeyondTermsIndustryAverage(), c.getId(), DATASET_EXPERIAN_DAYS_BEYOND_TERMS_INDUSTRY, isIncremental);
+				}
 			}
 			catch(IOException e)
 			{
@@ -153,6 +177,16 @@ public class SupplierAppCSVFactDataFull extends SupplierAppCSVFile
 		if(c.hasDunnBradstreetData()==false)
 		{
 			logger.warning("Failed Fact Row. Somehow we have D&B data for a company that has no duns - " + rowDetails);
+			return false;
+		}
+		return true;
+	}
+
+	private Boolean checkExperianDataExists(Company c, String rowDetails)
+	{		
+		if(c.hasExperianData()==false)
+		{
+			logger.warning("Failed Fact Row. Somehow we have Experian data for a company that has no experian reference - " + rowDetails);
 			return false;
 		}
 		return true;

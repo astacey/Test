@@ -194,6 +194,8 @@ public class Company
 		this.openBalance.setCommitted();
 		if(hasDunnBradstreetData())
 			getDunnBradstreetData().setCommitted();
+		if(hasExperianData())
+			getExperianData().setCommitted();
 	}
 
 	public Boolean hasExperianData(){

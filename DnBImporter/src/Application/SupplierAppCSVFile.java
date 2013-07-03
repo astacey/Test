@@ -22,6 +22,10 @@ public abstract class SupplierAppCSVFile
 	public final static String DATASET_AVERAGE_DAYS_TO_PAYMENT_CODE = "ADTP";
 	public final static String DATASET_OPEN_BALANCE_CODE = "OB";
 	public final static String DATASET_TOTAL_SPEND_CODE = "S";
+	public final static String DATASET_EXPERIAN_DAYS_BEYOND_TERMS = "DBT";
+	public final static String DATASET_EXPERIAN_DAYS_BEYOND_TERMS_INDUSTRY = "DBT-IND";
+	public final static String DATASET_EXPERIAN_DELPHI = "DELPHI";
+	public final static String DATASET_EXPERIAN_DELPHI_INDUSTRY = "DELPHI-IND"; 
 	
 	protected static Logger logger = Logger.getLogger(SupplierAppCSVFile.class.getName());
 	

@@ -89,19 +89,24 @@ public class TestCompanyRepository implements ICompanyRepository
 	@Override
 	public CompanyCollection getCompaniesForInitialUpdateExperian() {
 		// TODO Auto-generated method stub
-		return null;
+		return new CompanyCollection();
 	}
 
 	@Override
 	public CompanyCollection getCompaniesForInitialUpdateDnB() {
 		// TODO Auto-generated method stub
-		return null;
+		return new CompanyCollection();
 	}
 	
 	@Override
 	public CompanyCollection getCompaniesByExperianReference(String reference) {
-		// TODO Auto-generated method stub
-		return null;
+		CompanyCollection results = new CompanyCollection();
+		for(Company c : testCompanies)
+		{
+			if(c.hasExperianData() && c.getExperianData().getId().equalsIgnoreCase(reference))
+				results.add(c);
+		}
+		return results;
 	}
 	
 	// List of Big companies given to me by Mike at D&B

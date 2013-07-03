@@ -10,6 +10,8 @@ import Domain.IExperianRepository;
 public class TestExperianRepository implements IExperianRepository 
 {
 	private String[] failToRegister = new String[]{};
+	private ArrayList<ExperianData> getUpdatesResult;
+	
 	@Override
 	public Boolean registerCompany(String ref, ExperianLegalStatus status) 
 	{
@@ -30,7 +32,7 @@ public class TestExperianRepository implements IExperianRepository
 	@Override
 	public ArrayList<ExperianData> getCompanyUpdates(Date startDate, Date endDate) throws Exception 
 	{
-		return null;
+		return getUpdatesResult;
 	}
 
 	public String[] getFailToRegister() {
@@ -39,6 +41,14 @@ public class TestExperianRepository implements IExperianRepository
 
 	public void setFailToRegister(String[] failToRegister) {
 		this.failToRegister = failToRegister;
+	}
+
+	public ArrayList<ExperianData> getGetUpdatesResult() {
+		return getUpdatesResult;
+	}
+
+	public void setGetUpdatesResult(ArrayList<ExperianData> getUpdatesResult) {
+		this.getUpdatesResult = getUpdatesResult;
 	}
 
 	

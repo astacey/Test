@@ -51,7 +51,7 @@ public class ExperianUpdateHandler
 					updatedData.setRegistrationStatus(RegistrationStatus.ACTIVE);
 					for(Company c : companiesToUpdate)
 					{	
-						c.setExperianData(updatedData);
+						updateCompanyData(c, updatedData);
 						companyRepo.saveCompany(c);
 					}
 				}
@@ -60,7 +60,7 @@ public class ExperianUpdateHandler
 					logger.warning("Received data for Experian Ref that does not exist [" + updatedData.getId() + "]");
 				}
 			}
-		} 
+		}
 		catch (SOAPException soape) 
 		{
 			logger.severe("SOAP ERROR getting details for start [" + start + "] end [" + end + "]: " + soape.getMessage());
@@ -72,6 +72,18 @@ public class ExperianUpdateHandler
 			return false;
 		}
 		return true;
+	}
+	
+	private void updateCompanyData(Company c, ExperianData updatedData)
+	{
+		if(c.getExperianData()!=null) // should never be null at this point, but just in case
+		{
+			c.getExperianData().setName(updatedData.getName());
+			c.getExperianData().getDelphiScores().upsert(updatedData.getDelphiScores());
+			c.getExperianData().getDelphiScoresIndustryAverage().upsert(updatedData.getDelphiScoresIndustryAverage());
+			c.getExperianData().getDaysBeyondTerms().upsert(updatedData.getDaysBeyondTerms());
+			c.getExperianData().getDaysBeyondTermsIndustryAverage().upsert(updatedData.getDaysBeyondTermsIndustryAverage());
+		}
 	}
 	
 	private void getInitialUpdates()
@@ -107,5 +119,4 @@ public class ExperianUpdateHandler
 		cal.add(Calendar.DATE, -1);
 		return cal.getTime();
 	}
-	
 }

@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import Test.TestRepositories.TestCompanyRepository;
 import Test.TestRepositories.TestDnBRepository;
+import Test.TestRepositories.TestImporterSettingsRepository;
 
 import Application.DnBUpdateHandler;
 

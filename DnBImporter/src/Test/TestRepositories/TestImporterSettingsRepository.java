@@ -1,4 +1,4 @@
-package Test;
+package Test.TestRepositories;
 
 import java.util.Date;
 

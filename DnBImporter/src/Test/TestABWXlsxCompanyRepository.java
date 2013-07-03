@@ -13,7 +13,7 @@ public class TestABWXlsxCompanyRepository {
 	@Test
 	public void testGetAllCompanies() 
 	{
-		ABWXlsxCompanyRepository repo = new ABWXlsxCompanyRepository("/home/astacey/SupplierDataTest/ABWUpdates/");
+		ABWXlsxCompanyRepository repo = new ABWXlsxCompanyRepository(AllTests.getTestFolder() + "ABWUpdates/", "UKU4");
 		// 2 companies, 2 eu should be ignored
 		// 1001 ABDT = 31
 		// and 1002 ABDT = 40

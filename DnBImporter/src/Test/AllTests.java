@@ -5,15 +5,31 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({TestABWCSVCompanyRepository.class, 
-				TestSupplierAppCSVCompanyRepository.class, TestCompanyType.class, 
-				TestDnBData.class, TestDnBDataMapper.class, TestDnBDataUpdateMapper.class, 
-				TestDnBRating.class, TestDnBRegistrationCollection.class, TestImporterArgs.class, 
-				TestInitialUploadHandler.class, TestImporterSettings.class,
-				TestDnBUpdateHandler.class, TestXmlHelper.class, TestDatedValueCollection.class, TestDatedValue.class,
-				TestSupplierAppCSVFactDataFull.class,
-				TestExperianDataMapper.class, TestCompany.class, TestBulkMappingUpload.class,
-				TestExperianRegistrationHandler.class })
+@SuiteClasses({ TestABWCSVCompanyRepository.class, 
+				TestABWXlsxCompanyRepository.class,
+				TestBulkMappingUpload.class, 
+				TestCompany.class, 
+				TestCompanyType.class,
+				TestDatedValue.class, 
+				TestDatedValueCollection.class, 
+				TestDnBCSVCompanyRepository.class, 
+				TestDnBData.class, 
+				TestDnBDataMapper.class, 
+				TestDnBDataUpdateMapper.class, 
+				TestDnBRating.class, 
+				TestDnBRegistrationCollection.class, 
+				TestDnBUpdateHandler.class,
+				TestExperianDataMapper.class, 
+				TestExperianUpdateHandler.class, 
+				TestExperianRegistrationHandler.class,
+				TestImporterArgs.class, 
+				TestImporterSettings.class,  
+				TestInitialUploadHandler.class,
+				TestRegistrationHandler.class,
+				TestSupplierAppCSVCompanyRepository.class, 
+				TestSupplierAppCSVFactDataFull.class, 
+				TestXmlHelper.class
+				 })
 
 public class AllTests {
 	

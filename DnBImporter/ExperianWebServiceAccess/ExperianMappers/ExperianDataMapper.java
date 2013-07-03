@@ -14,7 +14,9 @@ import ExperianLtdCompanySearchWS.IndDebitMonthly;
 import ExperianLtdCompanySearchWS.LtdCompanyData;
 import ExperianLtdCompanySearchWS.ScoreHistory;
 import ExperianLtdCompanySearchWS.SectorScore;
+import ExperianNonLtdBusinessSearchWS.DebitMonthly;
 import ExperianNonLtdBusinessSearchWS.NonLtdBusinessData;
+import ExperianNonLtdBusinessSearchWS.NonLtdScoreHistory;
 
 public class ExperianDataMapper 
 {
@@ -70,17 +72,54 @@ public class ExperianDataMapper
 	
 	public ExperianData getExperianData(NonLtdBusinessData nonLtdCompanyData)
 	{
-		return null;
+		ExperianData experianData = new ExperianData(nonLtdCompanyData.getNonLimitedKey(), nonLtdCompanyData.getBusinessName(), ExperianLegalStatus.NONLIMITED);
+		// Commercial Delphi Scores
+		if( nonLtdCompanyData.getCommercialDelphiHistory()!=null && nonLtdCompanyData.getCommercialDelphiHistory()!=null)
+		{
+			for( NonLtdScoreHistory s : nonLtdCompanyData.getCommercialDelphiHistory().getScoreHistory())
+			{
+				int score = XmlHelper.getIntegerFromXmlString(s.getCommDelphiScore());
+				Date date = getCCYYMMDDDate(s.getScoreHistoryDate());
+				experianData.getDelphiScores().add(new IntegerDatedValue(date, score));			
+			}
+		}
+		// Payment Performance
+		if( nonLtdCompanyData.getPaymentPerformance()!=null
+				&& nonLtdCompanyData.getPaymentPerformance().getPaymentFull()!=null)
+		{
+			// DBT
+			for( DebitMonthly monthlyData : nonLtdCompanyData.getPaymentPerformance().getPaymentFull().getDBTMonthly())
+			{
+				int days = monthlyData.getDBT();
+				Date date = getCCYYMMDate(monthlyData.getExpMonth());
+				experianData.getDaysBeyondTerms().add(new IntegerDatedValue(date, days));
+			}
+		}
+		return experianData;
 	}
 	
-	private Date getCCYYMMDate(CCYYMM theDate)
+	private Date getCCYYMMDate(ExperianLtdCompanySearchWS.CCYYMM theDate)
+	{
+		Calendar cal = Calendar.getInstance();
+		cal.set(Integer.parseInt(theDate.getCCYY()), Integer.parseInt(theDate.getMM()), 1);
+		return cal.getTime();
+	}
+
+	private Date getCCYYMMDate(ExperianNonLtdBusinessSearchWS.CCYYMM theDate)
 	{
 		Calendar cal = Calendar.getInstance();
 		cal.set(Integer.parseInt(theDate.getCCYY()), Integer.parseInt(theDate.getMM()), 1);
 		return cal.getTime();
 	}
 	
-	private Date getCCYYMMDDDate(CCYYMMDD theDate)
+	private Date getCCYYMMDDDate(ExperianLtdCompanySearchWS.CCYYMMDD theDate)
+	{
+		Calendar cal = Calendar.getInstance();
+		cal.set(Integer.parseInt(theDate.getCCYY()), Integer.parseInt(theDate.getMM()), Integer.parseInt(theDate.getDD()));
+		return cal.getTime();
+	}
+	
+	private Date getCCYYMMDDDate(ExperianNonLtdBusinessSearchWS.CCYYMMDD theDate)
 	{
 		Calendar cal = Calendar.getInstance();
 		cal.set(Integer.parseInt(theDate.getCCYY()), Integer.parseInt(theDate.getMM()), Integer.parseInt(theDate.getDD()));

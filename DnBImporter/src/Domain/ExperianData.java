@@ -32,6 +32,14 @@ public class ExperianData
 		this.registrationStatus=RegistrationStatus.UNREGISTERED;
 	}
 	
+	public void setCommitted()
+	{
+		this.delphiScores.setCommitted();
+		this.delphiScoresIndustryAverage.setCommitted();
+		this.daysBeyondTerms.setCommitted();
+		this.daysBeyondTermsIndustryAverage.setCommitted();
+	}
+	
 	public String getId() {
 		return id;
 	}
