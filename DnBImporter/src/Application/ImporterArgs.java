@@ -22,6 +22,8 @@ public class ImporterArgs
 	private String mappingType ="";
 	private String jksFile = "";
 	private String jksPassword="";
+	private Boolean isShowForm=false;
+	private String GUIUpdateFolder="";
 	
 	public ImporterArgs(String[] args)
 	{
@@ -32,7 +34,16 @@ public class ImporterArgs
 	{
 		for(int i = 0;i<args.length;i++)
 		{
-			if(args[i].equalsIgnoreCase("-rdnb"))
+			if(args[i].equalsIgnoreCase("-gui"))
+			{
+				isShowForm = true;
+			}
+			else if(args[i].equalsIgnoreCase("-guiFolder"))
+			{
+				i++;
+				GUIUpdateFolder = args[i];
+			}
+			else if(args[i].equalsIgnoreCase("-rdnb"))
 			{
 				isRegistrationSelected = true;
 			}
@@ -218,5 +229,13 @@ public class ImporterArgs
 
 	public String getJksPassword() {
 		return jksPassword;
+	}
+
+	public Boolean getIsShowForm() {
+		return isShowForm;
+	}
+
+	public String getGUIUpdateFolder() {
+		return GUIUpdateFolder;
 	}
 }

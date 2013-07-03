@@ -9,51 +9,51 @@ import Domain.IDnBRepository;
 import Domain.ICompanyRepository;
 import Domain.IExperianRepository;
 
-
 public class EntryPoint 
 {
 	private static Logger logger = Logger.getLogger(EntryPoint.class.getName());
 	// Entry point 
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
-
-		if(args.length == 0)
+		try 
 		{
-			// if no arguments, launch the GUI
-			runWindow();	
+			ImporterLogging.setup();
 		}
-		else
+		catch (IOException e) 
 		{
-			try 
+			logger.severe(e.getMessage());
+			throw new RuntimeException("Problems with creating the log files", e);
+		}
+		try 
+		{
+			ImporterArgs impArgs = new ImporterArgs(args);
+			if(impArgs.getIsShowForm())
 			{
-				ImporterLogging.setup();
+				runWindow(impArgs);
 			}
-			catch (IOException e) 
+			else
 			{
-				logger.severe(e.getMessage());
-				throw new RuntimeException("Problems with creating the log files", e);
-			}
-			try 
-			{
-				ImporterArgs impArgs = new ImporterArgs(args);
 				logger.info("Starting runCommand");
 				runCommandLine(impArgs);
 				logger.info("Finished runCommand");
 			}
-			catch (Exception e) 
-			{
-				logger.severe(e.getMessage());
-				throw new RuntimeException("Error executing command", e);
-			}
+		}
+		catch (Exception e) 
+		{
+			logger.severe(e.getMessage());
+			throw new RuntimeException("Error executing command", e);
 		}
 	}
 	
-	private static void runWindow()
+	private static void runWindow(ImporterArgs args)
 	{
+		final ImporterArgs myargs = args;
 		EventQueue.invokeLater(new Runnable() {
+			ImporterArgs a = myargs;
 			public void run() {
 				try {
 					DnBImportForm frame = new DnBImportForm();
+					frame.setParameters(a.getUserName(), a.getPassword(), a.getJksFile(), a.getJksPassword(), a.getGUIUpdateFolder());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

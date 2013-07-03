@@ -16,10 +16,16 @@ import javax.swing.JTextArea;
 import javax.swing.JTabbedPane;
 import javax.xml.soap.SOAPException;
 
+import Application.ABWXlsxCompanyRepository;
 import Application.ExperianInitialise;
+import Application.SupplierAppCSVCompanyRepository;
 import DnBXmlMappers.DnBDataMapper;
+import Domain.Company;
+import Domain.CompanyCollection;
 import Domain.DnBData;
+import Domain.ExperianData;
 import Domain.ExperianLegalStatus;
+import Domain.RegistrationStatus;
 import ExperianAlertsRequestWS.*;
 import ExperianBusinessTargetWS.BusinessTargetOutput;
 import ExperianBusinessTargetWS.SearchResults;
@@ -44,6 +50,8 @@ public class DnBImportForm extends JFrame {
 
 	// increment if breaking change to serializaion
 	public static final long serialVersionUID = 1L;
+	private int currentCompanyIndex=0;
+	private CompanyCollection unmappedCompanies;
 	private JPanel contentPane;
 	private JTextField txtCompanyName;
 	private JLabel lblPostCode;
@@ -95,6 +103,9 @@ public class DnBImportForm extends JFrame {
 	private JLabel label_4;
 	private JTextField txtJKSPassword;
 	private JTextField txtJKSFile;
+	private JLabel lblAccountsFile;
+	private JTextField txtSupplierDataFolder;
+	private JButton btnGetNext;
 	
 	/**
 	 * Create the frame.
@@ -108,7 +119,7 @@ public class DnBImportForm extends JFrame {
 		contentPane.setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(27, 12, 586, 238);
+		tabbedPane.setBounds(27, 12, 639, 238);
 		contentPane.add(tabbedPane);
 		
 		panel_1 = new JPanel();
@@ -241,13 +252,11 @@ public class DnBImportForm extends JFrame {
 		panel_2.add(lblPassword);
 		
 		txtUserName = new JTextField();
-		txtUserName.setText("unit4test");
 		txtUserName.setBounds(133, 33, 114, 19);
 		panel_2.add(txtUserName);
 		txtUserName.setColumns(10);
 		
 		txtPassword = new JTextField();
-		txtPassword.setText("ed1r1ver");
 		txtPassword.setBounds(133, 62, 114, 19);
 		panel_2.add(txtPassword);
 		txtPassword.setColumns(10);
@@ -269,16 +278,23 @@ public class DnBImportForm extends JFrame {
 		panel_2.add(label_4);
 		
 		txtJKSPassword = new JTextField();
-		txtJKSPassword.setText("Caste11");
 		txtJKSPassword.setColumns(10);
 		txtJKSPassword.setBounds(390, 60, 114, 19);
 		panel_2.add(txtJKSPassword);
 		
 		txtJKSFile = new JTextField();
-		txtJKSFile.setText("/home/astacey/Experian/UNITUnit4U01U.jks");
 		txtJKSFile.setColumns(10);
 		txtJKSFile.setBounds(349, 31, 220, 19);
 		panel_2.add(txtJKSFile);
+		
+		lblAccountsFile = new JLabel("Supplier Data:");
+		lblAccountsFile.setBounds(283, 91, 109, 15);
+		panel_2.add(lblAccountsFile);
+		
+		txtSupplierDataFolder = new JTextField();
+		txtSupplierDataFolder.setColumns(10);
+		txtSupplierDataFolder.setBounds(400, 89, 169, 19);
+		panel_2.add(txtSupplierDataFolder);
 		
 		panel_5 = new JPanel();
 		tabbedPane.addTab("Experian", null, panel_5, null);
@@ -412,6 +428,15 @@ public class DnBImportForm extends JFrame {
 		txtExperianPostCode.setBounds(153, 29, 177, 19);
 		panel_5.add(txtExperianPostCode);
 		
+		btnGetNext = new JButton("Get Next(csv)");
+		btnGetNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getNextCompanyCSV();
+			}
+		});
+		btnGetNext.setBounds(450, 8, 172, 19);
+		panel_5.add(btnGetNext);
+		
 		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane_1.setBounds(24, 262, 642, 265);
 		contentPane.add(tabbedPane_1);
@@ -448,6 +473,39 @@ public class DnBImportForm extends JFrame {
 				getCompanyDetails();
 			}
 		});
+	}
+	
+	public void setParameters(String dnbUser, String dnbPassword, String experianJKSFile, String experianJKSPassword, String experianCSVImport )
+	{
+		txtUserName.setText(dnbUser);
+		txtPassword.setText(dnbPassword);
+		txtJKSFile.setText(experianJKSFile);
+		txtJKSPassword.setText(experianJKSPassword);
+		txtSupplierDataFolder.setText(experianCSVImport);
+	}
+	
+	private void getNextCompanyCSV()
+	{
+		if(unmappedCompanies==null)
+		{
+			SupplierAppCSVCompanyRepository companyRepo = new SupplierAppCSVCompanyRepository(txtSupplierDataFolder.getText());
+			unmappedCompanies = new CompanyCollection();
+			for(Company c: companyRepo.getAllCompanies())
+			{
+				if(!c.hasExperianData())
+					unmappedCompanies.add(c);
+			}
+			
+		}
+		currentCompanyIndex++;
+		Company c = unmappedCompanies.get(currentCompanyIndex);
+		txtExperianCompanyName.setText(c.getName());
+		ABWXlsxCompanyRepository abwRepo = new ABWXlsxCompanyRepository(txtSupplierDataFolder.getText(), "UKU4");
+		Company abw = abwRepo.getCompanyById(c.getId());
+		if(abw!=null&&abw.getMainAddress()!=null)
+			txtExperianPostCode.setText(abw.getMainAddress().getPostCode());
+		else
+			txtExperianPostCode.setText("");
 	}
 	
 	private void getNotifications()
@@ -543,7 +601,10 @@ public class DnBImportForm extends JFrame {
 					txtResults.setText(output.getError().getMessage());
 				else
 				{
-					String results = "";
+					String results = "Searching for : \n"
+							+"Name : " + companyName
+							+"\nPostCode : postCode"
+							+"\n----------------------------------------------------------------\n\n";
 					for(SearchResults res : output.getSearchResults())
 					{
 						results += "Business Ref : " + res.getBusinessRef()
@@ -611,7 +672,10 @@ public class DnBImportForm extends JFrame {
 				if(action.equalsIgnoreCase("a"))
 				{
 					if(client.addAlert(ref, status))
+					{
+						updateCompanyRegistered(ref, status);
 						txtFormattedResults.setText("registered - " + ref);
+					}
 					else
 						txtFormattedResults.setText("failed to register - " + ref);
 				}
@@ -627,11 +691,22 @@ public class DnBImportForm extends JFrame {
 			{
 				txtFormattedResults.setText("SOAP EXCEPTION : " + soape.getMessage());
 			}
-			catch (Exception e) 
+			catch (Exception e)
 			{
 				txtFormattedResults.setText("EXCEPTION : " + e.getMessage());
 			}
 		}
+	}
+	
+	private void updateCompanyRegistered(String ref, ExperianLegalStatus status)
+	{
+		SupplierAppCSVCompanyRepository companyRepo = new SupplierAppCSVCompanyRepository(txtSupplierDataFolder.getText());
+		Company c = unmappedCompanies.get(currentCompanyIndex);
+		ExperianData d = new ExperianData(ref, "", status);
+		c.setExperianData(d);
+		c.getExperianData().setRegistrationStatus(RegistrationStatus.REGISTERED);
+		companyRepo.saveCompany(c);
+		companyRepo.commitAllChanges();
 	}
 	
 	private void getExperianNonLtdDetails()

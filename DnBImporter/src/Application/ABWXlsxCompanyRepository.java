@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import com.csvreader.CsvReader;
 
 import Domain.AccountGroup;
+import Domain.Address;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
@@ -114,7 +115,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	private void readAllCompaniesFromXlsx()
 	{
 		this.allCompanies = new CompanyCollection();
@@ -136,6 +137,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 					String groupName = csvReader.get("group_name");
 					String verticalMarket = csvReader.get("V_market");
 					String client = csvReader.get("client");
+					String postcode = csvReader.get("zip_code");
 					
 					// TODO: only import this client for now
 					if(clientFilter.length()==0 || client.equalsIgnoreCase(clientFilter))
@@ -146,6 +148,13 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 						c.setVerticalMarket(verticalMarket);
 						if( groupCode.length()>0)
 							c.setAccountGroup(new AccountGroup(groupCode, groupName));
+						
+						if(postcode.length()>0)
+						{
+							Address address = new Address();
+							address.setPostCode(postcode);
+							c.setMainAddress(address);
+						}
 						
 						// TODO : should I delete D&B data if the duns column exists, but data is empty - Dangerous ?
 						String dunsString = csvReader.get("DUNS_NO");

@@ -21,9 +21,11 @@ public class Company
 	// Open Balance
 	private DoubleDatedValueCollection openBalance; 
 	// D&B's data...
-	DnBData dunnBradstreetData;
+	private DnBData dunnBradstreetData;
 	// Experian data
-	ExperianData experianData;
+	private ExperianData experianData;
+	// Main company address - may need to convert to a list of addresses in future ?
+	private Address mainAddress;
 	
 	public Company(String id, String name, CompanyType type)
 	{
@@ -208,5 +210,13 @@ public class Company
 
 	public void setExperianData(ExperianData experianData) {
 		this.experianData = experianData;
+	}
+
+	public Address getMainAddress() {
+		return mainAddress;
+	}
+
+	public void setMainAddress(Address mainAddress) {
+		this.mainAddress = mainAddress;
 	}
 }
