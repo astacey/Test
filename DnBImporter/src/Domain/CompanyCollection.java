@@ -38,7 +38,7 @@ public class CompanyCollection extends ArrayList<Company>
 	{
 		for(int i=0;i<this.size();i++)
 		{
-			if(this.get(i).getId()==c.getId())
+			if(this.get(i).getId().equals(c.getId()))
 			{
 				this.set(i, c);
 				return true;

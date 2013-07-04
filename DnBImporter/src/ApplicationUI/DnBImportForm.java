@@ -43,6 +43,8 @@ import WebServiceClients.GetRegistrationActivityClient;
 import WebServiceClients.GetRegistrationListClient;
 import WebServiceClients.LookUpClient;
 import javax.swing.JScrollPane;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 
 
 
@@ -52,6 +54,9 @@ public class DnBImportForm extends JFrame {
 	public static final long serialVersionUID = 1L;
 	private int currentCompanyIndex=0;
 	private CompanyCollection unmappedCompanies;
+	private SupplierAppCSVCompanyRepository companyRepo;
+	private ABWXlsxCompanyRepository abwRepo;
+	private String mainAddress;
 	private JPanel contentPane;
 	private JTextField txtCompanyName;
 	private JLabel lblPostCode;
@@ -111,15 +116,17 @@ public class DnBImportForm extends JFrame {
 	 * Create the frame.
 	 */
 	public DnBImportForm() {
+		setBounds(new Rectangle(65, 24, 1000, 1000));
+		setPreferredSize(new Dimension(1000, 1000));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 680, 568);
+		setBounds(100, 100, 924, 568);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(27, 12, 639, 238);
+		tabbedPane.setBounds(27, 12, 882, 238);
 		contentPane.add(tabbedPane);
 		
 		panel_1 = new JPanel();
@@ -438,7 +445,7 @@ public class DnBImportForm extends JFrame {
 		panel_5.add(btnGetNext);
 		
 		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_1.setBounds(24, 262, 642, 265);
+		tabbedPane_1.setBounds(24, 262, 885, 265);
 		contentPane.add(tabbedPane_1);
 		
 		JPanel panel_3 = new JPanel();
@@ -449,7 +456,7 @@ public class DnBImportForm extends JFrame {
 		txtFormattedResults.setLineWrap(true);
 		
 		JScrollPane scrollPane1 = new JScrollPane(txtFormattedResults);
-		scrollPane1.setBounds(0, 0, 642, 250);
+		scrollPane1.setBounds(0, 0, 880, 250);
 		panel_3.add(scrollPane1);
 		
 		JPanel panel_4 = new JPanel();
@@ -460,7 +467,7 @@ public class DnBImportForm extends JFrame {
 		txtResults.setLineWrap(true);
 
 		JScrollPane scrollPane = new JScrollPane(txtResults);
-		scrollPane.setBounds(0, 0, 642, 250);
+		scrollPane.setBounds(0, 0, 880, 250);
 		panel_4.add(scrollPane);
 		
 		btnRunLookup.addActionListener(new ActionListener() {
@@ -484,11 +491,25 @@ public class DnBImportForm extends JFrame {
 		txtSupplierDataFolder.setText(experianCSVImport);
 	}
 	
+	private SupplierAppCSVCompanyRepository getCompanyRepo()
+	{
+		if(companyRepo==null)
+			companyRepo = new SupplierAppCSVCompanyRepository(txtSupplierDataFolder.getText());
+		return companyRepo;
+	}
+	
+	private ABWXlsxCompanyRepository getAbwRepo()
+	{
+		if(abwRepo==null)
+			abwRepo = new ABWXlsxCompanyRepository(txtSupplierDataFolder.getText(), "UKU4");
+		return abwRepo;
+	}
+	
 	private void getNextCompanyCSV()
 	{
 		if(unmappedCompanies==null)
 		{
-			SupplierAppCSVCompanyRepository companyRepo = new SupplierAppCSVCompanyRepository(txtSupplierDataFolder.getText());
+			SupplierAppCSVCompanyRepository companyRepo = getCompanyRepo();
 			unmappedCompanies = new CompanyCollection();
 			for(Company c: companyRepo.getAllCompanies())
 			{
@@ -500,12 +521,21 @@ public class DnBImportForm extends JFrame {
 		currentCompanyIndex++;
 		Company c = unmappedCompanies.get(currentCompanyIndex);
 		txtExperianCompanyName.setText(c.getName());
-		ABWXlsxCompanyRepository abwRepo = new ABWXlsxCompanyRepository(txtSupplierDataFolder.getText(), "UKU4");
+		ABWXlsxCompanyRepository abwRepo = getAbwRepo();
 		Company abw = abwRepo.getCompanyById(c.getId());
 		if(abw!=null&&abw.getMainAddress()!=null)
+		{
 			txtExperianPostCode.setText(abw.getMainAddress().getPostCode());
+			mainAddress = abw.getMainAddress().getAddressLine1();
+		}
 		else
+		{
 			txtExperianPostCode.setText("");
+			mainAddress = "";
+		}
+		txtExperianRef.setText("");
+		
+		runExperianCompanyLookup();
 	}
 	
 	private void getNotifications()
@@ -591,6 +621,7 @@ public class DnBImportForm extends JFrame {
 		initExperian();
 		String companyName = txtExperianCompanyName.getText();
 		String postCode = txtExperianPostCode.getText();
+		
 		if(companyName.length() > 0)
 		{
 			ExperianBusinessTargetClient client = new ExperianBusinessTargetClient();
@@ -601,9 +632,10 @@ public class DnBImportForm extends JFrame {
 					txtResults.setText(output.getError().getMessage());
 				else
 				{
-					String results = "Searching for : \n"
-							+"Name : " + companyName
-							+"\nPostCode : postCode"
+					String results = "Searching for : "
+							+"\nName : " + companyName
+							+"\nAddress : " + mainAddress.replace("  ","")
+							+"\nPostCode : " + postCode
 							+"\n----------------------------------------------------------------\n\n";
 					for(SearchResults res : output.getSearchResults())
 					{
@@ -611,6 +643,8 @@ public class DnBImportForm extends JFrame {
 								 + "\nName : " + res.getName()
 								 + "\nLegal Status : " + res.getLegalStatus()
 								 + "\nAddress 1 : " + res.getBusinessLocation().getLocationLine1()
+ 								 + "\nAddress 2 : " + res.getBusinessLocation().getLocationLine2()
+								 + "\nAddress 3 : " + res.getBusinessLocation().getLocationLine3() 								 
 								 + "\nPost Code : " + res.getBusinessLocation().getPostcode()
 								 + "\n---------------------------------------------------\n";
 					}
@@ -700,7 +734,7 @@ public class DnBImportForm extends JFrame {
 	
 	private void updateCompanyRegistered(String ref, ExperianLegalStatus status)
 	{
-		SupplierAppCSVCompanyRepository companyRepo = new SupplierAppCSVCompanyRepository(txtSupplierDataFolder.getText());
+		SupplierAppCSVCompanyRepository companyRepo = getCompanyRepo();
 		Company c = unmappedCompanies.get(currentCompanyIndex);
 		ExperianData d = new ExperianData(ref, "", status);
 		c.setExperianData(d);

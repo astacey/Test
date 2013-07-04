@@ -138,6 +138,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 					String verticalMarket = csvReader.get("V_market");
 					String client = csvReader.get("client");
 					String postcode = csvReader.get("zip_code");
+					String address1 = csvReader.get("address");
 					
 					// TODO: only import this client for now
 					if(clientFilter.length()==0 || client.equalsIgnoreCase(clientFilter))
@@ -149,9 +150,10 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 						if( groupCode.length()>0)
 							c.setAccountGroup(new AccountGroup(groupCode, groupName));
 						
-						if(postcode.length()>0)
+						if(postcode.length()>0||address1.length()>0)
 						{
 							Address address = new Address();
+							address.setAddressLine1(address1);
 							address.setPostCode(postcode);
 							c.setMainAddress(address);
 						}
