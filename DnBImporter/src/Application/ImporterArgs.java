@@ -24,6 +24,7 @@ public class ImporterArgs
 	private String jksPassword="";
 	private Boolean isShowForm=false;
 	private String GUIUpdateFolder="";
+	private char delimiter;
 	
 	public ImporterArgs(String[] args)
 	{
@@ -137,6 +138,13 @@ public class ImporterArgs
 				i++;
 				this.jksPassword=args[i];
 			}
+			else if(args[i].equalsIgnoreCase("-delimiter"))
+			{
+				i++;
+				char[] chars=new char[1];
+				args[i].getChars(0, 1, chars, 0);
+				this.delimiter=chars[0];
+			}
 			else
 			{
 				RuntimeException e = new RuntimeException("Invalid argument " + args[i]);
@@ -237,5 +245,9 @@ public class ImporterArgs
 
 	public String getGUIUpdateFolder() {
 		return GUIUpdateFolder;
+	}
+
+	public char getDelimiter() {
+		return delimiter;
 	}
 }

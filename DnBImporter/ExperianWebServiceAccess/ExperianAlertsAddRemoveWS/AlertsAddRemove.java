@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "AlertsAddRemove", targetNamespace = "http://services.experian.com/experian/wbsv/generic/bi", wsdlLocation = "file:/home/astacey/git/DnBImporter/DnBImporter/ExperianWSDL/AlertsAddRemove.wsdl")
+@WebServiceClient(name = "AlertsAddRemove", targetNamespace = "http://services.experian.com/experian/wbsv/generic/bi", wsdlLocation = "file:ExperianWSDL/AlertsAddRemove.wsdl")
 public class AlertsAddRemove
     extends Service
 {
@@ -30,9 +30,9 @@ public class AlertsAddRemove
         try {
             URL baseUrl;
             baseUrl = ExperianAlertsAddRemoveWS.AlertsAddRemove.class.getResource(".");
-            url = new URL(baseUrl, "file:/home/astacey/git/DnBImporter/DnBImporter/ExperianWSDL/AlertsAddRemove.wsdl");
+            url = new URL(baseUrl, "file:ExperianWSDL/AlertsAddRemove.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:/home/astacey/git/DnBImporter/DnBImporter/ExperianWSDL/AlertsAddRemove.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'file:ExperianWSDL/AlertsAddRemove.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         ALERTSADDREMOVE_WSDL_LOCATION = url;

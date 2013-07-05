@@ -57,8 +57,12 @@ public class Company
 	
 	private Boolean uploadExperianMapping(String id)
 	{
-		// If no existing mapping or mapping is different, then set up new experian details
-		if(experianData==null)
+		if(id.length()==0) // unmapped - wipe old data ( dangerous ??? )
+		{
+			experianData = null;
+			return true;
+		}
+		else if(experianData==null) // If no existing mapping or mapping is different, then set up new experian details
 		{
 			experianData = new ExperianData(id, "", ExperianLegalStatus.UNKNOWN);
 			return true;
@@ -74,8 +78,12 @@ public class Company
 	
 	private Boolean uploadDnBMapping(String id)
 	{
-		// If no existing mapping or mapping is different, then set up new experian details
-		if(dunnBradstreetData==null)
+		if(id.length()==0) // unmapped - wipe old data ( dangerous ??? )
+		{
+			dunnBradstreetData = null;
+			return true;
+		}
+		else if(dunnBradstreetData==null)// If no existing mapping or mapping is different, then set up new experian details
 		{
 			dunnBradstreetData = new DnBData(Integer.parseInt(id));
 			return true;

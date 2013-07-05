@@ -11,7 +11,7 @@ public class TestImporterArgs {
 	@Test
 	public void testAll() {
 		
-		String[] args = new String[]{ "-iDnB", "c:/DnBImporter/", "-rdnb", "-u", "user", "-p", "password", "-xabw", "testabwpath", "-rexperian", "-xexperian" };
+		String[] args = new String[]{ "-iDnB", "c:/DnBImporter/", "-rdnb", "-u", "user", "-p", "password", "-xabw", "testabwpath", "-rexperian", "-xexperian", "-delimiter", ";" };
 		ImporterArgs impArgs = new ImporterArgs(args);
 		
 		assertTrue("IsInitialUpload is true", impArgs.getIsInitialUpload());
@@ -25,6 +25,8 @@ public class TestImporterArgs {
 		assertTrue("IsABWUpdate is true", impArgs.getIsABWUpdate());
 		assertEquals("ABW update Source is ", "testabwpath", impArgs.getAbwUpdateFolder());
 		assertTrue("IsExperianUpdate is true", impArgs.getIsExperianUpdate());
+		
+		assertTrue("delimiter is ;", ';'==impArgs.getDelimiter());
 		
 		impArgs = new ImporterArgs(new String[] { "-x" });
 		assertTrue("IsUpdate is true", impArgs.getIsDnBUpdate());

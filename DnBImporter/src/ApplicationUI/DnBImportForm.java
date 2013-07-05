@@ -56,7 +56,7 @@ public class DnBImportForm extends JFrame {
 	private CompanyCollection unmappedCompanies;
 	private SupplierAppCSVCompanyRepository companyRepo;
 	private ABWXlsxCompanyRepository abwRepo;
-	private String mainAddress;
+	private String mainAddress = "";
 	private JPanel contentPane;
 	private JTextField txtCompanyName;
 	private JLabel lblPostCode;

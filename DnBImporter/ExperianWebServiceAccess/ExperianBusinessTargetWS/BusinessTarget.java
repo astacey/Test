@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "BusinessTarget", targetNamespace = "http://services.experian.com/experian/wbsv/generic/bi", wsdlLocation = "file:/home/astacey/git/DnBImporter/DnBImporter/ExperianWSDL/BusinessTarget.wsdl")
+@WebServiceClient(name = "BusinessTarget", targetNamespace = "http://services.experian.com/experian/wbsv/generic/bi", wsdlLocation = "file:ExperianWSDL/BusinessTarget.wsdl")
 public class BusinessTarget
     extends Service
 {
@@ -30,9 +30,9 @@ public class BusinessTarget
         try {
             URL baseUrl;
             baseUrl = ExperianBusinessTargetWS.BusinessTarget.class.getResource(".");
-            url = new URL(baseUrl, "file:/home/astacey/git/DnBImporter/DnBImporter/ExperianWSDL/BusinessTarget.wsdl");
+            url = new URL(baseUrl, "file:ExperianWSDL/BusinessTarget.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:/home/astacey/git/DnBImporter/DnBImporter/ExperianWSDL/BusinessTarget.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'file:ExperianWSDL/BusinessTarget.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         BUSINESSTARGET_WSDL_LOCATION = url;

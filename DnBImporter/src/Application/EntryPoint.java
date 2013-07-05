@@ -76,6 +76,7 @@ public class EntryPoint
 		{
 			logger.info("Starting Bulk Upload");
 			BulkMappingUpload bmu = new BulkMappingUpload(companyRepo, args.getBulkMappingFile(), args.getMasterId(), args.getMappingId(), args.getMappingType());
+			bmu.setDelimiter(args.getDelimiter());
 			bmu.uploadMappings();
 			logger.info("Finished Bulk Upload");
 		}
