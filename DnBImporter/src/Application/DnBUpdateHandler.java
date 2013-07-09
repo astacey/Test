@@ -12,6 +12,7 @@ import Domain.CompanyCollection;
 import Domain.DnBData;
 import Domain.ICompanyRepository;
 import Domain.IDnBRepository;
+import Domain.RegistrationStatus;
 
 public class DnBUpdateHandler 
 {
@@ -41,6 +42,8 @@ public class DnBUpdateHandler
 	 */
 	public Boolean getUpdates()
 	{
+		// 1. download data for companies that need initial seeding
+		getInitialUpdates();
 		// Get Updates
 		Date startDate = settings.getLastRunDateDnB();
 		Date endDate = getEndDate();
@@ -62,6 +65,28 @@ public class DnBUpdateHandler
 		// Save LastRunDate
 		settings.setLastRunDateDnB(endDate);
 		return true;
+	}
+	
+	private void getInitialUpdates()
+	{
+		CompanyCollection comps = u4baCompanyRepository.getCompaniesForInitialUpdateDnB();
+		int compsToGet = comps.size(), success=0, fail=0;
+		for(Company c : comps)
+		{
+			DnBData data = dnbRepository.getCompanyDetails(c.getDunnBradstreetData().getDunsNumber());
+			if( data != null )
+			{
+				data.getRegistrationDetails().setStatus(RegistrationStatus.ACTIVE);
+				c.setDunnBradstreetData(data);
+				success++;
+			}
+			else
+			{
+				// Something went wrong, probably an error that will be logged in lower class
+				fail++;
+			}
+		}
+		logger.info("Companies to get = " + String.valueOf(compsToGet) + ", success = " + String.valueOf(success) + ", fail = " + String.valueOf(fail) + ".");
 	}
 	
 	private Boolean getUpdates(Date startDate, Date endDate)

@@ -2,14 +2,13 @@ package WebServiceClients;
 
 import Application.JaxBHelper;
 
-import DBWebClient.CREDITMSGSRSV2;
-import DBWebClient.LookUpInput;
-import DBWebClient.LookUpRequest;
-import DBWebClient.LookUpResponse;
-import DBWebClient.ObjectFactory;
-import DBWebClient.WspLookUp;
-import DBWebClient.WspLookUpPortType;
-
+import DBLookUpClient.CREDITMSGSRSV2;
+import DBLookUpClient.LookUpInput;
+import DBLookUpClient.LookUpRequest;
+import DBLookUpClient.LookUpResponse;
+import DBLookUpClient.ObjectFactory;
+import DBLookUpClient.WspLookUp;
+import DBLookUpClient.WspLookUpPortType;
 
 public class LookUpClient extends DnBWebServiceClient
 {

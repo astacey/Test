@@ -14,7 +14,6 @@ import WebServiceClients.GetCompanyDetailsClient;
 import WebServiceClients.GetNotificationsClient;
 import WebServiceClients.GetRegistrationListClient;
 
-import DBGetNotificationsClient.Exception_Exception;
 import DnBXmlMappers.DnBDataMapper;
 import DnBXmlMappers.DnBDataUpdateMapper;
 import DnBXmlMappers.DnBRegistrationListMapper;
@@ -103,15 +102,15 @@ public class DnBWebServiceRepository implements IDnBRepository
 		do
 		{
 			String xmlResponseString;
-			try 
-			{
+			//try 
+			//{
 				xmlResponseString = client.getNotifications(startDate, endDate, resultTicket);
-			} 
-			catch (Exception_Exception ee) 
-			{
-				Exception e = new Exception("Error getting response from get notifications.", ee);
-				throw(e);
-			}
+			//} 
+			//catch (Exception_Exception ee) 
+			//{
+			//	Exception e = new Exception("Error getting response from get notifications.", ee);
+			//	throw(e);
+			//}
 			logger.info(xmlResponseString);
 
 			ArrayList<DnBData> data = mapper.getDnBDataFromXml(xmlResponseString);

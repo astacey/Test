@@ -1,0 +1,41 @@
+08-Jul-2013 22:17:28 Application.EntryPoint main
+INFO: Starting runCommand
+08-Jul-2013 22:17:30 Application.EntryPoint runCommandLine
+INFO: Starting DnB Registration
+08-Jul-2013 22:17:30 Application.DnBRegistrationHandler RegisterCompanies
+INFO: Getting unregistered duns
+08-Jul-2013 22:17:30 Application.SupplierAppCSVCompanyRepository archiveFiles
+INFO: Archive folder [/home/astacey/SupplierData/Archive20130708101728/] created.
+08-Jul-2013 22:17:30 Application.EntryPoint runCommandLine
+INFO: Finished DnB Registration
+08-Jul-2013 22:17:30 Application.EntryPoint runCommandLine
+INFO: Starting DnB Update
+08-Jul-2013 22:17:41 Application.DnBWebServiceRepository getCompanyDetails
+INFO: <?xml version="1.0" encoding="UTF-8" standalone="yes"?><CREDITMSGSRSV2 xmlns:ns2="http://www.dnb.com/DNB_WebServices/Providers/OrderAndInvestigations/GDP/wsp_GDP"><DATATRNRS><TRNUID>Id-70975dbe51db2c73240b7669-2</TRNUID><STATUS><CODE>0</CODE><SEVERITY>INFO</SEVERITY></STATUS><DATARS><SRVRTID>21429767</SRVRTID><CACHE_IND>Y</CACHE_IND><DUNS_NBR>211291232</DUNS_NBR><PRIM_NME>Oldham Metropolitan Borough Council</PRIM_NME><ADR_LINE><ArrayOfstringItem>Civic Centre</ArrayOfstringItem><ArrayOfstringItem>West Street</ArrayOfstringItem></ADR_LINE><POST_TOWN>OLDHAM</POST_TOWN><PRIM_GEO_AREA>LANCASHIRE</PRIM_GEO_AREA><POST_CODE>OL1 1UT</POST_CODE><CTRY_CD>GB</CTRY_CD><BR_IND>N</BR_IND><ADR_TENR_TYPE_CD><ArrayOfstringItem>O</ArrayOfstringItem></ADR_TENR_TYPE_CD><AVG_HIGH_CR>3412</AVG_HIGH_CR><BUS_STRU>N</BUS_STRU><CLM_IND>N</CLM_IND><CRCY_CD>GBP</CRCY_CD><CRIM_IND>N</CRIM_IND><DNB_RATG>O1</DNB_RATG><DOM_ULT_CTRY_CD>GB</DOM_ULT_CTRY_CD><DOM_ULT_PNT_DUNS>211291232</DOM_ULT_PNT_DUNS><DOM_ULT_PNT_NME>Oldham Metropolitan Borough Council</DOM_ULT_PNT_NME><DSTR_IND>N</DSTR_IND><FAIL_SCR>1645</FAIL_SCR><FAIL_SCR_NATL_PCTG>100</FAIL_SCR_NATL_PCTG><FAX_NBR>01617703998</FAX_NBR><FINL_EMBT_IND>N</FINL_EMBT_IND><FINL_LGL_EVNT_IND>N</FINL_LGL_EVNT_IND><GBL_ULT_CTRY_CD>GB</GBL_ULT_CTRY_CD><GBL_ULT_PNT_DUNS>211291232</GBL_ULT_PNT_DUNS><GBL_ULT_PNT_NME>Oldham Metropolitan Borough Council</GBL_ULT_PNT_NME><HIGH_CR>40000</HIGH_CR><INCN_YR>1974</INCN_YR><INTL_DLNG_CD>44</INTL_DLNG_CD><LGL_FORM>LSC/117</LGL_FORM><LOCN_STAT>HQ</LOCN_STAT><MAX_CR>3333500</MAX_CR><OPRG_SPEC_EVNT_IND>N</OPRG_SPEC_EVNT_IND><OTHR_SPEC_EVNT_IND>Y</OTHR_SPEC_EVNT_IND><OUT_BUS_IND>N</OUT_BUS_IND><PAYD_3_MO_AGO>74</PAYD_3_MO_AGO><PAYD_NORM>73</PAYD_NORM><PAYD_SCR>74</PAYD_SCR><PNT_CTRY_CD>GB</PNT_CTRY_CD><PNT_DUNS>211291232</PNT_DUNS><PNT_NME>Oldham Metropolitan Borough Council</PNT_NME><PRIM_SIC>9121</PRIM_SIC><PRIM_SIC_TYPE_CD>1972</PRIM_SIC_TYPE_CD><SCRD_FLNG_IND>N</SCRD_FLNG_IND><STAT>1</STAT><STRT_YR>1974</STRT_YR><SUIT_JDGT_IND>Y</SUIT_JDGT_IND><TLCM_NBR>01617703000</TLCM_NBR><TOT_EMPL>2000</TOT_EMPL><TOT_EMPL_ESTD_IND>Y</TOT_EMPL_ESTD_IND><TOT_EMPL_IND>A</TOT_EMPL_IND><TOT_PMT>66</TOT_PMT><TRDG_STYL><ArrayOfstringItem>Oldham Council</ArrayOfstringItem><ArrayOfstringItem>Rose Hill Court Sheltered Housing</ArrayOfstringItem></TRDG_STYL><ENQ_DUNS>211291232</ENQ_DUNS><PRIN_NME>Colin Smith</PRIN_NME><PRIN_TTL>Chief Executive Officer</PRIN_TTL><FAIL_SCR_ENTR><SCR_GRP><ASMT_DT>20130705</ASMT_DT><NATL_PCTL>100</NATL_PCTL><ALGM_ID>GB1035</ALGM_ID><SCR>1645</SCR></SCR_GRP></FAIL_SCR_ENTR><DELQ_SCR_ENTR><SCR_GRP><ASMT_DT>20130705</ASMT_DT><NATL_PCTL>44</NATL_PCTL><ALGM_ID>GB1532</ALGM_ID><SCR>462</SCR></SCR_GRP></DELQ_SCR_ENTR></DATARS></DATATRNRS></CREDITMSGSRSV2>
+08-Jul-2013 22:17:41 Application.DnBUpdateHandler getInitialUpdates
+INFO: Companies to get = 1, success = 1, fail = 0.
+08-Jul-2013 22:17:41 Application.DnBUpdateHandler getUpdates
+INFO: Getting updates for [2013-06-06 04:52:44 000 EST] to [2013-06-07 04:52:44 000 EST]
+08-Jul-2013 22:17:41 Application.DnBUpdateHandler getUpdates
+SEVERE: ERROR: unable to get updates for dates [2013-06-06 04:52:44 000 EST] to [2013-06-07 04:52:44 000 EST].
+08-Jul-2013 22:17:41 Application.DnBUpdateHandler getUpdates
+SEVERE: com.sun.xml.bind.v2.runtime.IllegalAnnotationsException: 2 counts of IllegalAnnotationExceptions
+Two classes have the same XML type name "{https://www.dnb.com/DNB_WebServices/Providers/GetNotifications_V1/wsp_GetNotifications_V1}ws_GetNotifications". Use @XmlType.name and @XmlType.namespace to assign different names to them.
+	this problem is related to the following location:
+		at DBGetNotificationsClientV1.WsGetNotifications
+		at public DBGetNotificationsClientV1.WsGetNotifications DBGetNotificationsClientV1.ObjectFactory.createWsGetNotifications()
+		at DBGetNotificationsClientV1.ObjectFactory
+	this problem is related to the following location:
+		at DBNotificationsClientV1.WsGetNotifications
+Two classes have the same XML type name "{https://www.dnb.com/DNB_WebServices/Providers/GetNotifications_V1/wsp_GetNotifications_V1}ws_GetNotificationsResponse". Use @XmlType.name and @XmlType.namespace to assign different names to them.
+	this problem is related to the following location:
+		at DBGetNotificationsClientV1.WsGetNotificationsResponse
+		at public DBGetNotificationsClientV1.WsGetNotificationsResponse DBGetNotificationsClientV1.ObjectFactory.createWsGetNotificationsResponse()
+		at DBGetNotificationsClientV1.ObjectFactory
+	this problem is related to the following location:
+		at DBNotificationsClientV1.WsGetNotificationsResponse
+
+08-Jul-2013 22:17:41 Application.EntryPoint runCommandLine
+INFO: Finihed DnB Update
+08-Jul-2013 22:17:41 Application.EntryPoint main
+INFO: Finished runCommand

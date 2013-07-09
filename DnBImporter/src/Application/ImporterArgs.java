@@ -76,7 +76,7 @@ public class ImporterArgs
 				i++;
 				importSourceFile=args[i];
 			}
-			else if(args[i].equalsIgnoreCase("-x"))
+			else if(args[i].equalsIgnoreCase("-xdnb"))
 			{
 				isDnBUpdate = true;
 			}

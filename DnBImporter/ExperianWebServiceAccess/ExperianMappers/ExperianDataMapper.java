@@ -7,7 +7,6 @@ import Application.XmlHelper;
 import Domain.ExperianData;
 import Domain.ExperianLegalStatus;
 import Domain.IntegerDatedValue;
-import ExperianLtdCompanySearchWS.CCYYMM;
 import ExperianLtdCompanySearchWS.CCYYMMDD;
 import ExperianLtdCompanySearchWS.CompDebitMonthly;
 import ExperianLtdCompanySearchWS.IndDebitMonthly;

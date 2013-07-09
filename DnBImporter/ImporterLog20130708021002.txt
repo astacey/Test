@@ -1,0 +1,25 @@
+08-Jul-2013 14:10:02 Application.EntryPoint main
+INFO: Starting runCommand
+08-Jul-2013 14:10:04 Application.EntryPoint runCommandLine
+INFO: Starting DnB Registration
+08-Jul-2013 14:10:04 Application.DnBRegistrationHandler RegisterCompanies
+INFO: Getting unregistered duns
+08-Jul-2013 14:10:04 Application.SupplierAppCSVCompanyRepository archiveFiles
+INFO: Archive folder [/home/astacey/SupplierData/Archive20130708021002/] created.
+08-Jul-2013 14:10:05 Application.EntryPoint runCommandLine
+INFO: Finished DnB Registration
+08-Jul-2013 14:10:05 Application.EntryPoint runCommandLine
+INFO: Starting DnB Update
+08-Jul-2013 14:10:05 Application.DnBUpdateHandler getInitialUpdates
+INFO: Companies to get = 0, success = 0, fail = 0.
+08-Jul-2013 14:10:05 Application.DnBUpdateHandler getUpdates
+INFO: Getting updates for [2013-06-06 04:52:44 000 EST] to [2013-06-07 04:52:44 000 EST]
+08-Jul-2013 14:10:05 Application.DnBUpdateHandler getUpdates
+SEVERE: ERROR: unable to get updates for dates [2013-06-06 04:52:44 000 EST] to [2013-06-07 04:52:44 000 EST].
+08-Jul-2013 14:10:05 Application.DnBUpdateHandler getUpdates
+SEVERE: Failed to access the WSDL at: file:/home/astacey/git/DnBImporter/DnBImporter/bin/DBGetNotificationsClient/WSDL/GetNotifications.wsdl. It failed with: 
+	/home/astacey/git/DnBImporter/DnBImporter/bin/DBGetNotificationsClient/WSDL/GetNotifications.wsdl (No such file or directory).
+08-Jul-2013 14:10:05 Application.EntryPoint runCommandLine
+INFO: Finihed DnB Update
+08-Jul-2013 14:10:05 Application.EntryPoint main
+INFO: Finished runCommand

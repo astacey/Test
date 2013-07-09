@@ -1,0 +1,16 @@
+08-Jul-2013 14:13:06 Application.EntryPoint main
+INFO: Starting runCommand
+08-Jul-2013 14:13:08 Application.EntryPoint runCommandLine
+INFO: Starting DnB Registration
+08-Jul-2013 14:13:08 Application.DnBRegistrationHandler RegisterCompanies
+INFO: Getting unregistered duns
+08-Jul-2013 14:13:08 Application.SupplierAppCSVCompanyRepository archiveFiles
+INFO: Archive folder [/home/astacey/SupplierData/Archive20130708021306/] created.
+08-Jul-2013 14:13:08 Application.EntryPoint runCommandLine
+INFO: Finished DnB Registration
+08-Jul-2013 14:13:08 Application.EntryPoint runCommandLine
+INFO: Starting DnB Update
+08-Jul-2013 14:13:08 Application.DnBUpdateHandler getInitialUpdates
+INFO: Companies to get = 0, success = 0, fail = 0.
+08-Jul-2013 14:13:08 Application.DnBUpdateHandler getUpdates
+INFO: Getting updates for [2013-06-06 04:52:44 000 EST] to [2013-06-07 04:52:44 000 EST]

@@ -1,7 +1,6 @@
 package Test;
 
 import static org.junit.Assert.*;
-import junit.framework.AssertionFailedError;
 
 import org.junit.Test;
 

@@ -809,6 +809,8 @@ public class DnBImportForm extends JFrame {
 				result = "No results returned.";
 			txtFormattedResults.setText(result);
 			
+			RawExperianAlertsRequestClient rawClient = new RawExperianAlertsRequestClient();
+			txtResults.setText(rawClient.getXml(new String[]{}));
 		} 
 		catch (SOAPException soape) 
 		{

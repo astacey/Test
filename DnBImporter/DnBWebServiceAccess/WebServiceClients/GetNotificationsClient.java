@@ -4,13 +4,12 @@ import java.util.Date;
 import java.text.*;
 import Application.JaxBHelper;
 
-import DBGetNotificationsClient.Exception_Exception;
-import DBGetNotificationsClient.GLBLMNSVCMSGSRSV1;
-import DBGetNotificationsClient.GetNotificationsRequest;
-import DBGetNotificationsClient.GetNotificationsRequestData;
-import DBGetNotificationsClient.ObjectFactory;
-import DBGetNotificationsClient.WspGetNotifications;
-import DBGetNotificationsClient.WspGetNotificationsPortType;
+import DBGetNotificationsClientV1.GLBLMNSVCMSGSRSV1;
+import DBGetNotificationsClientV1.GetNotificationsRequest;
+import DBGetNotificationsClientV1.GetNotificationsRequestData;
+import DBGetNotificationsClientV1.ObjectFactory;
+import DBGetNotificationsClientV1.WspGetNotificationsV1;
+import DBGetNotificationsClientV1.WspGetNotificationsV1PortType;
 
 
 public class GetNotificationsClient extends DnBWebServiceClient 
@@ -20,12 +19,12 @@ public class GetNotificationsClient extends DnBWebServiceClient
 		super(userName, password);
 	}
 	
-	public String getNotifications(Date fromDate, Date toDate) throws Exception_Exception
+	public String getNotifications(Date fromDate, Date toDate)
 	{
 		return getNotifications(fromDate, toDate, "");
 	}
 	
-	public String getNotifications(Date fromDate, Date toDate, String resultTicket) throws Exception_Exception
+	public String getNotifications(Date fromDate, Date toDate, String resultTicket)
 	{
 		// Note : Date period requested needs to be within the last 90 days or the service throws an error
 		//		: Date range cannot exceed 4 days or you get an error
@@ -46,9 +45,9 @@ public class GetNotificationsClient extends DnBWebServiceClient
 		request.setPassword(password);
 		request.setGetNotificationsRequestData(data);
 		
-		WspGetNotifications client = new WspGetNotifications();
+		WspGetNotificationsV1 client = new WspGetNotificationsV1();
 		
-		WspGetNotificationsPortType port = client.getDNBWebServicesProvidersGetNotificationsWspGetNotificationsPort();
+		WspGetNotificationsV1PortType port = client.getDNBWebServicesProvidersGetNotificationsV1WspGetNotificationsV1Port();
 		
 		//try
 		//{

@@ -1,13 +1,12 @@
 package WebServiceClients;
 import Application.JaxBHelper;
 
-import DBAddRegistrationClient.AddRegistrationData;
-import DBAddRegistrationClient.AddRegistrationRequest;
-import DBAddRegistrationClient.AddRegistrationResponse;
-import DBAddRegistrationClient.Exception_Exception;
-import DBAddRegistrationClient.GLBLMNSVCMSGSRSV1;
-import DBAddRegistrationClient.WspAddRegistration;
-import DBAddRegistrationClient.WspAddRegistrationPortType;
+import DBAddRegistrationClientV1.AddRegistrationData;
+import DBAddRegistrationClientV1.AddRegistrationRequest;
+import DBAddRegistrationClientV1.AddRegistrationResponse;
+import DBAddRegistrationClientV1.GLBLMNSVCMSGSRSV1;
+import DBAddRegistrationClientV1.WspAddRegistrationV1;
+import DBAddRegistrationClientV1.WspAddRegistrationV1PortType;
 
 
 public class AddRegistrationClient extends DnBWebServiceClient 
@@ -17,7 +16,7 @@ public class AddRegistrationClient extends DnBWebServiceClient
 		super(userName, password);
 	}
 	
-	public String addRegistration(String dunsNumber) throws Exception_Exception
+	public String addRegistration(String dunsNumber)
 	{
 		String responseXml = "";
 		
@@ -31,9 +30,9 @@ public class AddRegistrationClient extends DnBWebServiceClient
 		data.setNotificationLevel("Level 3");
 		request.setAddRegistrationData(data);
 		
-		WspAddRegistration client = new WspAddRegistration();
+		WspAddRegistrationV1 client = new WspAddRegistrationV1();
 		
-		WspAddRegistrationPortType port = client.getDNBWebServicesProvidersAddRegistrationWspAddRegistrationPort();
+		WspAddRegistrationV1PortType port = client.getDNBWebServicesProvidersAddRegistrationV1WspAddRegistrationV1Port();
 		
 		AddRegistrationResponse response = port.wsAddRegistration(request);
 		responseXml = JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, response.getDGX().getGLBLMNSVCMSGSRSV1());

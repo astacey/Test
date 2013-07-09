@@ -1,0 +1,12 @@
+05-Jul-2013 12:08:06 Application.EntryPoint main
+INFO: Starting runCommand
+05-Jul-2013 12:08:09 Application.EntryPoint runCommandLine
+INFO: Starting Bulk Upload
+05-Jul-2013 12:08:09 Application.SupplierAppCSVCompanyRepository archiveFiles
+INFO: Archive folder [/home/astacey/SupplierData/Archive20130705120806/] created.
+05-Jul-2013 12:08:09 Application.BulkMappingUpload uploadMappings
+INFO: Read 2987, mapped 0, nonexisting companies 0, no master id = 2987
+05-Jul-2013 12:08:09 Application.EntryPoint runCommandLine
+INFO: Finished Bulk Upload
+05-Jul-2013 12:08:09 Application.EntryPoint main
+INFO: Finished runCommand
