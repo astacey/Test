@@ -1,4 +1,0 @@
-05-Jul-2013 12:08:32 Application.EntryPoint main
-INFO: Starting runCommand
-05-Jul-2013 12:08:34 Application.EntryPoint runCommandLine
-INFO: Starting Bulk Upload

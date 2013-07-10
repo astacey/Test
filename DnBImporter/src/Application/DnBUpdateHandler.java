@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.DnBData;
+import Domain.DnBRating;
 import Domain.ICompanyRepository;
 import Domain.IDnBRepository;
 import Domain.RegistrationStatus;
@@ -93,9 +94,11 @@ public class DnBUpdateHandler
 	{
 		Boolean gotUpdates = false;
 		ArrayList<DnBData> updates = new ArrayList<DnBData>();
+		int numUpdates=0, updated=0, missing=0;
 		try 
 		{
 			updates = dnbRepository.getCompanyUpdates(startDate, endDate);
+			numUpdates = updates.size();
 			gotUpdates = true;
 		} 
 		catch (Exception e1) 
@@ -114,12 +117,14 @@ public class DnBUpdateHandler
 				if(companyMatches.size()==0)
 				{
 					logger.warning("Received data for a duns that doesn't exist in the system. Investigate. Duns [" + String.valueOf(dunsNumber) + "]");
+					missing++;
 				}
 				else
 				{
 					for(Company company : companyMatches)
 					{
-						company.setDunnBradstreetData(data);
+						updated++;
+						updateCompanyDnBData(company, data);
 						u4baCompanyRepository.saveCompany(company);
 					}
 				}
@@ -131,7 +136,27 @@ public class DnBUpdateHandler
 				e.printStackTrace();
 			}
 		}
+		logger.info("dates [" + dateFormatter.format(startDate) + " EST] to [" + dateFormatter.format(endDate) + " EST]. Number of updates = " + numUpdates + ". Missing = " + missing + ". Updated = " + updated + ".");
 		return gotUpdates;
+	}
+	
+	private void updateCompanyDnBData(Company companyToUpdate, DnBData data)
+	{
+		if( companyToUpdate.hasDunnBradstreetData())
+		{
+			for(DnBRating rat : data.getDbratingHistory())
+			{
+				companyToUpdate.getDunnBradstreetData().getDbratingHistory().add(rat);
+			}
+			companyToUpdate.getDunnBradstreetData().getFailureRiskScoreHistory().upsert(data.getFailureRiskScoreHistory());
+			companyToUpdate.getDunnBradstreetData().getFailureRiskPercentileHistory().upsert(data.getFailureRiskPercentileHistory());
+			companyToUpdate.getDunnBradstreetData().getPaydexScoreHistory().upsert(data.getPaydexScoreHistory());
+			companyToUpdate.getDunnBradstreetData().getPaydexNormHistory().upsert(data.getPaydexNormHistory());
+		}
+		else
+		{
+			companyToUpdate.setDunnBradstreetData(data);
+		}
 	}
 	
 	private Date getEndDate()

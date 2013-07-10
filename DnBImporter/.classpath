@@ -11,6 +11,5 @@
 	<classpathentry kind="lib" path="/home/astacey/apache-cxf-2.7.5/modules/cxf-api-2.7.5.jar"/>
 	<classpathentry kind="lib" path="/home/astacey/apache-cxf-2.7.5/modules/cxf-rt-bindings-soap-2.7.5.jar"/>
 	<classpathentry kind="lib" path="/home/astacey/jaxws-ri/lib/jaxws-rt.jar"/>
-	<classpathentry kind="lib" path="/home/astacey/jaxws-ri/lib/jaxws-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
