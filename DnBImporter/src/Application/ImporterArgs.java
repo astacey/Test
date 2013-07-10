@@ -6,11 +6,8 @@ public class ImporterArgs
 	private Boolean isExperianRegistrationSelected = false;
 	private String userName="";
 	private String password="";
-	private Boolean isInitailUpload = false;
 	private Boolean isDnBUpdate = false;
 	private Boolean isABWUpdate = false;
-	private String importSourceFile = "";
-	private String importSource = "";
 	private String abwUpdateFolder = "";
 	private Boolean isPrepareABWCSV = false;
 	private String clientFilter = "";
@@ -61,20 +58,6 @@ public class ImporterArgs
 			{
 				i++;
 				password=args[i];
-			}
-			else if(args[i].equalsIgnoreCase("-iabw"))
-			{
-				isInitailUpload = true;
-				importSource = "ABW";
-				i++;
-				importSourceFile=args[i];
-			}
-			else if(args[i].equalsIgnoreCase("-idnb"))
-			{
-				isInitailUpload = true;
-				importSource = "DnB";
-				i++;
-				importSourceFile=args[i];
 			}
 			else if(args[i].equalsIgnoreCase("-xdnb"))
 			{
@@ -157,11 +140,6 @@ public class ImporterArgs
 	{
 		return isRegistrationSelected;
 	}
-
-	public Boolean getIsInitialUpload()
-	{
-		return isInitailUpload;
-	}
 	
 	public String getUserName()
 	{
@@ -176,15 +154,6 @@ public class ImporterArgs
 	public Boolean getIsDnBUpdate()
 	{
 		return isDnBUpdate;
-	}
-
-	public String getImportSourceFile() 
-	{
-		return importSourceFile;
-	}
-
-	public String getImportSource() {
-		return importSource;
 	}
 
 	public Boolean getIsABWUpdate() {

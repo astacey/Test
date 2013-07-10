@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import Application.ABWCSVCompanyRepository;
 import Application.FileHelper;
+import Application.UnusedSources.ABWCSVCompanyRepository;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
 

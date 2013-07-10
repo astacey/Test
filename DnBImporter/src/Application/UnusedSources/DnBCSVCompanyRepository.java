@@ -1,4 +1,4 @@
-package Application;
+package Application.UnusedSources;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import com.csvreader.CsvReader;
 
+import Application.XmlHelper;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;

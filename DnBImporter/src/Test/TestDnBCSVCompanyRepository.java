@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import Application.DnBCSVCompanyRepository;
 import Application.FileHelper;
+import Application.UnusedSources.DnBCSVCompanyRepository;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
 

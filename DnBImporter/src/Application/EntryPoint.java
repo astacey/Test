@@ -80,18 +80,6 @@ public class EntryPoint
 			bmu.uploadMappings();
 			logger.info("Finished Bulk Upload");
 		}
-		// Think this will become obsolete or be a specific DnB initial upload
-		// TODO: probably move the initial download of dnb data to the register function ?
-		if(args.getIsInitialUpload() == true)
-		{
-			ICompanyRepository companySourceRepo = new ABWCSVCompanyRepository(args.getImportSourceFile());
-			if( args.getImportSource().equalsIgnoreCase("DnB") )
-				companySourceRepo = new DnBCSVCompanyRepository(args.getImportSourceFile());
-			logger.info("Starting Initial Upload, source = " + companySourceRepo.toString());
-			DnBInitialUploadHandler initial = new DnBInitialUploadHandler(companyRepo, dnbRepo, settings, companySourceRepo);
-			initial.downloadAllCompanies();
-			logger.info("Finished Initial Upload");
-		}
 		if(args.getIsPrepareABWCSV() == true)
 		{
 			logger.info("Start preparing ABW CSV");
@@ -107,10 +95,7 @@ public class EntryPoint
 			abwHandler.getUpdates();
 			logger.info("Finihed ABW Update");
 		}
-		// if initial upload then we will need registering
-		// probably want registration to be run every day
-		// uncomment out the getIsUpdate() once I've got registration status management working
-		if(args.getIsDnBRegistrationSelected() == true )//|| args.getIsInitialUpload() == true ) //|| args.getIsUpdate() == true) 
+		if(args.getIsDnBRegistrationSelected() == true ) 
 		{
 			logger.info("Starting DnB Registration");
 			DnBRegistrationHandler handler = new DnBRegistrationHandler(companyRepo, dnbRepo);
