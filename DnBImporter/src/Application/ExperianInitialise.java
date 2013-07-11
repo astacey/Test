@@ -7,6 +7,6 @@ public class ExperianInitialise
 		System.setProperty("javax.net.ssl.keyStoreType", "jks");
 		System.setProperty("javax.net.ssl.keyStore", file);
 		System.setProperty("javax.net.ssl.keyStorePassword", password);
-		System.setProperty("javax.net.debug","all");
+		//System.setProperty("javax.net.debug","all");
 	}
 }

@@ -63,6 +63,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 		{
 			readAllCompaniesFromXlsx();
 			readOpenItems();
+			setDefaultOpenItems();
 			readTotalSpend();
 			readAvgDays();
 		}
@@ -221,7 +222,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 					String client = csvReader.get("client");
 					String openAmount = csvReader.get("rest_amt");
 					
-					// TODO: only import this client for now
+					// if client filter passed in, then use it
 					if(clientFilter.length()==0 || client.equalsIgnoreCase(clientFilter))
 					{
 						Company c = allCompanies.getCompanyFromId(id);
@@ -246,6 +247,17 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 		catch(Exception e)
 		{
 			logger.warning(e.getMessage());
+		}
+	}
+	
+	private void setDefaultOpenItems()
+	{
+		for(Company c : allCompanies)
+		{
+			if(c.getOpenBalance()==null)
+			{
+				c.getOpenBalanceCollection().upsert(new DoubleDatedValue(Calendar.getInstance().getTime(), 0.0));
+			}
 		}
 	}
 	

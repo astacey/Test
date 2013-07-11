@@ -111,6 +111,7 @@ public class DnBImportForm extends JFrame {
 	private JLabel lblAccountsFile;
 	private JTextField txtSupplierDataFolder;
 	private JButton btnGetNext;
+	private JScrollPane scrollPaneFormattedResults;
 	
 	/**
 	 * Create the frame.
@@ -455,9 +456,9 @@ public class DnBImportForm extends JFrame {
 		txtFormattedResults = new JTextArea();
 		txtFormattedResults.setLineWrap(true);
 		
-		JScrollPane scrollPane1 = new JScrollPane(txtFormattedResults);
-		scrollPane1.setBounds(0, 0, 880, 250);
-		panel_3.add(scrollPane1);
+		scrollPaneFormattedResults = new JScrollPane(txtFormattedResults);
+		scrollPaneFormattedResults.setBounds(0, 0, 880, 250);
+		panel_3.add(scrollPaneFormattedResults);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setLayout(null);
@@ -516,7 +517,7 @@ public class DnBImportForm extends JFrame {
 				if(!c.hasExperianData())
 					unmappedCompanies.add(c);
 			}
-			
+			unmappedCompanies.sortByOpenBalance();
 		}
 		currentCompanyIndex++;
 		Company c = unmappedCompanies.get(currentCompanyIndex);
@@ -649,6 +650,7 @@ public class DnBImportForm extends JFrame {
 								 + "\n---------------------------------------------------\n";
 					}
 					txtFormattedResults.setText(results);
+					txtFormattedResults.setCaretPosition(0);
 				}
 			}
 			catch(SOAPException soape)

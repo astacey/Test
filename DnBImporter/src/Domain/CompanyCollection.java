@@ -1,6 +1,7 @@
 package Domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CompanyCollection extends ArrayList<Company>
 {
@@ -53,5 +54,10 @@ public class CompanyCollection extends ArrayList<Company>
 		{
 			c.setCommitted();
 		}
+	}
+	
+	public void sortByOpenBalance()
+	{
+		Collections.sort(this);
 	}
 }

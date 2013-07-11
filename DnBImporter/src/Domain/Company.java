@@ -1,6 +1,6 @@
 package Domain;
 
-public class Company 
+public class Company implements Comparable<Company>
 {
 	// id of the company. Expecting this to come from agresso
 	private String id;
@@ -226,5 +226,18 @@ public class Company
 
 	public void setMainAddress(Address mainAddress) {
 		this.mainAddress = mainAddress;
+	}
+	
+	@Override
+	// this is probably temporary, figure out how to do this better later on. I specifically want order by open balance for concordance
+	public int compareTo(Company compareAgainst)
+	{
+		double thisOB = 0.0, compareOB = 0.0;
+		if( this.getOpenBalance()!=null)
+			thisOB = getOpenBalance().getValue();
+		if( compareAgainst.getOpenBalance()!=null)
+			compareOB = compareAgainst.getOpenBalance().getValue();
+		
+		return (int)Math.round(compareOB - thisOB);
 	}
 }
