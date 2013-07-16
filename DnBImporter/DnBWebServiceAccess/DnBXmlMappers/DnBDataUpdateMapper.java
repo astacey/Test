@@ -29,6 +29,8 @@ public class DnBDataUpdateMapper
 		 * D&B Paydex - PAYD_SCR
 		 * D&B Paydex Norm - PAYD_NORM
 		 * Primary SIC = PRIM_SIC
+		 * OUT_BUS_IND = Out of business indicator
+		 * 
 		 */
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		ArrayList<DnBData> updateCollection = new ArrayList<DnBData>();

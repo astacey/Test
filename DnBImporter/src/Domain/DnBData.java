@@ -38,6 +38,24 @@ public class DnBData
 	private DnBRegistration dnbRegistrationDetails;
 	// DnB OutOfBusiness indicator
 	private Boolean outOfBusiness;
+	// MAXIMUM CREDIT RECOMMENDATION 
+	//Maximum amount of credit recommended.  For Europe only.
+	private MoneyDatedValueCollection maximumCreditRecommendationHistory;	
+	// Credit Delinquency Score National Percentile
+	/* The Credit (Delinquency) Score Percentile illustrates where a company falls among businesses in the D&B information base, 
+	 * and is most effectively used by customers to rank order their portfolios from highest to lowest risk of delinquency.  
+	 * The Percentile is based on a 1 – 100 scale, where a 1 represents businesses that have the highest probability of severe 
+	 * delinquency, and a 100 which represents businesses with the lowest probability of severe delinquency.
+	 */
+	private IntegerDatedValueCollection creditDelinquencyNationalPercentileHistory;
+	// CASH AND LIQUID ASSETS
+	// Amount of Cash on hand and in banks and other liquid assets where available.
+	private MoneyDatedValueCollection cashLiquidAssetsHistory;
+	// Default Currency
+	private Currency defaultCurrency;
+	// Maximum Credit Recommendation Currency
+	// Currency Code for credit recommendation amount if different than default
+	private Currency maximumCreditRecommendationCurrency;
 	
 	public DnBData() { this(0);	}
 	
@@ -50,6 +68,9 @@ public class DnBData
 		this.paydexScoreHistory = new IntegerDatedValueCollection();
 		this.paydexNormHistory = new IntegerDatedValueCollection();
 		this.dnbRegistrationDetails = new DnBRegistration(dunsNumber);
+		this.maximumCreditRecommendationHistory = new MoneyDatedValueCollection();
+		this.creditDelinquencyNationalPercentileHistory = new IntegerDatedValueCollection();
+		this.cashLiquidAssetsHistory = new MoneyDatedValueCollection();
 		this.outOfBusiness = false;
 	}
 	
@@ -68,6 +89,12 @@ public class DnBData
 			thisData += "\nD&B PAYDEX : " + String.valueOf(paydexScoreHistory.getCurrent().getValue());
 		if( paydexNormHistory.size()>0)
 			thisData += "\nD&B PAYDEX Norm: " + String.valueOf(paydexNormHistory.getCurrent().getValue());
+		if( maximumCreditRecommendationHistory.size()>0)
+			thisData += "\nMaximum Credit Recommendation: " + String.valueOf(maximumCreditRecommendationHistory.getCurrent().getValue().getValue()) + " " + maximumCreditRecommendationHistory.getCurrent().getValue().getCurrency().getDescription();
+		if( cashLiquidAssetsHistory.size()>0)
+			thisData += "\nCash and Liquid Assets: " + String.valueOf(cashLiquidAssetsHistory.getCurrent().getValue().getValue()) + " " + cashLiquidAssetsHistory.getCurrent().getValue().getCurrency().getDescription();
+		if( creditDelinquencyNationalPercentileHistory.size()>0)
+			thisData += "\nCredit Delinquency National Percentile: " + String.valueOf(creditDelinquencyNationalPercentileHistory.getCurrent().getValue());
 		thisData += "\nPrimary SIC Code : " + primarySicCode;
 		
 		return thisData;
@@ -146,5 +173,35 @@ public class DnBData
 		this.paydexNormHistory.setCommitted();
 		this.paydexScoreHistory.setCommitted();
 		this.dbRatingHistory.setCommitted();
+		this.maximumCreditRecommendationHistory.setCommitted();
+	}
+
+	public MoneyDatedValueCollection getMaximumCreditRecommendation() {
+		return maximumCreditRecommendationHistory;
+	}
+
+	public IntegerDatedValueCollection getCreditDelinquencyNationalPercentileHistory() {
+		return creditDelinquencyNationalPercentileHistory;
+	}
+
+	public MoneyDatedValueCollection getCashLiquidAssetsHistory() {
+		return cashLiquidAssetsHistory;
+	}
+
+	public Currency getDefaultCurrency() {
+		return defaultCurrency;
+	}
+
+	public void setDefaultCurrency(Currency defaultCurrency) {
+		this.defaultCurrency = defaultCurrency;
+	}
+
+	public Currency getMaximumCreditRecommendationCurrency() {
+		return maximumCreditRecommendationCurrency;
+	}
+
+	public void setMaximumCreditRecommendationCurrency(
+			Currency maximumCreditRecommendationCurrency) {
+		this.maximumCreditRecommendationCurrency = maximumCreditRecommendationCurrency;
 	}
 }

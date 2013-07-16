@@ -32,7 +32,7 @@ public class TestABWXlsxCompanyRepository {
 		assertEquals("company 2 account name is", "External customers", allCompanies.get(1).getAccountGroup().getName());
 		
 		assertEquals(30150, allCompanies.get(0).getOpenBalance().getValue(), 0.1);
-		assertEquals("Company 2 has no open balance", null, allCompanies.get(1).getOpenBalance());
+		assertTrue("Company 2 has no open balance", 0.0== allCompanies.get(1).getOpenBalance().getValue());
 		
 		assertEquals(81707.72, allCompanies.get(0).getTotalSpendCollection().get(0).getValue(), 0.1);
 		assertEquals(-21442.8, allCompanies.get(0).getTotalSpendCollection().get(1).getValue(), 0.1);

@@ -25,7 +25,7 @@ public class TestImporterArgs {
 		
 		assertTrue("delimiter is ;", ';'==impArgs.getDelimiter());
 		
-		impArgs = new ImporterArgs(new String[] { "-x" });
+		impArgs = new ImporterArgs(new String[] { "-xDnB" });
 		assertTrue("IsUpdate is true", impArgs.getIsDnBUpdate());
 	}
 

@@ -6,6 +6,7 @@ import Domain.AccountGroup;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
+import Domain.Currency;
 import Domain.DnBData;
 import Domain.ExperianData;
 import Domain.ExperianLegalStatus;
@@ -16,7 +17,7 @@ import com.csvreader.CsvWriter;
 
 public class SupplierAppCSVAccounts extends SupplierAppCSVFile 
 {
-	private final String[] accountsFileHeaders = new String[] { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS", "ACCOUNT_GROUP_CODE","ACCOUNT_GROUP_NAME","VERTICAL_MARKET", "EXPERIAN_NO", "EXPERIAN_LEGAL_STATUS", "EXPERIAN_REGISTRATION_STATUS" };
+	private final String[] accountsFileHeaders = new String[] { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS", "ACCOUNT_GROUP_CODE","ACCOUNT_GROUP_NAME","VERTICAL_MARKET", "EXPERIAN_NO", "EXPERIAN_LEGAL_STATUS", "EXPERIAN_REGISTRATION_STATUS", "DNB_DEFAULT_CURRENCY_CODE","DNB_CREDIT_RECOMMENDATION_CURRENCY_CODE" };
 	private final String allMemberId = "1";
 
 	@Override
@@ -34,7 +35,9 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 				String status = csvReader.get("STATUS");
 				String verticalMarket = csvReader.get("VERTICAL_MARKET");
 				String groupCode = csvReader.get("ACCOUNT_GROUP_CODE");
-				String groupName = csvReader.get("ACCOUNT_GROUP_NAME");
+				String groupName = csvReader.get("ACCOUNT_GROUP_NAME"); 
+				String currencyCode = csvReader.get("DNB_DEFAULT_CURRENCY_CODE");
+				String maxCreditCurrencyCode = csvReader.get("DNB_CREDIT_RECOMMENDATION_CURRENCY_CODE");
 				
 				// Ignore the artificial companies, all, supplier, partners, customers
 				if( ! ( (id.equals("1")&&name.equals("All") ) || ( id.equals("A") && name.equals("Suppliers") ) || ( id.equals("B") && name.equals("Partners") ) || ( id.equals("C") && name.equals("Customers" ) ) ) )
@@ -54,7 +57,8 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 						data.setOutOfBusiness(getOutOfBusiness(status));
 						String dnbStatus = csvReader.get("DnB_STATUS");
 						data.getRegistrationDetails().setStatus(RegistrationStatus.fromString(dnbStatus));
-						
+						data.setDefaultCurrency(Currency.getCurrencyFromCode(currencyCode));
+						data.setMaximumCreditRecommendationCurrency(Currency.getCurrencyFromCode(maxCreditCurrencyCode));
 						c.setDunnBradstreetData(data);
 					}
 					
@@ -89,13 +93,18 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 				accGroupCode = c.getAccountGroup().getCode();
 			}
 			
-			String duns="", outOfBusiness="Active", dnbStatus="", experianNo="", experianLegalStatus="", experianRegStatus="";  
+			String duns="", outOfBusiness="Active", dnbStatus="", experianNo="", experianLegalStatus="", experianRegStatus="", currency="", maxCreditCurrency="";  
 			
 			if(c.hasDunnBradstreetData())
 			{
 				duns = String.valueOf(c.getDunnBradstreetData().getDunsNumber());
 				outOfBusiness = getOutOfBusinessString(c.getDunnBradstreetData().getOutOfBusiness());
 				dnbStatus = c.getDunnBradstreetData().getRegistrationDetails().getStatus().getDescription();
+				if(c.getDunnBradstreetData().getDefaultCurrency()!=null)
+					currency = c.getDunnBradstreetData().getDefaultCurrency().getCode();
+				if(c.getDunnBradstreetData().getMaximumCreditRecommendationCurrency()!=null)
+					maxCreditCurrency = c.getDunnBradstreetData().getMaximumCreditRecommendationCurrency().getCode();
+				
 			}
 			if(c.hasExperianData())
 			{
@@ -103,7 +112,7 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 				experianLegalStatus = c.getExperianData().getLegalStatus().getDescription();
 				experianRegStatus = c.getExperianData().getRegistrationStatus().getDescription();
 			}
-			csvWriter.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), duns, outOfBusiness, dnbStatus, accGroupCode, accGroupName, c.getVerticalMarket(), experianNo, experianLegalStatus, experianRegStatus});
+			csvWriter.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), duns, outOfBusiness, dnbStatus, accGroupCode, accGroupName, c.getVerticalMarket(), experianNo, experianLegalStatus, experianRegStatus, currency, maxCreditCurrency});
 			
 			csvWriter.flush();
 		}
@@ -112,12 +121,12 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 	private void initialiseAccounts(CsvWriter csvWriter) throws IOException
 	{
 		csvWriter.writeRecord(accountsFileHeaders);
-		csvWriter.writeRecord(new String[] { allMemberId, "All",allMemberId,"","","","","","","","","",""  });
+		csvWriter.writeRecord(new String[] { allMemberId, "All",allMemberId,"","","","","","","","","","","",""  });
 		for(CompanyType ct : CompanyType.values())
 		{
 			if( ct!=CompanyType.UNKNOWN )
 			{
-				csvWriter.writeRecord(new String[] { ct.getId(), ct.getDescription(), allMemberId, "", "", "", "", "","","","","","" });
+				csvWriter.writeRecord(new String[] { ct.getId(), ct.getDescription(), allMemberId, "", "", "", "", "","","","","","","","" });
 			}
 		}
 		csvWriter.flush();

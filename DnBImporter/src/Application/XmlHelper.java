@@ -74,6 +74,12 @@ public class XmlHelper
 		return formatter.parse(str);
 	}
 	
+	public static Date getDateFromXmlString(String str, String format) throws ParseException
+	{
+		SimpleDateFormat formatter = new SimpleDateFormat(format);
+		return formatter.parse(str);
+	}
+	
 	public static String getStringFromXmlString(String str)
 	{
 		return unEncodeAmpersand(str);

@@ -14,6 +14,9 @@ import Domain.DoubleDatedValue;
 import Domain.DoubleDatedValueCollection;
 import Domain.IntegerDatedValue;
 import Domain.IntegerDatedValueCollection;
+import Domain.Money;
+import Domain.MoneyDatedValue;
+import Domain.MoneyDatedValueCollection;
 
 public class SupplierAppCSVFactDataFull extends SupplierAppCSVFile
 {
@@ -61,6 +64,15 @@ public class SupplierAppCSVFactDataFull extends SupplierAppCSVFile
 						else if(dataset.equalsIgnoreCase(DATASET_PAYDEX_NORM_CODE)
 								&& checkDBDataExists(c, csvFactsReader.getRawRecord())==true)
 							c.getDunnBradstreetData().getPaydexNormHistory().upsert(new IntegerDatedValue(date, Integer.valueOf(val)));
+						else if(dataset.equalsIgnoreCase(DATASET_CREDIT_DELINQUENCY_SCORE_PERCENTILE_CODE)
+								&& checkDBDataExists(c, csvFactsReader.getRawRecord())==true)
+							c.getDunnBradstreetData().getCreditDelinquencyNationalPercentileHistory().upsert(new IntegerDatedValue(date, Integer.valueOf(val)));
+						else if(dataset.equalsIgnoreCase(DATASET_CASH_AND_LIQUID_ASSETS_CODE)
+								&& checkDBDataExists(c, csvFactsReader.getRawRecord())==true)
+							c.getDunnBradstreetData().getCashLiquidAssetsHistory().upsert(new MoneyDatedValue(date, new Money(c.getDunnBradstreetData().getDefaultCurrency(), Double.valueOf(val))));
+						else if(dataset.equalsIgnoreCase(DATASET_MAX_CREDIT_RECOMMENDATION_CODE)
+								&& checkDBDataExists(c, csvFactsReader.getRawRecord())==true)
+							c.getDunnBradstreetData().getMaximumCreditRecommendation().upsert(new MoneyDatedValue(date, new Money(c.getDunnBradstreetData().getMaximumCreditRecommendationCurrency(), Double.valueOf(val))));
 						else if(dataset.equalsIgnoreCase(DATASET_EXPERIAN_DELPHI)
 								&& checkExperianDataExists(c, csvFactsReader.getRawRecord())==true)
 							c.getExperianData().getDelphiScores().upsert(new IntegerDatedValue(date, Integer.valueOf(val)));
@@ -122,6 +134,12 @@ public class SupplierAppCSVFactDataFull extends SupplierAppCSVFile
 					writeFactIntegerCollection(csvWriter, c.getDunnBradstreetData().getPaydexScoreHistory(), c.getId(), DATASET_PAYDEX_CODE, isIncremental);
 					// Payex Norm
 					writeFactIntegerCollection(csvWriter, c.getDunnBradstreetData().getPaydexNormHistory(), c.getId(), DATASET_PAYDEX_NORM_CODE, isIncremental);
+					// Credit Delinquency Score Percentile
+					writeFactIntegerCollection(csvWriter, c.getDunnBradstreetData().getCreditDelinquencyNationalPercentileHistory(), c.getId(), DATASET_CREDIT_DELINQUENCY_SCORE_PERCENTILE_CODE, isIncremental);
+					// Max Credit Recommendation
+					writeFactMoneyCollection(csvWriter, c.getDunnBradstreetData().getMaximumCreditRecommendation(), c.getId(), DATASET_MAX_CREDIT_RECOMMENDATION_CODE, isIncremental);
+					// Cash and Liquid Assets
+					writeFactMoneyCollection(csvWriter, c.getDunnBradstreetData().getCashLiquidAssetsHistory(), c.getId(), DATASET_CASH_AND_LIQUID_ASSETS_CODE, isIncremental);
 				}
 				// Experian Data
 				if( c.hasExperianData())
@@ -166,6 +184,20 @@ public class SupplierAppCSVFactDataFull extends SupplierAppCSVFile
 			if(isIncremental==false || dv.getIsCommitted()==false)
 			{
 				csvWriter.writeRecord(new String[] { String.valueOf(dv.getValue()), getFormattedStringForDate(dv.getDate()), companyId, datasetId });
+				csvWriter.flush();
+				dv.setCommitted();
+			}
+		}
+	}
+	
+	private void writeFactMoneyCollection(CsvWriter csvWriter, MoneyDatedValueCollection values,  String companyId, String datasetId, Boolean isIncremental) throws IOException
+	{
+		// currently not writing the currency into the facts, it's stored next to the company dimension details
+		for(MoneyDatedValue dv : values)
+		{
+			if(isIncremental==false || dv.getIsCommitted()==false)
+			{
+				csvWriter.writeRecord(new String[] { String.valueOf(dv.getValue().getValue()), getFormattedStringForDate(dv.getDate()), companyId, datasetId });
 				csvWriter.flush();
 				dv.setCommitted();
 			}

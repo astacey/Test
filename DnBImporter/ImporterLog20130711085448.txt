@@ -1,0 +1,16 @@
+11-Jul-2013 08:54:48 Application.EntryPoint main
+INFO: Starting runCommand
+11-Jul-2013 08:54:48 Application.EntryPoint runCommandLine
+INFO: Starting ABW Update
+11-Jul-2013 08:54:48 Application.ABWXlsxCompanyRepository readOpenItems
+WARNING: For input string: "Open Balance"
+11-Jul-2013 08:54:49 Application.ABWXlsxCompanyRepository readAvgDays
+WARNING: For input string: "Avg Days to Payment"
+11-Jul-2013 08:54:50 Application.SupplierAppCSVCompanyRepository archiveFiles
+INFO: Archive folder [/home/astacey/SupplierData/Archive20130711085448/] created.
+11-Jul-2013 08:54:50 Application.ABWUpdateHandler getUpdates
+INFO: Companies read from ABW = 3076, companies updated = 2543, companies added = 533
+11-Jul-2013 08:54:50 Application.EntryPoint runCommandLine
+INFO: Finihed ABW Update
+11-Jul-2013 08:54:50 Application.EntryPoint main
+INFO: Finished runCommand

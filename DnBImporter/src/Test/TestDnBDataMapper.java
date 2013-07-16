@@ -2,9 +2,13 @@ package Test;
 
 import static org.junit.Assert.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.junit.Test;
 
 import DnBXmlMappers.DnBDataMapper;
+import Domain.Currency;
 import Domain.DnBData;
 
 public class TestDnBDataMapper {
@@ -27,5 +31,21 @@ public class TestDnBDataMapper {
 		assertTrue("Check PAYDEX Norm", 75 == data.getPaydexNormHistory().getCurrent().getValue());
 		assertEquals("Check SIC Code", 7379, data.getPrimarySicCode());
 		assertEquals("Check Out of Business Indicator", true, data.getOutOfBusiness());
+		assertTrue("Check cash and liquid assets", 373000.0 - data.getCashLiquidAssetsHistory().getCurrent().getValue().getValue() < 0.00001);
+		assertTrue("Check cash and liquid assets currency", Currency.GBP == data.getCashLiquidAssetsHistory().getCurrent().getValue().getCurrency());
+		assertTrue("Check max credit recommendation", 1867000.0 - data.getMaximumCreditRecommendation().getCurrent().getValue().getValue() < 0.00001);
+		assertTrue("Check max credit recommendation currency", Currency.GBP == data.getMaximumCreditRecommendation().getCurrent().getValue().getCurrency());
+
+		assertTrue("Check Credit delinquency percentile", 22 == data.getCreditDelinquencyNationalPercentileHistory().getCurrent().getValue());
+		assertTrue("Check Credit delinquency percentile Date", "2013-04-27 00:00:00".equals(getDateString(data.getCreditDelinquencyNationalPercentileHistory().getCurrent().getDate())));
+		
+		assertEquals("Check default currency", Currency.GBP, data.getDefaultCurrency());
+		assertEquals("Check max credit currency", Currency.GBP, data.getMaximumCreditRecommendationCurrency());
+	}
+	
+	private String getDateString(Date date)
+	{
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return formatter.format(date);
 	}
 }

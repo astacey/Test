@@ -19,6 +19,9 @@ public abstract class SupplierAppCSVFile
 	public final static String DATASET_PAYDEX_NORM_CODE = "PN";
 	public final static String DATASET_FAILURE_RISK_CODE = "FR";
 	public final static String DATASET_FAILURE_RISK_PERCENTILE_CODE = "FRP";
+	public final static String DATASET_CREDIT_DELINQUENCY_SCORE_PERCENTILE_CODE = "CDSP";
+	public final static String DATASET_MAX_CREDIT_RECOMMENDATION_CODE = "MCR";
+	public final static String DATASET_CASH_AND_LIQUID_ASSETS_CODE = "CLA";
 	public final static String DATASET_AVERAGE_DAYS_TO_PAYMENT_CODE = "ADTP";
 	public final static String DATASET_OPEN_BALANCE_CODE = "OB";
 	public final static String DATASET_TOTAL_SPEND_CODE = "S";
