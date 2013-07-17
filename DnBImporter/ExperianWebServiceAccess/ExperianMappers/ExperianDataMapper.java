@@ -104,7 +104,9 @@ public class ExperianDataMapper
 			// DBT
 			for( DebitMonthly monthlyData : nonLtdCompanyData.getPaymentPerformance().getPaymentFull().getDBTMonthly())
 			{
-				int days = monthlyData.getDBT();
+				int days = 0;
+				if(monthlyData.getDBT()!=null)
+					days = monthlyData.getDBT();
 				Date date = getCCYYMMDate(monthlyData.getExpMonth());
 				experianData.getDaysBeyondTerms().add(new IntegerDatedValue(date, days));
 			}

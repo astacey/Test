@@ -57,7 +57,9 @@ public class XmlHelper
 	
 	public static int getIntegerFromXmlString(String str)
 	{
-		if(str.length()==0)
+		if(str==null)
+			return 0; // Not sure about this ??
+ 		if(str.length()==0)
 			return 0;
 		return Integer.valueOf(str);
 	}
