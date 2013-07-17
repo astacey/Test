@@ -65,7 +65,7 @@ public class TestSupplierAppCSVFactDataFull
 	public void testWriteRecords() 
 	{
 		String fullFactInput = "VALUE;TIME;ACCOUNTS (GEN_ID);DATASET (GEN_ID)\r\n";
-		String fullFactOutput = "VALUE;TIME;ACCOUNTS (GEN_ID);DATASET (GEN_ID)\r\n5.0;2013-01-01;1;ADTP\r\n8.0;2013-03-01;1;ADTP\r\n1005.0;2013-04-01;1;OB\r\n500.0;2013-05-01;1;OB\r\n1000.0;2013-01-01;1;S\r\n1;2013-01-01;1;Risk\r\n99;2013-01-01;1;FR\r\n50;2013-01-01;1;FRP\r\n200;2013-01-01;1;P\r\n75;2013-01-01;1;PN\r\n77;2013-07-16;1;CDSP\r\n77.77;2013-07-16;1;MCR\r\n0.1;2013-07-16;1;CLA\r\n100;2013-06-01;Experian;DELPHI\r\n200;2013-06-01;Experian;DELPHI-IND\r\n300;2013-06-01;Experian;DBT\r\n400;2013-06-01;Experian;DBT-IND\r\n";
+		String fullFactOutput = "VALUE;TIME;ACCOUNTS (GEN_ID);DATASET (GEN_ID)\r\n5;2013-01-01;1;ADTP\r\n8;2013-03-01;1;ADTP\r\n1005;2013-04-01;1;OB\r\n500;2013-05-01;1;OB\r\n1000;2013-01-01;1;S\r\n1;2013-01-01;1;Risk\r\n99;2013-01-01;1;FR\r\n50;2013-01-01;1;FRP\r\n200;2013-01-01;1;P\r\n75;2013-01-01;1;PN\r\n77;2013-07-16;1;CDSP\r\n77.77;2013-07-16;1;MCR\r\n10000000.01;2013-07-16;1;CLA\r\n100;2013-06-01;Experian;DELPHI\r\n200;2013-06-01;Experian;DELPHI-IND\r\n300;2013-06-01;Experian;DBT\r\n400;2013-06-01;Experian;DBT-IND\r\n";
 		FileHelper.writeFile(factFileFull, fullFactInput);
 		
 		SupplierAppCSVFactDataFull csv = new SupplierAppCSVFactDataFull();
@@ -110,7 +110,8 @@ public class TestSupplierAppCSVFactDataFull
 		companies.getCompanyFromId("1").getDunnBradstreetData().getPaydexNormHistory().add(new IntegerDatedValue(getDate(2013,1,1), 75));
 		companies.getCompanyFromId("1").getDunnBradstreetData().getCreditDelinquencyNationalPercentileHistory().add(new IntegerDatedValue(getDate(2013,7,16), 77));
 		companies.getCompanyFromId("1").getDunnBradstreetData().getMaximumCreditRecommendation().add(new MoneyDatedValue(getDate(2013,7,16), new Money(Currency.GBP, 77.77)));
-		companies.getCompanyFromId("1").getDunnBradstreetData().getCashLiquidAssetsHistory().add(new MoneyDatedValue(getDate(2013,7,16), new Money(Currency.GBP, 0.1)));
+		// Keep CLA large to test for scientific notation ( by default it writes as 1.000000001E7, we want 10000000.01
+		companies.getCompanyFromId("1").getDunnBradstreetData().getCashLiquidAssetsHistory().add(new MoneyDatedValue(getDate(2013,7,16), new Money(Currency.GBP, 10000000.01)));
 		
 		companies.getCompanyFromId("Experian").getExperianData().getDelphiScores().upsert(new IntegerDatedValue(getDate(2013,6,1), 100));
 		companies.getCompanyFromId("Experian").getExperianData().getDelphiScoresIndustryAverage().upsert(new IntegerDatedValue(getDate(2013,6,1), 200));

@@ -52,7 +52,7 @@ public class TestSupplierAppCSVCompanyRepository
 	@Test
 	public void testSaveCompany() 
 	{
-		String expectedFactOutput = "VALUE;TIME;ACCOUNTS (GEN_ID);DATASET (GEN_ID)\r\n1005.0;2013-04-01;1;OB\r\n1;2013-01-01;1;Risk\r\n99;2013-01-01;1;FR\r\n50;2013-01-01;1;FRP\r\n200;2013-01-01;1;P\r\n75;2013-01-01;1;PN\r\n";
+		String expectedFactOutput = "VALUE;TIME;ACCOUNTS (GEN_ID);DATASET (GEN_ID)\r\n1005;2013-04-01;1;OB\r\n1;2013-01-01;1;Risk\r\n99;2013-01-01;1;FR\r\n50;2013-01-01;1;FRP\r\n200;2013-01-01;1;P\r\n75;2013-01-01;1;PN\r\n";
 		FileHelper.writeFile(folderLocation + "accounts.csv", expectedAccountInput);
 		
 		Company c = new Company("1", "Test & Company", CompanyType.CUSTOMER);

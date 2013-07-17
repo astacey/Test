@@ -48,4 +48,13 @@ public class TestXmlHelper {
 		assertEquals("Check emptystring is 0", 0, XmlHelper.getIntegerFromXmlString(""));
 
 	}
+	
+	@Test
+	public void testGetDoubleAsString()
+	{
+		assertEquals("Check 100,000,000.33 returns correctly ", "100000000.33", XmlHelper.getDoubleAsString(100000000.33));
+		assertEquals("Check 100,000,000.333 returns correctly ", "100000000.33", XmlHelper.getDoubleAsString(100000000.333));	
+		assertEquals("Check 100,000,000.336 returns correctly ", "100000000.34", XmlHelper.getDoubleAsString(100000000.336));	
+		assertEquals("Check 100,000,000,000 returns correctly ", "100000000000", XmlHelper.getDoubleAsString(100000000000.0));
+	}
 }

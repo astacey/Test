@@ -183,7 +183,7 @@ public class SupplierAppCSVFactDataFull extends SupplierAppCSVFile
 		{
 			if(isIncremental==false || dv.getIsCommitted()==false)
 			{
-				csvWriter.writeRecord(new String[] { String.valueOf(dv.getValue()), getFormattedStringForDate(dv.getDate()), companyId, datasetId });
+				csvWriter.writeRecord(new String[] { XmlHelper.getDoubleAsString(dv.getValue()), getFormattedStringForDate(dv.getDate()), companyId, datasetId });
 				csvWriter.flush();
 				dv.setCommitted();
 			}
@@ -197,7 +197,7 @@ public class SupplierAppCSVFactDataFull extends SupplierAppCSVFile
 		{
 			if(isIncremental==false || dv.getIsCommitted()==false)
 			{
-				csvWriter.writeRecord(new String[] { String.valueOf(dv.getValue().getValue()), getFormattedStringForDate(dv.getDate()), companyId, datasetId });
+				csvWriter.writeRecord(new String[] { XmlHelper.getDoubleAsString(dv.getValue().getValue()), getFormattedStringForDate(dv.getDate()), companyId, datasetId });
 				csvWriter.flush();
 				dv.setCommitted();
 			}

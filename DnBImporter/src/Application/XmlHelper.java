@@ -1,6 +1,7 @@
 package Application;
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -112,5 +113,11 @@ public class XmlHelper
 	private static String unEncodeAmpersand(String str)
 	{
 		return str.replace("&amp;", "&");
+	}
+	
+	public static String getDoubleAsString(double value)
+	{
+		DecimalFormat formatter = new DecimalFormat("#.##");
+		return formatter.format(value);
 	}
 }
