@@ -26,6 +26,7 @@ public class EntryPoint
 		}
 		try 
 		{
+			System.setProperty("javax.net.debug","all");
 			ImporterArgs impArgs = new ImporterArgs(args);
 			if(impArgs.getIsShowForm())
 			{

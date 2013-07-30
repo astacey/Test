@@ -1,0 +1,35 @@
+Usage: 
+DnbImporter -gui [-guifolder folder] [-u userName] [-pwd password] [-jksfile filepath] [-jkspass password]
+
+	-gui		Displays the user interface to make calls manually
+	-guifolder	Populates the "Supplier Data" input box on the Account Details tab
+	-u		Populates the D&B "User Name" input box on the Account Details tab
+	-pwd		Populates the D&B "Password" input box on the Account Details tab
+	-jksfile	Populates the Experian "JKS File" input box on the Account Details tab
+	-jkspass	Populates the Experian "Password" input box on the Account Details tab
+
+Or
+
+DnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mappingtype [-delimiter delimiter]] [-rdnb] [-xdnb] [-rexperian] [-xexperian] [-xabw folder [-f clientfilter]]
+
+	-bm		Perform a bulk mapping import from a csv file
+	-masterid	Column header of the master id column in the csv file
+	-mappingid	Column header of the mapping id in the csv file ( the -mappingtype option specifies exactly what this id represents )
+	-mappingtype	Specifies the mapping type of the mapping id column. 
+			Current options are:
+			"dnb" for Dunn and Bradstreet DUNS numbers
+			"experian" for Experian reference numbers
+	-delimiter	The delimiter used in the csv file
+	
+	-rdnb		Update the D&B notification registrations
+	-xdnb		Get D&B data updates for registered companies
+	-u		Populates the D&B "User Name" input box on the Account Details tab
+	-pwd		Populates the D&B "Password" input box on the Account Details tab
+
+	-rexperian	Update the Experian alert registrations
+	-xxperian	Get D&B data updates for registered companies
+	-jksfile	Populates the Experian "JKS File" input box on the Account Details tab
+	-jkspass	Populates the Experian "Password" input box on the Account Details tab
+
+	-xabw		Import data from abw based csv files. Must specify the folder location as a parameter.
+	-f		Filter the import based on Client. If specified, will only import the companies that match the specified client value.
