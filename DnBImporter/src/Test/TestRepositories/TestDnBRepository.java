@@ -46,6 +46,7 @@ public class TestDnBRepository implements IDnBRepository
 		DnBData data = new DnBData(100);
 		data.setName("Unit 4 - Test Class");
 		data.getPaydexScoreHistory().add(new IntegerDatedValue(new Date(), 77));
+		data.setOutOfBusiness(true);
 		ArrayList<DnBData> updates = new ArrayList<DnBData>();
 		updates.add(data);
 		return updates;

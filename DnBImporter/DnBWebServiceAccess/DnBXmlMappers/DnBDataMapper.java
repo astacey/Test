@@ -81,18 +81,15 @@ public class DnBDataMapper
 						getCreditDelinquencyScore(data, children.item(j));
 				}
 
-				if(maxCreditCurrency==null&&defaultCurrency!=null)
-					maxCreditCurrency = defaultCurrency;
-				
 				if(maxCreditCurrency!=null)
 					data.setMaximumCreditRecommendationCurrency(maxCreditCurrency);
 				
 				if(defaultCurrency!=null)
 					data.setDefaultCurrency(defaultCurrency);
 				
-				if(maxCreditCurrency!=null && maxCredit > -1)
-					data.getMaximumCreditRecommendation().upsert(new MoneyDatedValue(new Date(), new Money(maxCreditCurrency, maxCredit)));
-				
+				if(data.getMaximumCreditRecommendationCurrency()!=null && maxCredit > -1)
+					data.getMaximumCreditRecommendation().upsert(new MoneyDatedValue(new Date(), new Money(data.getMaximumCreditRecommendationCurrency(), maxCredit)));
+
 				if(defaultCurrency!=null && cashLiquidAssets > -1)
 					data.getCashLiquidAssetsHistory().upsert(new MoneyDatedValue(new Date(), new Money(defaultCurrency, cashLiquidAssets)));
 				

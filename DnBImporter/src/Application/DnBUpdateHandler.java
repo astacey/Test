@@ -152,6 +152,8 @@ public class DnBUpdateHandler
 			companyToUpdate.getDunnBradstreetData().getFailureRiskPercentileHistory().upsert(data.getFailureRiskPercentileHistory());
 			companyToUpdate.getDunnBradstreetData().getPaydexScoreHistory().upsert(data.getPaydexScoreHistory());
 			companyToUpdate.getDunnBradstreetData().getPaydexNormHistory().upsert(data.getPaydexNormHistory());
+			
+			companyToUpdate.getDunnBradstreetData().setOutOfBusiness(data.getOutOfBusiness());
 		}
 		else
 		{

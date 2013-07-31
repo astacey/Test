@@ -52,10 +52,19 @@ public class DnBDataUpdateMapper
 					{
 						data.setName(children.item(j).getTextContent());
 					}
+					// 2 kinds of changes
+					// ones read from incremental part of xml ( NTFCRS )
+					// ones read from full snapshot of company xml ( MON_PROD_RS )
+					// basically, facts are coming from increments
+					// attributes are coming from full snapshot, this helps with nulling out values
+					// Also, avoids resetting values back to default by mistake - e.g. is OutOfBusiness. DnBData sets this to false by default. This means that if no update to this field, then we'd be constantly resetting to false. There's other solutions to this, but reading full snapshot of data is easiest at the time.
 					else if(children.item(j).getNodeName()=="NTFCRS")
 					{
-						// The changes are in here, this is going to get very loopy !!!
-						updateChanges(data, children.item(j));
+						updateChangesIncremental(data, children.item(j));						
+					}
+					else if(children.item(j).getNodeName()=="MON_PROD_RS")
+					{
+						updateChangesFull(data, children.item(j));						
 					}
 				
 				}
@@ -80,7 +89,7 @@ public class DnBDataUpdateMapper
 		return XmlHelper.getStringFromXPath(xml, "//GLBLMNSVCMSGSRSV1/GETNTFCTRNRS/RSLT_TKT");
 	}
 	
-	private void updateChanges(DnBData data, Node changes) throws ParseException
+	private void updateChangesIncremental(DnBData data, Node changes) throws ParseException
 	{
 		// changes = <NTFCRS>
 		for(int i=0;i<changes.getChildNodes().getLength();i++)
@@ -107,12 +116,8 @@ public class DnBDataUpdateMapper
 					paydex = XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent());
 				else if(children.item(j).getNodeName()=="PAYD_NORM")
 					paydexNorm = XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent());
-				else if(children.item(j).getNodeName()=="PRIM_SIC")
-					data.setPrimarySicCode(XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent()));
 				else if(children.item(j).getNodeName()=="SRC_DT")
 					changeDate = XmlHelper.getDateFromXmlString(children.item(j).getTextContent());
-				else if(children.item(j).getNodeName()=="OUT_BUS_IND" && children.item(j).getTextContent().equalsIgnoreCase("y"))
-					data.setOutOfBusiness(true);
 			}
 
 			if(failureRisk>-1)
@@ -123,6 +128,24 @@ public class DnBDataUpdateMapper
 				data.getPaydexScoreHistory().upsert(new IntegerDatedValue(changeDate, paydex));
 			if(paydexNorm>-1)
 				data.getPaydexScoreHistory().upsert(new IntegerDatedValue(changeDate, paydexNorm));
+		}
+	}
+	
+	private void updateChangesFull(DnBData data, Node changes) throws ParseException
+	{
+		// changes = <MON_PROD_RS>
+		for(int i=0;i<changes.getChildNodes().getLength();i++) // this should be length 1, should I check ?
+		{
+			Node changeNode = changes.getChildNodes().item(i); // this is <ArrayOfMON_PROD_RSItem>, if anyone's interested
+			NodeList children =  changeNode.getChildNodes(); 
+			
+			for(int j=0;j<children.getLength();j++)
+			{	
+				if(children.item(j).getNodeName()=="PRIM_SIC")
+					data.setPrimarySicCode(XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent()));
+				else if(children.item(j).getNodeName()=="OUT_BUS_IND" && children.item(j).getTextContent().equalsIgnoreCase("y"))
+					data.setOutOfBusiness(true);
+			}
 		}
 	}
 }

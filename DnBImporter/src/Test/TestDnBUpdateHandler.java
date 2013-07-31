@@ -13,6 +13,10 @@ import Test.TestRepositories.TestDnBRepository;
 import Test.TestRepositories.TestImporterSettingsRepository;
 
 import Application.DnBUpdateHandler;
+import Domain.Company;
+import Domain.CompanyCollection;
+import Domain.CompanyType;
+import Domain.DnBData;
 
 public class TestDnBUpdateHandler {
 
@@ -56,4 +60,34 @@ public class TestDnBUpdateHandler {
 		
 	}
 
+	@Test
+	public void testGetUpdatesOutOfBusinessFlag() 
+	{
+		TestCompanyRepository companyRepo = new TestCompanyRepository();
+		TestDnBRepository dnbRepo = new TestDnBRepository();
+		TestImporterSettingsRepository settingsRepo = new TestImporterSettingsRepository();
+		// Set date to be 
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_MONTH, -2);
+		cal.add(Calendar.MINUTE, -2);
+		settingsRepo.setLastRunDate(cal.getTime());
+		
+		// set up 1 companyh with out of business set to false
+		CompanyCollection companies = new CompanyCollection();
+		Company c = new Company("1", "Test", CompanyType.CUSTOMER);
+		c.setDunnBradstreetData(new DnBData(100));
+		c.getDunnBradstreetData().setOutOfBusiness(false);
+		companies.add(c);
+		companyRepo.setTestCompanies(companies);
+
+		// check this is empty
+		assertEquals("Number of companies saved is 0", 0, companyRepo.getCompaniesSaved().size());
+		
+		DnBUpdateHandler handler = new DnBUpdateHandler(companyRepo, dnbRepo, settingsRepo.getSettings());
+		handler.getUpdates();
+		// 
+		assertTrue("Paydex of saved company should be 77", 77==companyRepo.getAllCompanies().get(0).getDunnBradstreetData().getPaydexScoreHistory().getCurrent().getValue());
+		assertTrue("OutOfBusiness indicator of company should be true", companyRepo.getAllCompanies().get(0).getDunnBradstreetData().getOutOfBusiness());
+		
+	}
 }

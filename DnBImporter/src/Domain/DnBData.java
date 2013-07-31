@@ -197,7 +197,9 @@ public class DnBData
 	}
 
 	public Currency getMaximumCreditRecommendationCurrency() {
-		return maximumCreditRecommendationCurrency;
+		if(maximumCreditRecommendationCurrency!=null)
+			return maximumCreditRecommendationCurrency;
+		return defaultCurrency;
 	}
 
 	public void setMaximumCreditRecommendationCurrency(
