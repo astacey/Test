@@ -6,7 +6,7 @@ public class FileImporterSettingsRepository implements
 	private final String fileName = "ImporterSettings.txt";
 	
 	@Override
-	public ImporterSettings getSettings() 
+	public ImporterSettings getSettings() throws Exception
 	{
 		String settingsXml = FileHelper.getStringFromFile(fileName);
 		

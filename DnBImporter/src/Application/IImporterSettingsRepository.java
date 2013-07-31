@@ -2,6 +2,6 @@ package Application;
 
 public interface IImporterSettingsRepository 
 {
-	ImporterSettings getSettings();
+	ImporterSettings getSettings() throws Exception;
 	void saveSettings(ImporterSettings settings);
 }

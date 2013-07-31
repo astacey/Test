@@ -15,7 +15,12 @@ public class TestImporterSettings {
 	public void testFromXml() 
 	{
 		ImporterSettings settings = new ImporterSettings();
+		try
+		{
 		settings.fromXml("<Settings><LastRunDateDnB>2013-05-10T07:28:04:000</LastRunDateDnB><LastRunDateExperian>2013-07-16T22:28:04:000</LastRunDateExperian><CSVLocation>/home/astacey/SupplierData</CSVLocation><ABWLastProcessed>77</ABWLastProcessed></Settings>");
+		}
+		catch(Exception e)
+		{}
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		formatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
 		

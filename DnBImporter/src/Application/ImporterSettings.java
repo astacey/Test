@@ -33,30 +33,22 @@ public class ImporterSettings
 				+"<ABWLastProcessed>" + abwLastProcessed + "</ABWLastProcessed></Settings>";
 	}
 
-	public void fromXml(String xml)
+	public void fromXml(String xml) throws Exception
 	{ 
-		try
+		Document doc = XmlHelper.getXmlDocument(xml);
+		Node root = doc.getFirstChild();
+		for(int i=0;i<root.getChildNodes().getLength();i++)
 		{
-			Document doc = XmlHelper.getXmlDocument(xml);
-			Node root = doc.getFirstChild();
-			for(int i=0;i<root.getChildNodes().getLength();i++)
-			{
-				if( root.getChildNodes().item(i).getNodeName()=="LastRunDate") // Legacy support !! get rid of this in a few cycles time
-					this.lastRunDateDnB = getDateFormat().parse(root.getChildNodes().item(i).getTextContent());
-				else if( root.getChildNodes().item(i).getNodeName()=="LastRunDateDnB")
-					this.lastRunDateDnB = getDateFormat().parse(root.getChildNodes().item(i).getTextContent());
-				else if( root.getChildNodes().item(i).getNodeName()=="LastRunDateExperian")
-					this.lastRunDateExperian = getDateFormatExperian().parse(root.getChildNodes().item(i).getTextContent());
-				else if( root.getChildNodes().item(i).getNodeName()=="CSVLocation")
-					this.csvLocation = root.getChildNodes().item(i).getTextContent();
-				else if( root.getChildNodes().item(i).getNodeName()=="ABWLastProcessed")
-					this.abwLastProcessed = XmlHelper.getIntegerFromXmlString(root.getChildNodes().item(i).getTextContent());
-			}
-		}
-		catch (ParseException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if( root.getChildNodes().item(i).getNodeName()=="LastRunDate") // Legacy support !! get rid of this in a few cycles time
+				this.lastRunDateDnB = getDateFormat().parse(root.getChildNodes().item(i).getTextContent());
+			else if( root.getChildNodes().item(i).getNodeName()=="LastRunDateDnB")
+				this.lastRunDateDnB = getDateFormat().parse(root.getChildNodes().item(i).getTextContent());
+			else if( root.getChildNodes().item(i).getNodeName()=="LastRunDateExperian")
+				this.lastRunDateExperian = getDateFormatExperian().parse(root.getChildNodes().item(i).getTextContent());
+			else if( root.getChildNodes().item(i).getNodeName()=="CSVLocation")
+				this.csvLocation = root.getChildNodes().item(i).getTextContent();
+			else if( root.getChildNodes().item(i).getNodeName()=="ABWLastProcessed")
+				this.abwLastProcessed = XmlHelper.getIntegerFromXmlString(root.getChildNodes().item(i).getTextContent());
 		}
 	}
 	
