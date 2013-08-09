@@ -15,6 +15,7 @@ public class ImporterSettings
 	private String csvLocation;
 	private int abwLastProcessed;
 	private Date lastRunDateExperian;
+	private String xmlLogLocation;
 
 	public ImporterSettings()
 	{
@@ -30,6 +31,7 @@ public class ImporterSettings
 		return "<Settings><LastRunDateDnB>" + getDateFormat().format(lastRunDateDnB) + "</LastRunDateDnB>"
 				+"<LastRunDateExperian>" + getDateFormat().format(lastRunDateExperian) + "</LastRunDateExperian>"
 				+"<CSVLocation>" + csvLocation + "</CSVLocation>"
+				+"<XMLLogLocation>" + xmlLogLocation + "</XMLLogLocation>"
 				+"<ABWLastProcessed>" + abwLastProcessed + "</ABWLastProcessed></Settings>";
 	}
 
@@ -47,6 +49,8 @@ public class ImporterSettings
 				this.lastRunDateExperian = getDateFormatExperian().parse(root.getChildNodes().item(i).getTextContent());
 			else if( root.getChildNodes().item(i).getNodeName()=="CSVLocation")
 				this.csvLocation = root.getChildNodes().item(i).getTextContent();
+			else if( root.getChildNodes().item(i).getNodeName()=="XMLLogLocation")
+				this.xmlLogLocation = root.getChildNodes().item(i).getTextContent();
 			else if( root.getChildNodes().item(i).getNodeName()=="ABWLastProcessed")
 				this.abwLastProcessed = XmlHelper.getIntegerFromXmlString(root.getChildNodes().item(i).getTextContent());
 		}
@@ -97,6 +101,14 @@ public class ImporterSettings
 
 	public void setLastRunDateExperian(Date lastRunDateExperian) {
 		this.lastRunDateExperian = lastRunDateExperian;
+	}
+
+	public String getXmlLogLocation() {
+		return xmlLogLocation;
+	}
+
+	public void setXmlLogLocation(String xmlLogLocation) {
+		this.xmlLogLocation = xmlLogLocation;
 	}
 }
 	

@@ -22,6 +22,7 @@ public class ImporterArgs
 	private Boolean isShowForm=false;
 	private String GUIUpdateFolder="";
 	private char delimiter;
+	private Boolean isDebugJavax = false;
 	
 	public ImporterArgs(String[] args)
 	{
@@ -62,6 +63,11 @@ public class ImporterArgs
 			else if(args[i].equalsIgnoreCase("-xdnb"))
 			{
 				isDnBUpdate = true;
+			}
+
+			else if(args[i].equalsIgnoreCase("-debug"))
+			{
+				isDebugJavax = true;
 			}
 			else if(args[i].equalsIgnoreCase("-xabw"))
 			{
@@ -229,5 +235,9 @@ public class ImporterArgs
 
 	public char getDelimiter() {
 		return delimiter;
+	}
+
+	public Boolean getIsDebugJavax() {
+		return isDebugJavax;
 	}
 }

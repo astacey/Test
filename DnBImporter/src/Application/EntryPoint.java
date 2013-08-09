@@ -26,8 +26,9 @@ public class EntryPoint
 		}
 		try 
 		{
-			System.setProperty("javax.net.debug","all");
 			ImporterArgs impArgs = new ImporterArgs(args);
+			if(impArgs.getIsDebugJavax())
+				System.setProperty("javax.net.debug","all");
 			if(impArgs.getIsShowForm())
 			{
 				runWindow(impArgs);
@@ -65,11 +66,11 @@ public class EntryPoint
 	
 	private static void runCommandLine(ImporterArgs args) throws Exception
 	{
-		IDnBRepository dnbRepo = new DnBWebServiceRepository( args.getUserName(), args.getPassword() );
 		IExperianRepository experianRepo = new ExperianWebServcieRepository();
 		IImporterSettingsRepository settingsRepo = new FileImporterSettingsRepository();
 		// get settings
 		ImporterSettings settings = settingsRepo.getSettings();
+		IDnBRepository dnbRepo = new DnBWebServiceRepository( args.getUserName(), args.getPassword(), settings.getXmlLogLocation() );
 		ICompanyRepository companyRepo = new SupplierAppCSVCompanyRepository(settings.getCsvLocation());
 		ExperianInitialise expInit = new ExperianInitialise();
 

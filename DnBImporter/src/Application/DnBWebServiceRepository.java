@@ -24,14 +24,18 @@ import Domain.IDnBRepository;
 public class DnBWebServiceRepository implements IDnBRepository 
 {
 	private static Logger logger = Logger.getLogger(DnBWebServiceRepository.class.getName());
-	
+	private static XmlLogger xmlLogger;
 	private String wsUserName;
 	private String wsPassword;
 	
-	public DnBWebServiceRepository(String userName, String password)
+	public DnBWebServiceRepository(String userName, String password){ this(userName, password, null); }
+	
+	public DnBWebServiceRepository(String userName, String password, String logFileLocation)
 	{
 		this.wsUserName = userName;
 		this.wsPassword = password;
+		if(logFileLocation!=null)
+			xmlLogger = new XmlLogger(logFileLocation);
 	}
 	
 	@Override
@@ -43,7 +47,7 @@ public class DnBWebServiceRepository implements IDnBRepository
 		
 			String responseXml = client.addRegistration(String.valueOf(dunsNumber));
 			
-			logger.info(responseXml);
+			logXmlResponse(responseXml);
 			return isResponseSuccess(responseXml);
 		}
 		catch(Exception e)
@@ -65,11 +69,12 @@ public class DnBWebServiceRepository implements IDnBRepository
 		{
 			String xmlResponse = client.getRegistrationList(resultTicket);
 			
-			logger.info(xmlResponse);
+			logXmlResponse(xmlResponse);
 
 			regs.addFromXml(xmlResponse);
 			resultTicket = mapper.getResultTicket(xmlResponse);
-			// be good to wait 30 secs if result ticket not empty
+			if(resultTicket.length()>0)
+				sleepBetweenRequests();
 		}
 		while(resultTicket.length()>0);
 
@@ -82,7 +87,7 @@ public class DnBWebServiceRepository implements IDnBRepository
 		GetCompanyDetailsClient client = new GetCompanyDetailsClient(wsUserName, wsPassword);
 		
 		String xmlResponse = client.getCompanyDetails(String.valueOf(dunsNumber));
-		logger.info(xmlResponse);
+		logXmlResponse(xmlResponse);
 		
 		DnBDataMapper mapper = new DnBDataMapper();
 		
@@ -102,21 +107,15 @@ public class DnBWebServiceRepository implements IDnBRepository
 		do
 		{
 			String xmlResponseString;
-			//try 
-			//{
-				xmlResponseString = client.getNotifications(startDate, endDate, resultTicket);
-			//} 
-			//catch (Exception_Exception ee) 
-			//{
-			//	Exception e = new Exception("Error getting response from get notifications.", ee);
-			//	throw(e);
-			//}
-			logger.info(xmlResponseString);
+			xmlResponseString = client.getNotifications(startDate, endDate, resultTicket);
+			logXmlResponse(xmlResponseString);
 
 			ArrayList<DnBData> data = mapper.getDnBDataFromXml(xmlResponseString);
+			returnData.addAll(data);
 			// TODO : Should I make some kind of result class that has resultticket and arraylist properties ?
 			resultTicket = mapper.getResultTicket(xmlResponseString);
-			returnData.addAll(data);
+			if(resultTicket.length()>0)
+				sleepBetweenRequests();
 		}
 		while(resultTicket.length()>0);
 				
@@ -137,5 +136,26 @@ public class DnBWebServiceRepository implements IDnBRepository
 			e.printStackTrace();
 		}	
 		return false;
+	}
+	
+	private void logXmlResponse(String responseXml)
+	{
+		logger.info(responseXml);
+		if(xmlLogger!=null)
+			xmlLogger.logXml(responseXml);
+	}
+	
+	// Sleep for 60 seconds. This is to be used when the result from the server has a resultticket token. 
+	// This token is basically the server saying - I'm busy, check for the result later. Without waiting, I'm pretty much attacking the server with constant requests.
+	private void sleepBetweenRequests()
+	{
+		try 
+		{
+			Thread.sleep(60000);
+		} 
+		catch (InterruptedException e) 
+		{
+			logger.info(e.getMessage());
+		}
 	}
 }
