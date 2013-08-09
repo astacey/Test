@@ -13,9 +13,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import Application.XmlHelper;
+import Domain.Currency;
 import Domain.DnBData;
 import Domain.DnBRating;
 import Domain.IntegerDatedValue;
+import Domain.Money;
+import Domain.MoneyDatedValue;
 
 public class DnBDataUpdateMapper 
 {
@@ -30,7 +33,14 @@ public class DnBDataUpdateMapper
 		 * D&B Paydex Norm - PAYD_NORM
 		 * Primary SIC = PRIM_SIC
 		 * OUT_BUS_IND = Out of business indicator
+		 *  * MAXIMUM CREDIT RECOMMENDATION   - MAX_CR
+		 * MAXIMUM CREDIT CURRENCY CODE    - MAX_CR_CRCY_CD
+		 * Default Currency Code 	- CRCY_CD
+		 * Cash and Liquid Assets - CASH_LIQ_ASET
+		 * Credit Delinquency Score National Percentile - DELQ_SCR_ENTR\SCR_GRP\NATL_PCTL 
 		 * 
+		 * Credit Delinquency Score Commentary - DELQ_SCR_ENTR\SCR_GRP\SCR_CMTY_CD then multiple ArrayOfstringItem
+		 * Credit Delinquency Score Override - DELQ_SCR_ENTR\SCR_GRP\SCR_OVRD_CD
 		 */
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		ArrayList<DnBData> updateCollection = new ArrayList<DnBData>();
@@ -41,6 +51,8 @@ public class DnBDataUpdateMapper
 			{
 				DnBData data = new DnBData();
 				NodeList children = nodes.item(i).getChildNodes();
+				Node ntfcrs = null;
+				Node monprodrs = null;
 				
 				for(int j=0;j<children.getLength();j++)
 				{
@@ -60,14 +72,19 @@ public class DnBDataUpdateMapper
 					// Also, avoids resetting values back to default by mistake - e.g. is OutOfBusiness. DnBData sets this to false by default. This means that if no update to this field, then we'd be constantly resetting to false. There's other solutions to this, but reading full snapshot of data is easiest at the time.
 					else if(children.item(j).getNodeName()=="NTFCRS")
 					{
-						updateChangesIncremental(data, children.item(j));						
+						ntfcrs = children.item(j);					
 					}
 					else if(children.item(j).getNodeName()=="MON_PROD_RS")
 					{
-						updateChangesFull(data, children.item(j));						
+						monprodrs = children.item(j);				
 					}
 				
 				}
+				// Need to do monprodrs before the ntfcrs node, because I need the currency to be filled in first
+				if(monprodrs!=null)
+					updateChangesFull(data, monprodrs);
+				if(ntfcrs!=null)
+					updateChangesIncremental(data, ntfcrs);
 				updateCollection.add(data);
 			}
 		/*} 
@@ -88,7 +105,7 @@ public class DnBDataUpdateMapper
 	{
 		return XmlHelper.getStringFromXPath(xml, "//GLBLMNSVCMSGSRSV1/GETNTFCTRNRS/RSLT_TKT");
 	}
-	
+		
 	private void updateChangesIncremental(DnBData data, Node changes) throws ParseException
 	{
 		// changes = <NTFCRS>
@@ -101,6 +118,10 @@ public class DnBDataUpdateMapper
 			int failureRiskPercentile=-1;
 			int paydex=-1;
 			int paydexNorm=-1;
+			double maxCredit=-1.0;
+			double cashAssets=-1.0;
+			int creditDelinquencyPercentile=-1;
+			
 			Date changeDate = new Date();
 			
 			for(int j=0;j<children.getLength();j++)
@@ -118,6 +139,13 @@ public class DnBDataUpdateMapper
 					paydexNorm = XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent());
 				else if(children.item(j).getNodeName()=="SRC_DT")
 					changeDate = XmlHelper.getDateFromXmlString(children.item(j).getTextContent());
+				else if(children.item(j).getNodeName()=="MAX_CR")
+					maxCredit = XmlHelper.getDoubleFromXmlString(children.item(j).getTextContent());
+				else if(children.item(j).getNodeName()=="CASH_LIQ_ASET")
+					cashAssets = XmlHelper.getDoubleFromXmlString(children.item(j).getTextContent());
+				else if(children.item(j).getNodeName()=="DELQ_SCR_ENTR")
+					creditDelinquencyPercentile = getCreditDelinquencyScore(children.item(j));
+				//
 			}
 
 			if(failureRisk>-1)
@@ -128,6 +156,13 @@ public class DnBDataUpdateMapper
 				data.getPaydexScoreHistory().upsert(new IntegerDatedValue(changeDate, paydex));
 			if(paydexNorm>-1)
 				data.getPaydexScoreHistory().upsert(new IntegerDatedValue(changeDate, paydexNorm));
+			if(creditDelinquencyPercentile>-1)
+				data.getCreditDelinquencyNationalPercentileHistory().upsert(new IntegerDatedValue(changeDate, creditDelinquencyPercentile));
+			if(maxCredit>-1.0)
+				data.getMaximumCreditRecommendation().upsert(new MoneyDatedValue(changeDate, new Money(data.getMaximumCreditRecommendationCurrency(), maxCredit)));
+			if(cashAssets>-1.0)
+				data.getCashLiquidAssetsHistory().upsert(new MoneyDatedValue(changeDate, new Money(data.getDefaultCurrency(), cashAssets)));
+
 		}
 	}
 	
@@ -145,7 +180,31 @@ public class DnBDataUpdateMapper
 					data.setPrimarySicCode(XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent()));
 				else if(children.item(j).getNodeName()=="OUT_BUS_IND" && children.item(j).getTextContent().equalsIgnoreCase("y"))
 					data.setOutOfBusiness(true);
+				else if(children.item(j).getNodeName()=="CRCY_CD")
+					data.setDefaultCurrency(Currency.getCurrencyFromCode(children.item(j).getTextContent()));
+				else if(children.item(j).getNodeName()=="MAX_CR_CRCY_CD")
+					data.setMaximumCreditRecommendationCurrency(Currency.getCurrencyFromCode(children.item(j).getTextContent()));
 			}
 		}
+	}
+	
+	// This is very similar to the method in dnbdatamapper. The big difference is the date, which appears to be in a different place here.
+	// if it turns out that there is an ASMT_DT in the updates, then maybe I can consolidate the 2 methods
+	public int getCreditDelinquencyScore(Node delinquencyNode)
+	{
+	//	 * Credit Delinquency Score National Percentile - DELQ_SCR_ENTR\SCR_GRP\NATL_PCTL 
+		for(int i=0;i<delinquencyNode.getChildNodes().getLength();i++)
+		{
+			if( delinquencyNode.getChildNodes().item(i).getNodeName()=="SCR_GRP" )
+			{
+				NodeList scoreNodes = delinquencyNode.getChildNodes().item(i).getChildNodes();
+				for(int j=0;j<scoreNodes.getLength();j++)
+				{
+					if(scoreNodes.item(j).getNodeName()=="NATL_PCTL")
+						return XmlHelper.getIntegerFromXmlString(scoreNodes.item(j).getTextContent());
+				}
+			}
+		}
+		return -1;
 	}
 }

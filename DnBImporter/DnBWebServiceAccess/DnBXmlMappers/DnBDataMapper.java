@@ -131,7 +131,7 @@ public class DnBDataMapper
 		}
 	}
 	
-	private void getCreditDelinquencyScore(DnBData data, Node delinquencyNode)
+	public void getCreditDelinquencyScore(DnBData data, Node delinquencyNode)
 	{
 	//	 * Credit Delinquency Score National Percentile - DELQ_SCR_ENTR\SCR_GRP\NATL_PCTL 
 	//	 * Credit Delinquency Score National Percentile Date - DELQ_SCR_ENTR\SCR_GRP\ASMT_DT
