@@ -1,6 +1,7 @@
 package DnBXmlMappers;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -25,6 +26,8 @@ public class DnBDataMapper
 		 * D&B Failure Risk (Financial Stress) - FAIL_SCR
 		 * D&B Rating - DNB_RATG
 		 * D&B Failure Risk (Financial Stress) National percentile- NATL_PCTL or FAIL_SCR_NATL_PCTG ???
+		 * D&B Failure Risk Score Commentary - FAIL_SCR_OVRD_CD then multiple ArrayOfstringItem
+		 * D&B Failure Risk Score Commentary - FAIL_SCR_ENTR\SCR_GRP\SCR_OVRD_CD
 		 * Primary Name - PRIM_NME
 		 * D&B Paydex - PAYD_SCR
 		 * D&B Paydex Norm - PAYD_NORM
@@ -36,6 +39,8 @@ public class DnBDataMapper
 		 * Cash and Liquid Assets - CASH_LIQ_ASET
 		 * Credit Delinquency Score National Percentile - DELQ_SCR_ENTR\SCR_GRP\NATL_PCTL 
 		 * Credit Delinquency Score National Percentile Date - DELQ_SCR_ENTR\SCR_GRP\ASMT_DT
+		 * Credit Delinquency Score Commentary - DELQ_SCR_ENTR\SCR_GRP\SCR_CMTY_CD then multiple ArrayOfstringItem
+		 * Credit Delinquency Score Override - DELQ_SCR_ENTR\SCR_GRP\SCR_OVRD_CD
 		 */
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		try
@@ -79,6 +84,10 @@ public class DnBDataMapper
 						cashLiquidAssets = XmlHelper.getDoubleFromXmlString(children.item(j).getTextContent());
 					else if(children.item(j).getNodeName()=="DELQ_SCR_ENTR")
 						getCreditDelinquencyScore(data, children.item(j));
+					else if(children.item(j).getNodeName()=="FAIL_SCR_CMTY")
+						getScoreCommentary(data.getFailureRiskScoreCommentary(), children.item(j));
+					else if(children.item(j).getNodeName()=="FAIL_SCR_ENTR")
+						getFailureRiskScore(data, children.item(j));
 				}
 
 				if(maxCreditCurrency!=null)
@@ -109,6 +118,19 @@ public class DnBDataMapper
 		return null;
 	}
 	
+	private void getScoreCommentary(ArrayList<DnBScoreCommentary> commentary, Node commentaryNode)
+	{
+		for(int i=0;i<commentaryNode.getChildNodes().getLength();i++)
+		{
+			String code = commentaryNode.getChildNodes().item(i).getTextContent();
+			DnBScoreCommentary comment = DnBScoreCommentary.getCommentaryFromCode(code);
+			if(comment != null)
+				commentary.add(comment);
+			else
+				logger.severe("Unknown score commentary code : " + code);
+		}
+	}
+	
 	private void getCreditDelinquencyScore(DnBData data, Node delinquencyNode)
 	{
 	//	 * Credit Delinquency Score National Percentile - DELQ_SCR_ENTR\SCR_GRP\NATL_PCTL 
@@ -137,6 +159,11 @@ public class DnBDataMapper
 							logger.warning("Error: " + e.getMessage());
 						}
 					}
+					else if(scoreNodes.item(j).getNodeName()=="SCR_CMTY_CD")
+						getScoreCommentary(data.getCreditDelinquencyScoreCommentary(), scoreNodes.item(j));
+					else if(scoreNodes.item(j).getNodeName()=="SCR_OVRD_CD")
+						data.setCreditDelinquencyScoreOverride(getScoreOverride(scoreNodes.item(j).getTextContent()));
+					
 				}
 			}
 		}
@@ -144,5 +171,33 @@ public class DnBDataMapper
 		{
 			data.getCreditDelinquencyNationalPercentileHistory().upsert(new IntegerDatedValue(asmtDate, natPerc));
 		}
+	}
+	
+	private void getFailureRiskScore(DnBData data, Node failureRiskNode)
+	{
+		// D&B Failure Risk Score Commentary - FAIL_SCR_ENTR\SCR_GRP\SCR_OVRD_CD
+		// I could get the other Failure Risk Score fields from this blob of xml also
+		// I started out by not doing that though, so don't want to change right now for no reason
+		// If I do change, can probably merge this with the creditrisk method above, since the xml blobs are the same
+		for(int i=0;i<failureRiskNode.getChildNodes().getLength();i++)
+		{
+			if( failureRiskNode.getChildNodes().item(i).getNodeName()=="SCR_GRP" )
+			{
+				NodeList scoreNodes = failureRiskNode.getChildNodes().item(i).getChildNodes();
+				for(int j=0;j<scoreNodes.getLength();j++)
+				{
+					if(scoreNodes.item(j).getNodeName()=="SCR_OVRD_CD")
+						data.setFailureRiskScoreOverride(getScoreOverride(scoreNodes.item(j).getTextContent()));
+				}
+			}
+		}
+	}
+	
+	private DnBScoreOverride getScoreOverride(String code)
+	{
+		DnBScoreOverride override = DnBScoreOverride.getOverrideFromCode(code);
+		if(override==null)
+			logger.severe("Unknown score commentary code : " + code);
+		return override;
 	}
 }

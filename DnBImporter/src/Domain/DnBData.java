@@ -1,5 +1,6 @@
 package Domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class DnBData 
@@ -56,6 +57,14 @@ public class DnBData
 	// Maximum Credit Recommendation Currency
 	// Currency Code for credit recommendation amount if different than default
 	private Currency maximumCreditRecommendationCurrency;
+	// Failure Risk Score Commentary - Not storing history to begin with, so this relates to the current score
+	private ArrayList<DnBScoreCommentary> failureRiskScoreCommentary;
+	// Credit Delinquency Score Commentary - Not storing history to begin with, so this relates to the current score
+	private ArrayList<DnBScoreCommentary> creditDelinquencyScoreCommentary;	
+	// Failure Risk Score Override - Not storing history to begin with, so this relates to the current score
+	private DnBScoreOverride failureRiskScoreOverride;
+	// Credit Delinquency Score Override - Not storing history to begin with, so this relates to the current score
+	private DnBScoreOverride creditDelinquencyScoreOverride;
 	
 	public DnBData() { this(0);	}
 	
@@ -72,6 +81,8 @@ public class DnBData
 		this.creditDelinquencyNationalPercentileHistory = new IntegerDatedValueCollection();
 		this.cashLiquidAssetsHistory = new MoneyDatedValueCollection();
 		this.outOfBusiness = false;
+		this.failureRiskScoreCommentary=new ArrayList<DnBScoreCommentary>();
+		this.creditDelinquencyScoreCommentary=new ArrayList<DnBScoreCommentary>();
 	}
 	
 	@Override
@@ -84,7 +95,17 @@ public class DnBData
 		if( failureRiskScoreHistory.size()>0)
 			thisData += "\nD&B Failure Risk (Financial Stress) Score : " + String.valueOf(failureRiskScoreHistory.getCurrent().getValue());
 		if( failureRiskNationalPercentileHistory.size()>0)
-			thisData += "\nD&B Failure Risk (Financial Stress) Score Ntional Percentile : " + String.valueOf(failureRiskNationalPercentileHistory.getCurrent().getValue());
+			thisData += "\nD&B Failure Risk (Financial Stress) Score National Percentile : " + String.valueOf(failureRiskNationalPercentileHistory.getCurrent().getValue());
+		if(failureRiskScoreCommentary.size()>0)
+		{
+			thisData += "\nFailure Risk Score Commentary :";
+			for(DnBScoreCommentary comment : failureRiskScoreCommentary)
+			{
+				thisData += "\n\t" + comment.getCode() + " : " + comment.getDescription();
+			}
+		}
+		if( failureRiskScoreOverride!=null)
+			thisData += "\nFailure Risk Score Override: " + failureRiskScoreOverride.getCode() + " : " + failureRiskScoreOverride.getDescription();
 		if( paydexScoreHistory.size()>0)
 			thisData += "\nD&B PAYDEX : " + String.valueOf(paydexScoreHistory.getCurrent().getValue());
 		if( paydexNormHistory.size()>0)
@@ -95,6 +116,17 @@ public class DnBData
 			thisData += "\nCash and Liquid Assets: " + String.valueOf(cashLiquidAssetsHistory.getCurrent().getValue().getValue()) + " " + cashLiquidAssetsHistory.getCurrent().getValue().getCurrency().getDescription();
 		if( creditDelinquencyNationalPercentileHistory.size()>0)
 			thisData += "\nCredit Delinquency National Percentile: " + String.valueOf(creditDelinquencyNationalPercentileHistory.getCurrent().getValue());
+		if(creditDelinquencyScoreCommentary.size()>0)
+		{
+			thisData += "\nCredit Delinquency Score Commentary :";
+			for(DnBScoreCommentary comment : creditDelinquencyScoreCommentary)
+			{
+				thisData += "\n\t" + comment.getCode() + " : " + comment.getDescription();
+			}
+		}
+		if( creditDelinquencyScoreOverride!=null)
+			thisData += "\nCredit Delinquency Score Override: " + creditDelinquencyScoreOverride.getCode() + " : " + creditDelinquencyScoreOverride.getDescription();
+		
 		thisData += "\nPrimary SIC Code : " + primarySicCode;
 		
 		return thisData;
@@ -205,5 +237,31 @@ public class DnBData
 	public void setMaximumCreditRecommendationCurrency(
 			Currency maximumCreditRecommendationCurrency) {
 		this.maximumCreditRecommendationCurrency = maximumCreditRecommendationCurrency;
+	}
+
+	public ArrayList<DnBScoreCommentary> getFailureRiskScoreCommentary() {
+		return failureRiskScoreCommentary;
+	}
+
+	public ArrayList<DnBScoreCommentary> getCreditDelinquencyScoreCommentary() {
+		return creditDelinquencyScoreCommentary;
+	}
+
+	public DnBScoreOverride getFailureRiskScoreOverride() {
+		return failureRiskScoreOverride;
+	}
+
+	public void setFailureRiskScoreOverride(
+			DnBScoreOverride failureRiskScoreOverride) {
+		this.failureRiskScoreOverride = failureRiskScoreOverride;
+	}
+
+	public DnBScoreOverride getCreditDelinquencyScoreOverride() {
+		return creditDelinquencyScoreOverride;
+	}
+
+	public void setCreditDelinquencyScoreOverride(
+			DnBScoreOverride creditDelinquencyScoreOverride) {
+		this.creditDelinquencyScoreOverride = creditDelinquencyScoreOverride;
 	}
 }
