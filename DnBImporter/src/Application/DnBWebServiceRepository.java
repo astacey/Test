@@ -34,7 +34,7 @@ public class DnBWebServiceRepository implements IDnBRepository
 	{
 		this.wsUserName = userName;
 		this.wsPassword = password;
-		if(logFileLocation!=null)
+		if(logFileLocation!=null&&logFileLocation.length()>0)
 			xmlLogger = new XmlLogger(logFileLocation);
 	}
 	

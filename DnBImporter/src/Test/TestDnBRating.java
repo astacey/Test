@@ -22,6 +22,6 @@ public class TestDnBRating {
 		assertEquals("1 equals 1", 1, data.getRiskIndicator());
 		
 		data = new DnBRating("4A-");
-		assertEquals("4A- equals ?????", -1, data.getRiskIndicator());
+		assertEquals("4A- equals ?????", 0, data.getRiskIndicator());
 	}
 }

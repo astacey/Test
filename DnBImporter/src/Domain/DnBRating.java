@@ -56,7 +56,7 @@ public class DnBRating implements Comparable<DnBRating>
 	 */
 	public int getRiskIndicator()
 	{
-		int risk = -1;
+		int risk = 0;
 		
 		try
 		{

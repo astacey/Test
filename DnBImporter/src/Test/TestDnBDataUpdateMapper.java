@@ -87,7 +87,7 @@ public class TestDnBDataUpdateMapper {
 		
 		assertEquals("Length of data collection is 1", 1, data.size());
 		assertEquals("DnBrating is 4A-", "4A-", data.get(0).getCurrentRating().getRating());
-		assertEquals("DBRating is undetermined, value should be ???", -1, data.get(0).getCurrentRating().getRiskIndicator());
+		assertEquals("DBRating is undetermined, value should be ???", 0, data.get(0).getCurrentRating().getRiskIndicator());
 	}
 
 }

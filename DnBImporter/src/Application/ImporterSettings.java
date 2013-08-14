@@ -23,6 +23,7 @@ public class ImporterSettings
 		// shouldn't ever need the default
 		lastRunDateDnB = Calendar.getInstance(TimeZone.getTimeZone("US/Eastern")).getTime();
 		lastRunDateExperian = Calendar.getInstance().getTime();
+		xmlLogLocation="";
 		abwLastProcessed = 0;
 	}
 		
