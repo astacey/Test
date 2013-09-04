@@ -121,6 +121,7 @@ public class DnBDataUpdateMapper
 			double maxCredit=-1.0;
 			double cashAssets=-1.0;
 			int creditDelinquencyPercentile=-1;
+			String dnbRating = null;
 			
 			Date changeDate = new Date();
 			
@@ -130,7 +131,7 @@ public class DnBDataUpdateMapper
 				if(children.item(j).getNodeName()=="FAIL_SCR")
 					failureRisk = XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent());
 				else if(children.item(j).getNodeName()=="DNB_RATG")
-					data.getDbratingHistory().add(new DnBRating(children.item(j).getTextContent(), new Date() ));
+					dnbRating = children.item(j).getTextContent();
 				else if(children.item(j).getNodeName()=="FAIL_SCR_NATL_PCTG")
 					failureRiskPercentile = XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent());
 				else if(children.item(j).getNodeName()=="PAYD_SCR")
@@ -148,6 +149,8 @@ public class DnBDataUpdateMapper
 				//
 			}
 
+			if(dnbRating != null)
+				data.getDbratingHistory().add(new DnBRating(dnbRating, changeDate ));
 			if(failureRisk>-1)
 				data.getFailureRiskScoreHistory().upsert(new IntegerDatedValue(changeDate, failureRisk));
 			if(failureRiskPercentile>-1)

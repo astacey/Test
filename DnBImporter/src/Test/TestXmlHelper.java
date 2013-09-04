@@ -40,7 +40,7 @@ public class TestXmlHelper {
 		assertEquals("Date's don't match", "2013-05-04 06:28:16", formatter.format(test));
 		
 	}
-	
+		
 	@Test
 	public void testGetIntegerFromXmlString()
 	{

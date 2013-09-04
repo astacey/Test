@@ -127,6 +127,7 @@ public class DnBData
 		if( creditDelinquencyScoreOverride!=null)
 			thisData += "\nCredit Delinquency Score Override: " + creditDelinquencyScoreOverride.getCode() + " : " + creditDelinquencyScoreOverride.getDescription();
 		
+		thisData += "\nOut of Business Indicator : " + outOfBusiness;
 		thisData += "\nPrimary SIC Code : " + primarySicCode;
 		
 		return thisData;

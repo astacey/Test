@@ -647,6 +647,7 @@ public class DnBImportForm extends JFrame {
  								 + "\nAddress 2 : " + res.getBusinessLocation().getLocationLine2()
 								 + "\nAddress 3 : " + res.getBusinessLocation().getLocationLine3() 								 
 								 + "\nPost Code : " + res.getBusinessLocation().getPostcode()
+								 + "\n Business Status : " + res.getBusinessStatus()
 								 + "\n---------------------------------------------------\n";
 					}
 					txtFormattedResults.setText(results);
