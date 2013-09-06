@@ -35,7 +35,21 @@ public class AddRegistrationClient extends DnBWebServiceClient
 		WspAddRegistrationV1PortType port = client.getDNBWebServicesProvidersAddRegistrationV1WspAddRegistrationV1Port();
 		
 		AddRegistrationResponse response = port.wsAddRegistration(request);
-		responseXml = JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, response.getDGX().getGLBLMNSVCMSGSRSV1());
+		
+		// Check for sign on errors
+		String code = response.getDGX().getSIGNONMSGSRSV1().getSONRS().getSTATUS().getCODE();
+		
+		if(code.equalsIgnoreCase("0"))
+		{
+			responseXml = JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, response.getDGX().getGLBLMNSVCMSGSRSV1());
+		}
+		else
+		{
+			// sign on error in xml- throw !
+			String message = response.getDGX().getSIGNONMSGSRSV1().getSONRS().getSTATUS().getMESSAGE();
+			RuntimeException e = new RuntimeException("Failed to log into D&B service.\n\n" + message); 
+			throw e;
+		}		
 
 		return responseXml;
 	}

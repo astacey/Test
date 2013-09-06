@@ -7,6 +7,7 @@ import Application.JaxBHelper;
 import DBGetNotificationsClientV1.GLBLMNSVCMSGSRSV1;
 import DBGetNotificationsClientV1.GetNotificationsRequest;
 import DBGetNotificationsClientV1.GetNotificationsRequestData;
+import DBGetNotificationsClientV1.GetNotificationsResponse;
 import DBGetNotificationsClientV1.ObjectFactory;
 import DBGetNotificationsClientV1.WspGetNotificationsV1;
 import DBGetNotificationsClientV1.WspGetNotificationsV1PortType;
@@ -49,14 +50,22 @@ public class GetNotificationsClient extends DnBWebServiceClient
 		
 		WspGetNotificationsV1PortType port = client.getDNBWebServicesProvidersGetNotificationsV1WspGetNotificationsV1Port();
 		
-		//try
-		//{
-			responseXml = JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, port.wsGetNotifications(request).getDGX().getGLBLMNSVCMSGSRSV1());
-		//}
-		//catch(Exception e)
-		//{
-		//	responseXml = e.getMessage();
-		//}
+		GetNotificationsResponse response = port.wsGetNotifications(request);
+		
+		// Check for sign on errors
+		String code = response.getDGX().getSIGNONMSGSRSV1().getSONRS().getSTATUS().getCODE();
+		
+		if(code.equalsIgnoreCase("0"))
+		{
+			responseXml = JaxBHelper.ConvertJaxBToString(GLBLMNSVCMSGSRSV1.class, response.getDGX().getGLBLMNSVCMSGSRSV1());
+		}
+		else
+		{
+			// sign on error in xml- throw !
+			String message = response.getDGX().getSIGNONMSGSRSV1().getSONRS().getSTATUS().getMESSAGE().getValue();
+			RuntimeException e = new RuntimeException("Failed to log into D&B service.\n\n" + message); 
+			throw e;
+		}
 		return responseXml;
 	}
 }
