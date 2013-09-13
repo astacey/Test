@@ -119,7 +119,7 @@ public class SupplierAppCSVFactDataFull extends SupplierAppCSVFile
 					// Rating ( Risk Indicator )
 					for(DnBRating r : c.getDunnBradstreetData().getDbratingHistory())
 					{
-						if(isIncremental==false || r.getCommitted()==false)
+						if(isIncremental==false || r.getIsCommitted()==false)
 						{
 							csvWriter.writeRecord(new String[] { String.valueOf(r.getRiskIndicator()), getFormattedStringForDate(r.getDate()), c.getId(), DATASET_RISK_CODE });
 							csvWriter.flush();

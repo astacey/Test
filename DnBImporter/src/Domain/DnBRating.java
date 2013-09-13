@@ -2,7 +2,7 @@ package Domain;
 
 import java.util.Date;
 
-public class DnBRating implements Comparable<DnBRating>
+public class DnBRating extends DatedValue<String>
 {
 	// Calculate from 2 inputs ?? or calculate the 2 fields that make up D&B rating ?
 	/* 	D&B uses several different rating classifications. The most common (e.g., 4A3) D&B Rating is divided into two parts: financial strength and composite credit
@@ -12,38 +12,24 @@ public class DnBRating implements Comparable<DnBRating>
 		to businesses within specific industries or "1R", "2R," etc. ratings for companies without current financial statements on file. The Rating Interpretation Tables contain
 		specific rating definitions and interpretation tables for countries around the world
 		*/
-	private String rating;
-	// Date the rating took effect
-	private Date date;
-	// flag to check if changes have been saved/committed
-	private Boolean isCommitted = false;
 
 	public DnBRating(String rating)
 	{
-		this(rating, new Date());
+		super(new Date(), rating);
 	}
 	public DnBRating(String rating, Date date)
 	{
-		this.rating=rating;
-		this.date=date;
+		super(date, rating);
 	}
 	
+	// legacy code support, should just use super getValue()
 	public String getRating() {
-		return rating;
+		return this.getValue();
 	}
+	
+	// legacy code support, should just use super setValue()
 	public void setRating(String rating) {
-		this.rating = rating;
-		this.isCommitted = false;
-	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
-		this.isCommitted = false;
-	}
-	public Boolean getCommitted() {
-		return this.isCommitted;
+		this.setValue(rating);
 	}
 
 	// Returns the Risk Indicator portion of the D&B Rating
@@ -60,7 +46,7 @@ public class DnBRating implements Comparable<DnBRating>
 		
 		try
 		{
-			risk = Integer.parseInt(rating.substring(rating.length()-1));
+			risk = Integer.parseInt(getValue().substring(getValue().length()-1));
 		}
 		catch(Exception e)
 		{}
@@ -74,15 +60,4 @@ public class DnBRating implements Comparable<DnBRating>
 		return null;
 	}
 	*/
-
-	@Override
-	public int compareTo(DnBRating dbRating) 
-	{
-		return this.date.compareTo(dbRating.getDate());
-	}
-	
-	public void setCommitted()
-	{
-		this.isCommitted = true;
-	}
 }

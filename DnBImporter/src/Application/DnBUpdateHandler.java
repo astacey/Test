@@ -79,6 +79,7 @@ public class DnBUpdateHandler
 			{
 				data.getRegistrationDetails().setStatus(RegistrationStatus.ACTIVE);
 				c.setDunnBradstreetData(data);
+				u4baCompanyRepository.saveCompany(c); // do I need this ?
 				success++;
 			}
 			else
