@@ -37,6 +37,7 @@ import WebServiceClients.ExperianAlertsRequestClient;
 import WebServiceClients.ExperianBusinessTargetClient;
 import WebServiceClients.ExperianLtdCompanySearchClient;
 import WebServiceClients.ExperianNonLtdBusinessSearch;
+import WebServiceClients.FullReportClient;
 import WebServiceClients.GetCompanyDetailsClient;
 import WebServiceClients.GetNotificationsClient;
 import WebServiceClients.GetRegistrationActivityClient;
@@ -246,6 +247,15 @@ public class DnBImportForm extends JFrame {
 		JButton btnRunLookup = new JButton("Run LookUp");
 		btnRunLookup.setBounds(386, 12, 137, 25);
 		panel.add(btnRunLookup);
+		
+		JButton btnGetReport = new JButton("Get Report");
+		btnGetReport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getDBFullReport();
+			}
+		});
+		btnGetReport.setBounds(386, 155, 117, 25);
+		panel.add(btnGetReport);
 		
 		panel_2 = new JPanel();
 		tabbedPane.addTab("Account Details", null, panel_2, null);
@@ -613,6 +623,24 @@ public class DnBImportForm extends JFrame {
 			catch(Exception e)
 			{
 				txtResults.setText(e.getMessage());
+			}
+		}
+	}
+	
+	private void getDBFullReport()
+	{
+		String dunsNumber = txtDuns.getText();
+		if(dunsNumber.length()>0)
+		{
+			FullReportClient client = new FullReportClient(txtUserName.getText(), txtPassword.getText());
+			try
+			{
+				String res = client.getReport(dunsNumber);
+				txtResults.setText(res);
+			}
+			catch(Exception e)
+			{
+				txtResults.setText(e.getMessage());				
 			}
 		}
 	}

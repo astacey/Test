@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13794187584400" configfile="/DnBFullReportFetcher/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="index.xhtml" x="86" y="176" id="pf13794192756411" path="/index.xhtml"/>
+</pageflow:Pageflow>

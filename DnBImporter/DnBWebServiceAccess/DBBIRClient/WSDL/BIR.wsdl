@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://www.dnb.com/DNB_WebServices/Providers/OrderAndInvestigations/OtherProducts/BIR_V1/wsp_BIR_V1" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="wsp_BIR_V1" targetNamespace="http://www.dnb.com/DNB_WebServices/Providers/OrderAndInvestigations/OtherProducts/BIR_V1/wsp_BIR_V1">
+  <wsdl:types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.dnb.com/DNB_WebServices/Providers/OrderAndInvestigations/OtherProducts/BIR_V1/wsp_BIR_V1" xmlns:SOAP_ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://www.dnb.com/DNB_WebServices/Providers/OrderAndInvestigations/OtherProducts/BIR_V1/wsp_BIR_V1">
+          
+          <xsd:complexType name="ws_BIR">
+            <xsd:sequence>
+              <xsd:element name="BIRRequest" nillable="true" type="tns:prodOrderRequest_2"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="prodOrderRequest_2">
+            <xsd:sequence>
+              <xsd:element name="UserId" type="xsd:string"/>
+              <xsd:element name="Password" type="xsd:string"/>
+              <xsd:element name="TRNUID" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="SRVRTID" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="socCode" nillable="true" type="tns:socCode" minOccurs="0"/>
+              <xsd:element name="Orders" nillable="true" type="tns:Orders"/>
+              <xsd:element name="Immediate_Delivery" nillable="true" type="tns:Immediate_Delivery"/>
+              <xsd:element name="Investigation" nillable="true" type="tns:Investigation" minOccurs="0"/>
+              <xsd:element name="AdditionalFields" nillable="true" type="tns:ArrayOfAdditionalFields" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="socCode">
+            <xsd:sequence>
+              <xsd:element name="AppId" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="AppVer" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="Orders">
+            <xsd:sequence>
+              <xsd:element name="User_Language" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="DnB_DUNS_Number" nillable="true" type="xsd:string"/>
+              <xsd:element name="Country_Code" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Trade_Up_Indicator" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Product" type="xsd:string"/>
+              <xsd:element name="Product_Type" type="xsd:string"/>
+              <xsd:element name="Reason_Code" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="FileId" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="SBRI_Unmatched_AGN" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Char_Set_Override" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="Immediate_Delivery">
+            <xsd:sequence>
+              <xsd:element name="Mode" nillable="true" type="xsd:string"/>
+              <xsd:element name="Format" nillable="true" type="xsd:string"/>
+              <xsd:element name="Rpt_Language" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Ignore_Missing_Fields" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Email" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Email_Copy" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Not_From_Cache" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="Investigation">
+            <xsd:sequence>
+              <xsd:element name="InvestigationDelivery" nillable="true" type="tns:InvestigationDelivery" minOccurs="0"/>
+              <xsd:element name="NotificationDelivery" nillable="true" type="tns:NotificationDelivery" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="InvestigationDelivery">
+            <xsd:sequence>
+              <xsd:element name="Mode" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Format" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Rpt_Language" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Email" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Email_Copy" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Service" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Endorsement" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Cust_Request" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="NotificationDelivery">
+            <xsd:sequence>
+              <xsd:element name="Mode" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Format" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Rpt_Language" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Email" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Email_Copy" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Name" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Business_Num" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Business_Num_Type" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Phone" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Address_Line1" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Address_Line2" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Town" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="State_or_Province" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="Postal_Code" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="AdditionalFields">
+            <xsd:sequence>
+              <xsd:element name="FieldName" nillable="true" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="FieldValue" nillable="true" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="ArrayOfAdditionalFields"><xsd:sequence>
+			<xsd:element name="ArrayOfAdditionalFieldsItem" type="tns:AdditionalFields" maxOccurs="unbounded"/>
+		</xsd:sequence>
+
+          </xsd:complexType>
+          <xsd:complexType name="ws_BIRResponse">
+            <xsd:sequence>
+              <xsd:element name="BIRResponse" nillable="true" type="tns:BIRResponse"/>
+            </xsd:sequence>
+          </xsd:complexType>
+          <xsd:complexType name="BIRResponse">
+            <xsd:sequence>
+              <xsd:element name="Response" nillable="true" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        			<xsd:element name="ws_BIR" type="tns:ws_BIR"/>
+			<xsd:element name="ws_BIRResponse" type="tns:ws_BIRResponse"/>
+	</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="wsp_BIR_V1_PortType_ws_BIR">
+    <wsdl:part name="parameters" element="tns:ws_BIR">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="wsp_BIR_V1_PortType_ws_BIRResponse">
+    <wsdl:part name="parameters" element="tns:ws_BIRResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="wsp_BIR_V1_PortType">
+    <wsdl:operation name="ws_BIR">
+      <wsdl:input message="tns:wsp_BIR_V1_PortType_ws_BIR">
+    </wsdl:input>
+      <wsdl:output message="tns:wsp_BIR_V1_PortType_ws_BIRResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DNB_WebServices_Providers_OrderAndInvestigations_OtherProducts_BIR_V1_wsp_BIR_V1_Binder" type="tns:wsp_BIR_V1_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ws_BIR">
+      <soap:operation soapAction="DNB_WebServices_Providers_OrderAndInvestigations_OtherProducts_BIR_V1_wsp_BIR_V1_Binder_ws_BIR" style="document"/>
+      <wsdl:input>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsp_BIR_V1">
+    <wsdl:port name="DNB_WebServices_Providers_OrderAndInvestigations_OtherProducts_BIR_V1_wsp_BIR_V1_Port" binding="tns:DNB_WebServices_Providers_OrderAndInvestigations_OtherProducts_BIR_V1_wsp_BIR_V1_Binder">
+      <soap:address location="https://toolkit.dnb.com/ws/DNB_WebServices.Providers.OrderAndInvestigations.OtherProducts.BIR_V1:wsp_BIR_V1"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
+
