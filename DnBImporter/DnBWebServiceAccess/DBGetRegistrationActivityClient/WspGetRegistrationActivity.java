@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "wsp_GetRegistrationActivity", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/GetRegistrationActivity", wsdlLocation = "file:WSDL/GetRegistrationActivity.wsdl")
+@WebServiceClient(name = "wsp_GetRegistrationActivity", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/GetRegistrationActivity", wsdlLocation = "WSDL/GetRegistrationActivity.wsdl")
 public class WspGetRegistrationActivity
     extends Service
 {
@@ -29,10 +29,10 @@ public class WspGetRegistrationActivity
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = DBGetRegistrationActivityClient.WspGetRegistrationActivity.class.getResource(".");
-            url = new URL(baseUrl, "file:WSDL/GetRegistrationActivity.wsdl");
+            baseUrl = DBGetRegistrationActivityClient.WspGetRegistrationActivity.class.getResource("");
+            url = new URL(baseUrl, "WSDL/GetRegistrationActivity.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:WSDL/GetRegistrationActivity.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'WSDL/GetRegistrationActivity.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         WSPGETREGISTRATIONACTIVITY_WSDL_LOCATION = url;

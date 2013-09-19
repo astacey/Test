@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "wsp_GetNotifications_V1", targetNamespace = "https://www.dnb.com/DNB_WebServices/Providers/GetNotifications_V1/wsp_GetNotifications_V1", wsdlLocation = "file:WSDL/GetNotifications_V1.wsdl")
+@WebServiceClient(name = "wsp_GetNotifications_V1", targetNamespace = "https://www.dnb.com/DNB_WebServices/Providers/GetNotifications_V1/wsp_GetNotifications_V1", wsdlLocation = "WSDL/GetNotifications_V1.wsdl")
 public class WspGetNotificationsV1
     extends Service
 {
@@ -29,10 +29,10 @@ public class WspGetNotificationsV1
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = DBGetNotificationsClientV1.WspGetNotificationsV1 .class.getResource(".");
-            url = new URL(baseUrl, "file:WSDL/GetNotifications_V1.wsdl");
+            baseUrl = DBGetNotificationsClientV1.WspGetNotificationsV1 .class.getResource("");
+            url = new URL(baseUrl, "WSDL/GetNotifications_V1.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:WSDL/GetNotifications_V1.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'WSDL/GetNotifications_V1.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         WSPGETNOTIFICATIONSV1_WSDL_LOCATION = url;

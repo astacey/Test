@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "wsp_GDP_V3", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/OrderAndInvestigations/GDP_V3/wsp_GDP_V3", wsdlLocation = "file:WSDL/GDP_V3.wsdl")
+@WebServiceClient(name = "wsp_GDP_V3", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/OrderAndInvestigations/GDP_V3/wsp_GDP_V3", wsdlLocation = "WSDL/GDP_V3.wsdl")
 public class WspGDPV3
     extends Service
 {
@@ -29,10 +29,10 @@ public class WspGDPV3
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = DBGDPV3.WspGDPV3 .class.getResource(".");
-            url = new URL(baseUrl, "file:WSDL/GDP_V3.wsdl");
+            baseUrl = DBGDPV3.WspGDPV3 .class.getResource("");
+            url = new URL(baseUrl, "WSDL/GDP_V3.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:WSDL/GDP_V3.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'WSDL/GDP_V3.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         WSPGDPV3_WSDL_LOCATION = url;

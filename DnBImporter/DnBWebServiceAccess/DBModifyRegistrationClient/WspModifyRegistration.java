@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "wsp_ModifyRegistration", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/ModifyRegistration", wsdlLocation = "file:WSDL/ModifyRegistration.wsdl")
+@WebServiceClient(name = "wsp_ModifyRegistration", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/ModifyRegistration", wsdlLocation = "WSDL/ModifyRegistration.wsdl")
 public class WspModifyRegistration
     extends Service
 {
@@ -29,10 +29,10 @@ public class WspModifyRegistration
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = DBModifyRegistrationClient.WspModifyRegistration.class.getResource(".");
-            url = new URL(baseUrl, "file:WSDL/ModifyRegistration.wsdl");
+            baseUrl = DBModifyRegistrationClient.WspModifyRegistration.class.getResource("");
+            url = new URL(baseUrl, "WSDL/ModifyRegistration.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:WSDL/ModifyRegistration.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'WSDL/ModifyRegistration.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         WSPMODIFYREGISTRATION_WSDL_LOCATION = url;

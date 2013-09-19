@@ -19,7 +19,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "TokenService", targetNamespace = "http://www.uk.experian.com/WASP/", wsdlLocation = "file:ExperianWSDL/TokenService.wsdl")
+@WebServiceClient(name = "TokenService", targetNamespace = "http://www.uk.experian.com/WASP/", wsdlLocation = "ExperianWSDL/TokenService.wsdl")
 public class TokenService
     extends Service
 {
@@ -31,10 +31,10 @@ public class TokenService
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = ExperianTokenService.TokenService.class.getResource(".");
-            url = new URL(baseUrl, "file:ExperianWSDL/TokenService.wsdl");
+            baseUrl = ExperianTokenService.TokenService.class.getResource("");
+            url = new URL(baseUrl, "ExperianWSDL/TokenService.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:ExperianWSDL/TokenService.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'ExperianWSDL/TokenService.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         TOKENSERVICE_WSDL_LOCATION = url;

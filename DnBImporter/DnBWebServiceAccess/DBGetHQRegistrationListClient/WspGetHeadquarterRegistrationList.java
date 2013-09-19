@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "wsp_GetHeadquarterRegistrationList", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/GetHeadquarterRegistrationList/wsp_GetHeadquarterRegistrationList", wsdlLocation = "file:WSDL/GetHeadquarterRegistrationList.wsdl")
+@WebServiceClient(name = "wsp_GetHeadquarterRegistrationList", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/GetHeadquarterRegistrationList/wsp_GetHeadquarterRegistrationList", wsdlLocation = "WSDL/GetHeadquarterRegistrationList.wsdl")
 public class WspGetHeadquarterRegistrationList
     extends Service
 {
@@ -29,10 +29,10 @@ public class WspGetHeadquarterRegistrationList
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = DBGetHQRegistrationListClient.WspGetHeadquarterRegistrationList.class.getResource(".");
-            url = new URL(baseUrl, "file:WSDL/GetHeadquarterRegistrationList.wsdl");
+            baseUrl = DBGetHQRegistrationListClient.WspGetHeadquarterRegistrationList.class.getResource("");
+            url = new URL(baseUrl, "WSDL/GetHeadquarterRegistrationList.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:WSDL/GetHeadquarterRegistrationList.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'WSDL/GetHeadquarterRegistrationList.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         WSPGETHEADQUARTERREGISTRATIONLIST_WSDL_LOCATION = url;

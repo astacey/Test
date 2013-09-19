@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "wsp_TransferRegistration", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/TransferRegistration", wsdlLocation = "file:WSDL/TransferRegistration.wsdl")
+@WebServiceClient(name = "wsp_TransferRegistration", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/TransferRegistration", wsdlLocation = "WSDL/TransferRegistration.wsdl")
 public class WspTransferRegistration
     extends Service
 {
@@ -29,10 +29,10 @@ public class WspTransferRegistration
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = DBTransferRegistrationClient.WspTransferRegistration.class.getResource(".");
-            url = new URL(baseUrl, "file:WSDL/TransferRegistration.wsdl");
+            baseUrl = DBTransferRegistrationClient.WspTransferRegistration.class.getResource("");
+            url = new URL(baseUrl, "WSDL/TransferRegistration.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:WSDL/TransferRegistration.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'WSDL/TransferRegistration.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         WSPTRANSFERREGISTRATION_WSDL_LOCATION = url;

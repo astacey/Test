@@ -9,7 +9,7 @@ import Domain.DBFullReportSection;
 
 public class DBFullReportFetcher 
 {	
-	public String getReportText(String dunsNumber, user, password) 
+	public String getReportText(String dunsNumber, String user, String password) 
 	{
 		FullReportClient client = new FullReportClient(user, password);
 		DBFullReportMapper mapper = new DBFullReportMapper();

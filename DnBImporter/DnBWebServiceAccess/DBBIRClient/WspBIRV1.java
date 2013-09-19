@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "wsp_BIR_V1", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/OrderAndInvestigations/OtherProducts/BIR_V1/wsp_BIR_V1", wsdlLocation = "file:/home/astacey/git/DnBImporter/DnBImporter/DnBWebServiceAccess/DBBIRClient/WSDL/BIR.wsdl")
+@WebServiceClient(name = "wsp_BIR_V1", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/OrderAndInvestigations/OtherProducts/BIR_V1/wsp_BIR_V1", wsdlLocation = "WSDL/BIR.wsdl")
 public class WspBIRV1
     extends Service
 {
@@ -29,10 +29,10 @@ public class WspBIRV1
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = DBBIRClient.WspBIRV1 .class.getResource(".");
-            url = new URL(baseUrl, "file:/home/astacey/git/DnBImporter/DnBImporter/DnBWebServiceAccess/DBBIRClient/WSDL/BIR.wsdl");
+            baseUrl = DBBIRClient.WspBIRV1 .class.getResource("");
+            url = new URL(baseUrl, "WSDL/BIR.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:/home/astacey/git/DnBImporter/DnBImporter/DnBWebServiceAccess/DBBIRClient/WSDL/BIR.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'WSDL/BIR.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         WSPBIRV1_WSDL_LOCATION = url;

@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "wsp_GetNotificationCount", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/GetNotificationCount", wsdlLocation = "file:WSDL/GetNotificationCount.wsdl")
+@WebServiceClient(name = "wsp_GetNotificationCount", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/GetNotificationCount", wsdlLocation = "WSDL/GetNotificationCount.wsdl")
 public class WspGetNotificationCount
     extends Service
 {
@@ -29,10 +29,10 @@ public class WspGetNotificationCount
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = DBGetNotificationCountClient.WspGetNotificationCount.class.getResource(".");
-            url = new URL(baseUrl, "file:WSDL/GetNotificationCount.wsdl");
+            baseUrl = DBGetNotificationCountClient.WspGetNotificationCount.class.getResource("");
+            url = new URL(baseUrl, "WSDL/GetNotificationCount.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:WSDL/GetNotificationCount.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'WSDL/GetNotificationCount.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         WSPGETNOTIFICATIONCOUNT_WSDL_LOCATION = url;

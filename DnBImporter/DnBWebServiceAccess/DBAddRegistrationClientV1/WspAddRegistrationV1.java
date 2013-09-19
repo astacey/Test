@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "wsp_AddRegistration_V1", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/AddRegistration_V1/wsp_AddRegistration_V1", wsdlLocation = "file:WSDL/AddRegistration_V1.wsdl")
+@WebServiceClient(name = "wsp_AddRegistration_V1", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/AddRegistration_V1/wsp_AddRegistration_V1", wsdlLocation = "WSDL/AddRegistration_V1.wsdl")
 public class WspAddRegistrationV1
     extends Service
 {
@@ -29,10 +29,10 @@ public class WspAddRegistrationV1
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = DBAddRegistrationClientV1.WspAddRegistrationV1 .class.getResource(".");
-            url = new URL(baseUrl, "file:WSDL/AddRegistration_V1.wsdl");
+            baseUrl = DBAddRegistrationClientV1.WspAddRegistrationV1 .class.getResource("");
+            url = new URL(baseUrl, "WSDL/AddRegistration_V1.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:WSDL/AddRegistration_V1.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'WSDL/AddRegistration_V1.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         WSPADDREGISTRATIONV1_WSDL_LOCATION = url;

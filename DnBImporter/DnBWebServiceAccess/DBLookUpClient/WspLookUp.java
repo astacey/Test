@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "wsp_LookUp", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/LookUp", wsdlLocation = "file:WSDL/LookUp.wsdl")
+@WebServiceClient(name = "wsp_LookUp", targetNamespace = "http://www.dnb.com/DNB_WebServices/Providers/LookUp", wsdlLocation = "WSDL/LookUp.wsdl")
 public class WspLookUp
     extends Service
 {
@@ -29,10 +29,10 @@ public class WspLookUp
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = DBLookUpClient.WspLookUp.class.getResource(".");
-            url = new URL(baseUrl, "file:WSDL/LookUp.wsdl");
+            baseUrl = DBLookUpClient.WspLookUp.class.getResource("");
+            url = new URL(baseUrl, "WSDL/LookUp.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:WSDL/LookUp.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'WSDL/LookUp.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         WSPLOOKUP_WSDL_LOCATION = url;
