@@ -12,6 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
 				TestCompanyType.class,
 				TestDatedValue.class, 
 				TestDatedValueCollection.class, 
+				TestDBFullReportMapper.class,
 				TestDnBCSVCompanyRepository.class, 
 				TestDnBData.class, 
 				TestDnBDataMapper.class, 

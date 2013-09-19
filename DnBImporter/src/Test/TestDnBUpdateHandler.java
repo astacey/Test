@@ -3,7 +3,9 @@ package Test;
 import static org.junit.Assert.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 import org.junit.Test;
@@ -17,6 +19,7 @@ import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
 import Domain.DnBData;
+import Domain.DnBRating;
 
 public class TestDnBUpdateHandler {
 
@@ -89,5 +92,46 @@ public class TestDnBUpdateHandler {
 		assertTrue("Paydex of saved company should be 77", 77==companyRepo.getAllCompanies().get(0).getDunnBradstreetData().getPaydexScoreHistory().getCurrent().getValue());
 		assertTrue("OutOfBusiness indicator of company should be true", companyRepo.getAllCompanies().get(0).getDunnBradstreetData().getOutOfBusiness());
 		
+	}
+	
+	@Test
+	public void test2RatingsUpdates()
+	{
+		TestCompanyRepository companyRepo = new TestCompanyRepository();
+		TestDnBRepository dnbRepo = new TestDnBRepository();
+		TestImporterSettingsRepository settingsRepo = new TestImporterSettingsRepository();
+		// Set date to be now - 1 min, this means it'll only call dnbRepo.getupdates once
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -1);
+		settingsRepo.setLastRunDate(cal.getTime());
+		
+		// set up 1 companyh with out of business set to false
+		CompanyCollection companies = new CompanyCollection();
+		Company c = new Company("1", "Test", CompanyType.CUSTOMER);
+		c.setDunnBradstreetData(new DnBData(100));
+		c.getDunnBradstreetData().setOutOfBusiness(false);
+		companies.add(c);
+		companyRepo.setTestCompanies(companies);
+		
+		dnbRepo.setTestCompanyUpdates(getDBUpdates());
+		
+		DnBUpdateHandler handler = new DnBUpdateHandler(companyRepo, dnbRepo, settingsRepo.getSettings());
+		handler.getUpdates();
+		
+		assertEquals("There should be 1 rating for company 1", 1, companyRepo.getCompanyById("1").getDunnBradstreetData().getDbratingHistory().size());
+		assertEquals("The rating for company 1 should be H2", "H2", companyRepo.getCompanyById("1").getDunnBradstreetData().getCurrentRating().getRating());
+	}
+	
+	private ArrayList<DnBData> getDBUpdates()
+	{
+		ArrayList<DnBData> updates = new ArrayList<DnBData>();
+		
+		DnBData data = new DnBData(100);
+		data.getDbratingHistory().add(new DnBRating("O2", new Date()));
+		updates.add(data);
+		data = new DnBData(100);
+		data.getDbratingHistory().add(new DnBRating("H2", new Date()));
+		updates.add(data);
+		return updates;
 	}
 }

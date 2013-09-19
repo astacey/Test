@@ -147,7 +147,7 @@ public class DnBUpdateHandler
 		{
 			for(DnBRating rat : data.getDbratingHistory())
 			{
-				companyToUpdate.getDunnBradstreetData().getDbratingHistory().add(rat);
+				companyToUpdate.getDunnBradstreetData().getDbratingHistory().upsert(rat);
 			}
 			companyToUpdate.getDunnBradstreetData().getFailureRiskScoreHistory().upsert(data.getFailureRiskScoreHistory());
 			companyToUpdate.getDunnBradstreetData().getFailureRiskPercentileHistory().upsert(data.getFailureRiskPercentileHistory());

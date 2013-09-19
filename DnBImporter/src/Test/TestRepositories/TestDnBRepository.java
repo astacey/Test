@@ -12,6 +12,7 @@ import Domain.IntegerDatedValue;
 public class TestDnBRepository implements IDnBRepository 
 {
 	private DnBRegistrationCollection testRegistrations;
+	private ArrayList<DnBData> testCompanyUpdates;
 	
 	@Override
 	public Boolean registerCompany(int dunsNumber) {
@@ -42,7 +43,10 @@ public class TestDnBRepository implements IDnBRepository
 	@Override
 	public ArrayList<DnBData> getCompanyUpdates(Date startDate, Date endDate) 
 	{
-		
+		if(testCompanyUpdates != null)
+		{
+			return testCompanyUpdates;
+		}
 		DnBData data = new DnBData(100);
 		data.setName("Unit 4 - Test Class");
 		data.getPaydexScoreHistory().add(new IntegerDatedValue(new Date(), 77));
@@ -54,6 +58,14 @@ public class TestDnBRepository implements IDnBRepository
 
 	public void setTestRegistrations(DnBRegistrationCollection testRegistrations) {
 		this.testRegistrations = testRegistrations;
+	}
+
+	public ArrayList<DnBData> getTestCompanyUpdates() {
+		return testCompanyUpdates;
+	}
+
+	public void setTestCompanyUpdates(ArrayList<DnBData> testCompanyUpdates) {
+		this.testCompanyUpdates = testCompanyUpdates;
 	}
 
 }
