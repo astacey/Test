@@ -41,6 +41,14 @@ public class DnBDataMapper
 		 * Credit Delinquency Score National Percentile Date - DELQ_SCR_ENTR\SCR_GRP\ASMT_DT
 		 * Credit Delinquency Score Commentary - DELQ_SCR_ENTR\SCR_GRP\SCR_CMTY_CD then multiple ArrayOfstringItem
 		 * Credit Delinquency Score Override - DELQ_SCR_ENTR\SCR_GRP\SCR_OVRD_CD
+		 * 
+		 * Address Details
+		 * 
+		 * Adresss lines - ADR_LINE\ArrayOfstringItem
+		 * Post Code - POST_CODE
+		 * Postal Town - POST_TOWN
+		 * Primary Geograpihic Area - PRIM_GEO_AREA
+		 * Country - CTRY_CD
 		 */
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		try
@@ -53,6 +61,10 @@ public class DnBDataMapper
 				
 				Currency defaultCurrency = null, maxCreditCurrency = null;
 				double maxCredit = -1, cashLiquidAssets = -1;
+				
+				String postCode = null, county = null, town = null;
+				Country country = null;
+				ArrayList<String> addressLines = new ArrayList<String>();
 				
 				for(int j=0;j<children.getLength();j++)
 				{
@@ -88,6 +100,16 @@ public class DnBDataMapper
 						getScoreCommentary(data.getFailureRiskScoreCommentary(), children.item(j));
 					else if(children.item(j).getNodeName()=="FAIL_SCR_ENTR")
 						getFailureRiskScore(data, children.item(j));
+					else if(children.item(j).getNodeName()=="CTRY_CD")
+						country = Country.getCountryFromIso2(children.item(j).getTextContent());
+					else if(children.item(j).getNodeName()=="POST_TOWN")
+						town = XmlHelper.getStringFromXmlString(children.item(j).getTextContent());
+					else if(children.item(j).getNodeName()=="POST_CODE")
+						postCode = XmlHelper.getStringFromXmlString(children.item(j).getTextContent());
+					else if(children.item(j).getNodeName()=="PRIM_GEO_AREA")
+						county = XmlHelper.getStringFromXmlString(children.item(j).getTextContent());
+					else if(children.item(j).getNodeName()=="ADR_LINE")
+						 getAddressLines(addressLines, children.item(j));
 				}
 
 				if(maxCreditCurrency!=null)
@@ -102,6 +124,9 @@ public class DnBDataMapper
 				if(defaultCurrency!=null && cashLiquidAssets > -1)
 					data.getCashLiquidAssetsHistory().upsert(new MoneyDatedValue(new Date(), new Money(defaultCurrency, cashLiquidAssets)));
 				
+				Address address = getAddress(postCode, town, county, country, addressLines);
+				data.setMainAddress(address);
+
 				return data;
 			}
 			else
@@ -116,6 +141,29 @@ public class DnBDataMapper
 		}
 		
 		return null;
+	}
+	
+	private Address getAddress(String postCode, String town, String county, Country country, ArrayList<String> lines)
+	{
+		if(postCode!=null || town!=null || county!=null || country!=null || lines.size()>0)
+		{
+			Address address = new Address();
+			address.setPostCode(postCode);
+			address.setTown(town);
+			address.setCounty(county);
+			address.setCountry(country);
+			address.getAddressLines().addAll(lines);
+			return address;
+		}
+		return null;
+	}
+	
+	private void getAddressLines(ArrayList<String> lines, Node addressNode)
+	{
+		for(int i=0;i<addressNode.getChildNodes().getLength();i++)
+		{
+			lines.add(addressNode.getChildNodes().item(i).getTextContent());
+		}
 	}
 	
 	private void getScoreCommentary(ArrayList<DnBScoreCommentary> commentary, Node commentaryNode)

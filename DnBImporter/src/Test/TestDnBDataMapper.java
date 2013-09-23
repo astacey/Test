@@ -8,6 +8,7 @@ import java.util.Date;
 import org.junit.Test;
 
 import DnBXmlMappers.DnBDataMapper;
+import Domain.Country;
 import Domain.Currency;
 import Domain.DnBData;
 
@@ -41,6 +42,15 @@ public class TestDnBDataMapper {
 		
 		assertEquals("Check default currency", Currency.GBP, data.getDefaultCurrency());
 		assertEquals("Check max credit currency", Currency.GBP, data.getMaximumCreditRecommendationCurrency());
+		
+		// Address details
+		assertEquals("Postal Town is Bristol", "BRISTOL", data.getMainAddress().getTown());
+		assertEquals("Postal Code is BS20 0PX", "BS20 0PX", data.getMainAddress().getPostCode());
+		assertEquals("County is AVON", "AVON", data.getMainAddress().getCounty());
+		assertEquals("Postal Code is Great Britain", Country.GB, data.getMainAddress().getCountry());
+		assertEquals("Address lines length is 2", 2, data.getMainAddress().getAddressLines().size());
+		assertEquals("Address lines 0 is right", "ST GEORGES HALL", data.getMainAddress().getAddressLines().get(0));
+		assertEquals("Address lines 1 is right", "ST GEORGES HILL, EASTON-IN-GORDANO", data.getMainAddress().getAddressLines().get(1));
 	}
 	
 	private String getDateString(Date date)

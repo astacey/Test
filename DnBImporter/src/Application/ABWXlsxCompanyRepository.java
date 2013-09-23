@@ -154,7 +154,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 						if(postcode.length()>0||address1.length()>0)
 						{
 							Address address = new Address();
-							address.setAddressLine1(address1);
+							address.getAddressLines().add(address1);
 							address.setPostCode(postcode);
 							c.setMainAddress(address);
 						}

@@ -65,6 +65,8 @@ public class DnBData
 	private DnBScoreOverride failureRiskScoreOverride;
 	// Credit Delinquency Score Override - Not storing history to begin with, so this relates to the current score
 	private DnBScoreOverride creditDelinquencyScoreOverride;
+	// Main\Primary address of the company ( according to D&B ! )
+	private Address mainAddress;
 	
 	public DnBData() { this(0);	}
 	
@@ -129,6 +131,9 @@ public class DnBData
 		
 		thisData += "\nOut of Business Indicator : " + outOfBusiness;
 		thisData += "\nPrimary SIC Code : " + primarySicCode;
+		
+		if(mainAddress!=null)
+			thisData += "\nAddress : " + mainAddress.toString();
 		
 		return thisData;
 	}
@@ -264,5 +269,13 @@ public class DnBData
 	public void setCreditDelinquencyScoreOverride(
 			DnBScoreOverride creditDelinquencyScoreOverride) {
 		this.creditDelinquencyScoreOverride = creditDelinquencyScoreOverride;
+	}
+
+	public Address getMainAddress() {
+		return mainAddress;
+	}
+
+	public void setMainAddress(Address mainAddress) {
+		this.mainAddress = mainAddress;
 	}
 }

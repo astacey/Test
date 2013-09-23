@@ -13,6 +13,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import Application.XmlHelper;
+import Domain.Address;
+import Domain.Country;
 import Domain.Currency;
 import Domain.DnBData;
 import Domain.DnBRating;
@@ -41,6 +43,14 @@ public class DnBDataUpdateMapper
 		 * 
 		 * Credit Delinquency Score Commentary - DELQ_SCR_ENTR\SCR_GRP\SCR_CMTY_CD then multiple ArrayOfstringItem
 		 * Credit Delinquency Score Override - DELQ_SCR_ENTR\SCR_GRP\SCR_OVRD_CD
+		 * * 
+		 * Address Details
+		 * 
+		 * Adresss lines - ADR_LINE\ArrayOfstringItem
+		 * Post Code - POST_CODE
+		 * Postal Town - POST_TOWN
+		 * Primary Geograpihic Area - PRIM_GEO_AREA
+		 * Country - CTRY_CD
 		 */
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		ArrayList<DnBData> updateCollection = new ArrayList<DnBData>();
@@ -109,6 +119,13 @@ public class DnBDataUpdateMapper
 	private void updateChangesIncremental(DnBData data, Node changes) throws ParseException
 	{
 		// changes = <NTFCRS>
+
+		// Address details
+		String postCode = null, county = null, town = null;
+		Country country = null;
+		// It looks like only 1 address line ever shows up in an update. Think it's a  bug in D&B, but not really important
+		String addressLine = null;
+		
 		for(int i=0;i<changes.getChildNodes().getLength();i++)
 		{
 			Node changeNode = changes.getChildNodes().item(i); // this is <ArrayOfNTFCRSItem>, if anyone's interested
@@ -146,6 +163,16 @@ public class DnBDataUpdateMapper
 					cashAssets = XmlHelper.getDoubleFromXmlString(children.item(j).getTextContent());
 				else if(children.item(j).getNodeName()=="DELQ_SCR_ENTR")
 					creditDelinquencyPercentile = getCreditDelinquencyScore(children.item(j));
+				else if(children.item(j).getNodeName()=="CTRY_CD")
+					country = Country.getCountryFromIso2(children.item(j).getTextContent());
+				else if(children.item(j).getNodeName()=="POST_TOWN")
+					town = XmlHelper.getStringFromXmlString(children.item(j).getTextContent());
+				else if(children.item(j).getNodeName()=="POST_CODE")
+					postCode = XmlHelper.getStringFromXmlString(children.item(j).getTextContent());
+				else if(children.item(j).getNodeName()=="PRIM_GEO_AREA")
+					county = XmlHelper.getStringFromXmlString(children.item(j).getTextContent());
+				else if(children.item(j).getNodeName()=="ADR_LINE")
+					 addressLine = XmlHelper.getStringFromXmlString(children.item(j).getTextContent());
 				//
 			}
 
@@ -165,8 +192,25 @@ public class DnBDataUpdateMapper
 				data.getMaximumCreditRecommendation().upsert(new MoneyDatedValue(changeDate, new Money(data.getMaximumCreditRecommendationCurrency(), maxCredit)));
 			if(cashAssets>-1.0)
 				data.getCashLiquidAssetsHistory().upsert(new MoneyDatedValue(changeDate, new Money(data.getDefaultCurrency(), cashAssets)));
-
 		}
+
+		Address address = getAddress(postCode, town, county, country, addressLine);
+		data.setMainAddress(address);
+	}
+
+	private Address getAddress(String postCode, String town, String county, Country country, String line)
+	{
+		if(postCode!=null || town!=null || county!=null || country!=null || line != null)
+		{
+			Address address = new Address();
+			address.setPostCode(postCode);
+			address.setTown(town);
+			address.setCounty(county);
+			address.setCountry(country);
+			address.getAddressLines().add(line);
+			return address;
+		}
+		return null;
 	}
 	
 	private void updateChangesFull(DnBData data, Node changes) throws ParseException
