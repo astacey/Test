@@ -1,11 +1,14 @@
 package Application;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import Domain.AccountGroup;
+import Domain.Address;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
+import Domain.Country;
 import Domain.Currency;
 import Domain.DnBData;
 import Domain.ExperianData;
@@ -14,10 +17,12 @@ import Domain.RegistrationStatus;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
+import com.sun.org.apache.xpath.internal.operations.And;
 
 public class SupplierAppCSVAccounts extends SupplierAppCSVFile 
 {
-	private final String[] accountsFileHeaders = new String[] { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS", "ACCOUNT_GROUP_CODE","ACCOUNT_GROUP_NAME","VERTICAL_MARKET", "EXPERIAN_NO", "EXPERIAN_LEGAL_STATUS", "EXPERIAN_REGISTRATION_STATUS", "DNB_DEFAULT_CURRENCY_CODE","DNB_CREDIT_RECOMMENDATION_CURRENCY_CODE" };
+	private final String[] accountsFileHeaders = new String[] { "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS", "ACCOUNT_GROUP_CODE","ACCOUNT_GROUP_NAME","VERTICAL_MARKET", "EXPERIAN_NO", "EXPERIAN_LEGAL_STATUS", "EXPERIAN_REGISTRATION_STATUS", "DNB_DEFAULT_CURRENCY_CODE","DNB_CREDIT_RECOMMENDATION_CURRENCY_CODE",
+			"DNB_RATING", "DNB_ADDRESS_LINE_1", "DNB_ADDRESS_LINE_2", "DNB_ADDRESS_LINE_3", "DNB_ADDRESS_LINE_4", "DNB_ADDRESS_TOWN", "DNB_ADDRESS_COUNTY", "DNB_ADDRESS_COUNTRY_CODE", "DNB_ADDRESS_COUNTRY_DESCRIPTION", "DNB_ADDRESS_POST_CODE", "DNB_NAME", "DNB_MATCH_GRADE", "DNB_CONFIDENCE_CODE" };
 	private final String allMemberId = "1";
 
 	@Override
@@ -38,7 +43,7 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 				String groupName = csvReader.get("ACCOUNT_GROUP_NAME"); 
 				String currencyCode = csvReader.get("DNB_DEFAULT_CURRENCY_CODE");
 				String maxCreditCurrencyCode = csvReader.get("DNB_CREDIT_RECOMMENDATION_CURRENCY_CODE");
-				
+								
 				// Ignore the artificial companies, all, supplier, partners, customers
 				if( ! ( (id.equals("1")&&name.equals("All") ) || ( id.equals("A") && name.equals("Suppliers") ) || ( id.equals("B") && name.equals("Partners") ) || ( id.equals("C") && name.equals("Customers" ) ) ) )
 				{
@@ -48,6 +53,8 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 					c.setVerticalMarket(verticalMarket);
 					if( groupCode.length()>0)
 						c.setAccountGroup(new AccountGroup(groupCode, groupName));
+					
+					
 					
 					String dunsString = csvReader.get("DUNS_NO");
 					if( dunsString.length()>0)
@@ -59,6 +66,13 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 						data.getRegistrationDetails().setStatus(RegistrationStatus.fromString(dnbStatus));
 						data.setDefaultCurrency(Currency.getCurrencyFromCode(currencyCode));
 						data.setMaximumCreditRecommendationCurrency(Currency.getCurrencyFromCode(maxCreditCurrencyCode));
+						
+						data.setName(csvReader.get("DNB_NAME"));
+						data.setMatchGrade(csvReader.get("DNB_MATCH_GRADE"));
+						data.setMatchConfidenceCode(csvReader.get("DNB_CONFIDENCE_CODE"));
+						
+						Address dnbAddress = getAddress(csvReader);
+						data.setMainAddress(dnbAddress);
 						c.setDunnBradstreetData(data);
 					}
 					
@@ -95,6 +109,8 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 			
 			String duns="", outOfBusiness="Active", dnbStatus="", experianNo="", experianLegalStatus="", experianRegStatus="", currency="", maxCreditCurrency="";  
 			
+			String dnbRating="", dnbAddress1="", dnbAddress2="", dnbAddress3="", dnbAddress4="", dnbAddressTown="", dnbAddressCounty="", dnbAddressCountryCode="", dnbAddressCountryDesc="", dnbAddressPostCode="", dnbName="", dnbMatchGrade="", dnbConfidenceCode="";
+			
 			if(c.hasDunnBradstreetData())
 			{
 				duns = String.valueOf(c.getDunnBradstreetData().getDunsNumber());
@@ -104,7 +120,29 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 					currency = c.getDunnBradstreetData().getDefaultCurrency().getCode();
 				if(c.getDunnBradstreetData().getMaximumCreditRecommendationCurrency()!=null)
 					maxCreditCurrency = c.getDunnBradstreetData().getMaximumCreditRecommendationCurrency().getCode();
+				if(c.getDunnBradstreetData().getCurrentRating()!=null)
+					dnbRating=c.getDunnBradstreetData().getCurrentRating().getRating();
 				
+				dnbName = c.getDunnBradstreetData().getName();
+				dnbMatchGrade = c.getDunnBradstreetData().getMatchGrade();
+				dnbConfidenceCode = c.getDunnBradstreetData().getMatchConfidenceCode();
+				
+				Address address = c.getDunnBradstreetData().getMainAddress();
+				if(address!=null)
+				{
+					dnbAddress1 = address.getAddressLine1();
+					dnbAddress2 = address.getAddressLine2();
+					dnbAddress3 = address.getAddressLine3();
+					dnbAddress4 = address.getAddressLine4();
+					dnbAddressTown = address.getTown();
+					dnbAddressCounty = address.getCounty();
+					if( address.getCountry()!=null)
+					{
+						dnbAddressCountryCode = address.getCountry().getIso2();
+						dnbAddressCountryDesc = address.getCountry().getDescription();
+					}
+					dnbAddressPostCode = address.getPostCode();
+				}
 			}
 			if(c.hasExperianData())
 			{
@@ -112,21 +150,56 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 				experianLegalStatus = c.getExperianData().getLegalStatus().getDescription();
 				experianRegStatus = c.getExperianData().getRegistrationStatus().getDescription();
 			}
-			csvWriter.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), duns, outOfBusiness, dnbStatus, accGroupCode, accGroupName, c.getVerticalMarket(), experianNo, experianLegalStatus, experianRegStatus, currency, maxCreditCurrency});
+
+			csvWriter.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), duns, outOfBusiness, dnbStatus, accGroupCode, accGroupName, c.getVerticalMarket(), experianNo, experianLegalStatus, experianRegStatus, currency, maxCreditCurrency, dnbRating, dnbAddress1, dnbAddress2, dnbAddress3, dnbAddress4, dnbAddressTown, dnbAddressCounty, dnbAddressCountryCode, dnbAddressCountryDesc, dnbAddressPostCode, dnbName, dnbMatchGrade, dnbConfidenceCode});
 			
 			csvWriter.flush();
 		}
 	}
 	
+	private Address getAddress(CsvReader reader) throws IOException
+	{
+		//"DNB_ADDRESS_LINE_1", "DNB_ADDRESS_LINE_2", "DNB_ADDRESS_LINE_3", "DNB_ADDRESS_LINE_4", "DNB_ADDRESS_TOWN", "DNB_ADDRESS_COUNTY", "DNB_ADDRESS_COUNTRY_CODE", "DNB_ADDRESS_COUNTRY_DESCRIPTION", "DNB_ADDRESS_POST_CODE"
+		ArrayList<String> addressLines = new ArrayList<String>();
+		addAddressLine("DNB_ADDRESS_LINE_1", reader, addressLines);
+		addAddressLine("DNB_ADDRESS_LINE_2", reader, addressLines);
+		addAddressLine("DNB_ADDRESS_LINE_3", reader, addressLines);
+		addAddressLine("DNB_ADDRESS_LINE_4", reader, addressLines);
+		
+		String town = reader.get("DNB_ADDRESS_TOWN");
+		String county = reader.get("DNB_ADDRESS_COUNTY");
+		Country country = Country.getCountryFromIso2(reader.get("DNB_ADDRESS_COUNTRY_CODE"));
+		String postCode = reader.get("DNB_ADDRESS_POST_CODE");
+		
+		if(town.length()>0 || county.length()>0 || postCode.length()>0 || country!=null || addressLines.size()>0)
+		{
+			Address address = new Address();
+			address.getAddressLines().addAll(addressLines);
+			address.setTown(town);
+			address.setCounty(county);
+			address.setCountry(country);
+			address.setPostCode(postCode);
+			return address;
+		}
+		return null;
+	}
+	
+	private void addAddressLine(String tag, CsvReader reader, ArrayList<String> addressLines) throws IOException
+	{
+		String addressLine = reader.get(tag);
+		if(addressLine.length()>0)
+			addressLines.add(addressLine);
+	}
+	
 	private void initialiseAccounts(CsvWriter csvWriter) throws IOException
 	{
 		csvWriter.writeRecord(accountsFileHeaders);
-		csvWriter.writeRecord(new String[] { allMemberId, "All",allMemberId,"","","","","","","","","","","",""  });
+		csvWriter.writeRecord(new String[] { allMemberId, "All",allMemberId,"","","","","","","","","","","","","","","","","","","","","","","","",""  });
 		for(CompanyType ct : CompanyType.values())
 		{
 			if( ct!=CompanyType.UNKNOWN )
 			{
-				csvWriter.writeRecord(new String[] { ct.getId(), ct.getDescription(), allMemberId, "", "", "", "", "","","","","","","","" });
+				csvWriter.writeRecord(new String[] { ct.getId(), ct.getDescription(), allMemberId, "", "", "", "", "","","","","","","","","","","","","","","","","","","","","" });
 			}
 		}
 		csvWriter.flush();

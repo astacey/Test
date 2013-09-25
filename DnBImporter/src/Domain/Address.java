@@ -33,6 +33,24 @@ public class Address
 		return addressLines.get(0);
 	}
 
+	public String getAddressLine2() {
+		if(this.addressLines.size()>=2)
+			return addressLines.get(1);
+		return "";
+	}
+
+	public String getAddressLine3() {
+		if(this.addressLines.size()>=3)
+			return addressLines.get(2);
+		return "";
+	}
+
+	public String getAddressLine4() {
+		if(this.addressLines.size()>=4)
+			return addressLines.get(3);
+		return "";
+	}
+
 	public String getTown() {
 		return town;
 	}

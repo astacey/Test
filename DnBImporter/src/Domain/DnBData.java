@@ -67,6 +67,17 @@ public class DnBData
 	private DnBScoreOverride creditDelinquencyScoreOverride;
 	// Main\Primary address of the company ( according to D&B ! )
 	private Address mainAddress;
+	// Used to grade the automated matching of a company to a D&B company
+	// An alpha character 'MatchGrade' is assigned to each of the 11* components of the record
+	// Business Name, Street #, Street Name, City, State, Mailing Address, telephone, Post Code, Density, Uniqueness, SIC
+	// A - The element is a very close or exact match		
+	// B - The element is a close match		
+	// F - This element does not match		
+	// Z - This element was not used in the match analysis		
+	private String matchGrade;
+	// Used to grade the automated matching of a company to a D&B company
+	// 0 - 10. 0 or null - no match. 1-3 Low Confidence, 4-6 Medium, 7 - 10 High.
+	private String matchConfidenceCode;
 	
 	public DnBData() { this(0);	}
 	
@@ -277,5 +288,21 @@ public class DnBData
 
 	public void setMainAddress(Address mainAddress) {
 		this.mainAddress = mainAddress;
+	}
+
+	public String getMatchGrade() {
+		return matchGrade;
+	}
+
+	public void setMatchGrade(String matchGrade) {
+		this.matchGrade = matchGrade;
+	}
+
+	public String getMatchConfidenceCode() {
+		return matchConfidenceCode;
+	}
+
+	public void setMatchConfidenceCode(String matchConfidenceCode) {
+		this.matchConfidenceCode = matchConfidenceCode;
 	}
 }
