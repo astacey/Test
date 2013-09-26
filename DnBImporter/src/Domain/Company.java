@@ -46,12 +46,14 @@ public class Company implements Comparable<Company>
 		return company;
 	}
 	
-	public Boolean uploadCompanyMapping(String id, String mappingType)
+	// Introducing these 2 for D&B match grade and confidence
+	// Not sure this is "Nice" in terms of code structure/design/whatever. After 60 seconds thinking, I just need to get on with it. Revisit later. Honest.
+	public Boolean uploadCompanyMapping(String id, String mappingType, String mappingGrade, String mappingConfidence)
 	{
 		if(mappingType.equalsIgnoreCase("experian"))
 			return uploadExperianMapping(id);
 		else if(mappingType.equalsIgnoreCase("dnb"))
-			return uploadDnBMapping(id);
+			return uploadDnBMapping(id, mappingGrade, mappingConfidence);
 		return false;
 	}
 	
@@ -76,27 +78,42 @@ public class Company implements Comparable<Company>
 		return false;
 	}
 	
-	private Boolean uploadDnBMapping(String id)
+	private Boolean uploadDnBMapping(String id, String grade, String confidence)
 	{
 		if(id.length()==0) // unmapped - wipe old data ( dangerous ??? )
 		{
 			dunnBradstreetData = null;
 			return true;
 		}
-		else if(dunnBradstreetData==null)// If no existing mapping or mapping is different, then set up new experian details
+		else if(dunnBradstreetData==null)// If no existing mapping or mapping is different, then set up new D&B details
 		{
 			dunnBradstreetData = new DnBData(Integer.parseInt(id));
+			updateDnBMatchGradeAndConfidence(grade, confidence);
 			return true;
 		}
 		else if(dunnBradstreetData.getDunsNumber()!=Integer.parseInt(id))
 		{
-			//TODO : Not sure what else we need to do, but all existing experian data needs to be wiped if remapped
+			//TODO : Not sure what else we need to do, but all existing D&B data needs to be wiped if remapped
 			dunnBradstreetData = new DnBData(Integer.parseInt(id));
+			updateDnBMatchGradeAndConfidence(grade, confidence);
 			return true;
+		}
+		else if(dunnBradstreetData.getDunsNumber()==Integer.parseInt(id))
+		{
+			// just update confidence and grade
+			updateDnBMatchGradeAndConfidence(grade, confidence);
+			// return true ? don't think so - only if new mapping
 		}
 		return false;
 	}
 	
+	private void updateDnBMatchGradeAndConfidence(String grade, String confidence)
+	{
+		if( grade.length()>0)
+			dunnBradstreetData.setMatchGrade(grade);
+		if(confidence.length()>0)
+			dunnBradstreetData.setMatchConfidenceCode(confidence);
+	}
 	/**
 	 * @return the name 
 	 */

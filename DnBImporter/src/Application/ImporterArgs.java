@@ -17,6 +17,8 @@ public class ImporterArgs
 	private String masterId = "";
 	private String mappingId ="";
 	private String mappingType ="";
+	private String mappingMatchGrade = "";
+	private String mappingConfidence = "";
 	private String jksFile = "";
 	private String jksPassword="";
 	private Boolean isShowForm=false;
@@ -105,6 +107,16 @@ public class ImporterArgs
 			{
 				i++;
 				this.mappingId=args[i];
+			}
+			else if(args[i].equalsIgnoreCase("-mappingGrade"))
+			{
+				i++;
+				this.mappingMatchGrade=args[i];
+			}
+			else if(args[i].equalsIgnoreCase("-mappingConfidence"))
+			{
+				i++;
+				this.mappingConfidence=args[i];
 			}
 			else if(args[i].equalsIgnoreCase("-mappingtype"))
 			{
@@ -239,5 +251,13 @@ public class ImporterArgs
 
 	public Boolean getIsDebugJavax() {
 		return isDebugJavax;
+	}
+
+	public String getMappingMatchGrade() {
+		return mappingMatchGrade;
+	}
+
+	public String getMappingConfidence() {
+		return mappingConfidence;
 	}
 }
