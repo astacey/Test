@@ -162,7 +162,7 @@ public class DnBDataMapper
 	{
 		for(int i=0;i<addressNode.getChildNodes().getLength();i++)
 		{
-			lines.add(addressNode.getChildNodes().item(i).getTextContent());
+			lines.add(XmlHelper.getStringFromXmlString(addressNode.getChildNodes().item(i).getTextContent()));
 		}
 	}
 	
