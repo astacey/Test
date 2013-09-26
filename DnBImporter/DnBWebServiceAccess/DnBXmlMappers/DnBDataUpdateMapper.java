@@ -72,7 +72,7 @@ public class DnBDataUpdateMapper
 					}
 					else if(children.item(j).getNodeName()=="PRIM_NME")
 					{
-						data.setName(children.item(j).getTextContent());
+						data.setName(XmlHelper.getStringFromXmlString(children.item(j).getTextContent()));
 					}
 					// 2 kinds of changes
 					// ones read from incremental part of xml ( NTFCRS )

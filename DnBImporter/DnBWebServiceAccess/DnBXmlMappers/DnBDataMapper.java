@@ -83,7 +83,7 @@ public class DnBDataMapper
 					else if(children.item(j).getNodeName()=="PRIM_SIC")
 						data.setPrimarySicCode(XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent()));
 					else if(children.item(j).getNodeName()=="PRIM_NME")
-						data.setName(children.item(j).getTextContent());
+						data.setName(XmlHelper.getStringFromXmlString(children.item(j).getTextContent()));
 					else if(children.item(j).getNodeName()=="OUT_BUS_IND" && children.item(j).getTextContent().equalsIgnoreCase("y"))
 						data.setOutOfBusiness(true);
 					else if(children.item(j).getNodeName()=="CRCY_CD")
