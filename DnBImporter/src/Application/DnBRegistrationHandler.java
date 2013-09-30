@@ -44,7 +44,17 @@ public class DnBRegistrationHandler
 				if( reg == null || reg.getStatus()==RegistrationStatus.CANCELLED || reg.getStatus()==RegistrationStatus.FAILED)
 				{
 					logger.info("Registering duns - " + duns);
-					if( dnbRepository.registerCompany(duns) == true)
+//					Boolean registered = false;
+//					try
+//					{
+//						registered = dnbRepository.registerCompany(duns);
+//					}
+//					catch(Exception e)
+//					{
+//						logger.warning("Error registering DUNS [" + duns + "] :" + e.getMessage());
+//					}
+	//				if( registered == true)
+					if( dnbRepository.registerCompany(duns) == true )
 					{
 						logger.info("Registered duns - " + duns);
 						// Save status as PENDING - don't bother checking the return value, it'll always be pending ( unless error ).
@@ -59,7 +69,7 @@ public class DnBRegistrationHandler
 						failed++;
 						// Check the company out of business indicator to see if it should be flagged as inactive
 						DnBData dnbData = dnbRepository.getCompanyDetails(duns);
-						if(dnbData.getOutOfBusiness()==true)
+						if(dnbData != null && dnbData.getOutOfBusiness()==true)
 							unregisteredCompany.getDunnBradstreetData().setOutOfBusiness(true);
 					}
 				}

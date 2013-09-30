@@ -40,6 +40,7 @@ public class BulkMappingUpload
 		CompanyCollection companies = companyRepo.getAllCompanies();
 		CsvReader reader = getCsvReader();
 		int read=0, mapped=0, notexist=0, nomasterid=0;
+		
 		if(reader.readHeaders())
 		{
 			while(reader.readRecord()==true)

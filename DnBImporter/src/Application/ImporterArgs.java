@@ -23,7 +23,7 @@ public class ImporterArgs
 	private String jksPassword="";
 	private Boolean isShowForm=false;
 	private String GUIUpdateFolder="";
-	private char delimiter;
+	private char delimiter=','; // default
 	private Boolean isDebugJavax = false;
 	
 	public ImporterArgs(String[] args)
