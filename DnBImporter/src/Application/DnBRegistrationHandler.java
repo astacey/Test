@@ -24,7 +24,7 @@ public class DnBRegistrationHandler
 	public void RegisterCompanies()
 	{
 		logger.info("Getting unregistered duns");
-		int active=0, pending=0, failed=0;
+		int active=0, pending=0, failed=0, oob=0, tradeups=0;
 		
 		CompanyCollection unregisteredDuns = importRepository.getUnregisteredDunsCompanies();
 		
@@ -44,17 +44,17 @@ public class DnBRegistrationHandler
 				if( reg == null || reg.getStatus()==RegistrationStatus.CANCELLED || reg.getStatus()==RegistrationStatus.FAILED)
 				{
 					logger.info("Registering duns - " + duns);
-//					Boolean registered = false;
-//					try
-//					{
-//						registered = dnbRepository.registerCompany(duns);
-//					}
-//					catch(Exception e)
-//					{
-//						logger.warning("Error registering DUNS [" + duns + "] :" + e.getMessage());
-//					}
-	//				if( registered == true)
-					if( dnbRepository.registerCompany(duns) == true )
+					Boolean registered = false;
+					try
+					{
+						registered = dnbRepository.registerCompany(duns);
+					}
+					catch(Exception e)
+					{
+						logger.warning("Error registering DUNS [" + duns + "] :" + e.getMessage());
+					}
+					if( registered == true)
+					//if( dnbRepository.registerCompany(duns) == true )
 					{
 						logger.info("Registered duns - " + duns);
 						// Save status as PENDING - don't bother checking the return value, it'll always be pending ( unless error ).
@@ -68,9 +68,36 @@ public class DnBRegistrationHandler
 						unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setStatus(RegistrationStatus.FAILED);
 						failed++;
 						// Check the company out of business indicator to see if it should be flagged as inactive
-						DnBData dnbData = dnbRepository.getCompanyDetails(duns);
-						if(dnbData != null && dnbData.getOutOfBusiness()==true)
-							unregisteredCompany.getDunnBradstreetData().setOutOfBusiness(true);
+						// Also, check for a "Trade-Up". This is when our company has been matched to a branch, not the real company.
+						// It looks like the way to tell is to compare the duns returned in the getdata request. If it's not the same as the one requested, then we're in a trade up situation
+						try
+						{
+							DnBData dnbData = dnbRepository.getCompanyDetails(duns);
+							// Check for different duns here
+							// I shouldn't have to worry about the duns changing here in relation to existing facts - since this hasn't been registered successfully yet, there should be no facts
+							if(dnbData != null)
+							{
+								if(dnbData.getDunsNumber()!=unregisteredCompany.getDunnBradstreetData().getDunsNumber())
+								{
+									// set original duns field, so that we have a record
+									unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setOriginalMatchedDunsNo(unregisteredCompany.getDunnBradstreetData().getDunsNumber());
+									// Set status unregistered
+									unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setStatus(RegistrationStatus.UNREGISTERED);
+									// finally, set the duns to be the new one
+									unregisteredCompany.getDunnBradstreetData().setDunsNumber(dnbData.getDunsNumber());
+									tradeups++;
+								}
+								else if(dnbData.getOutOfBusiness()==true)
+								{
+									unregisteredCompany.getDunnBradstreetData().setOutOfBusiness(true);
+									oob++;
+								}
+							}
+						}
+						catch(Exception e)
+						{
+							logger.warning("Error checking Out of Business for DUNS [" + duns + "] :" + e.getMessage());
+						}
 					}
 				}
 				else
@@ -93,7 +120,7 @@ public class DnBRegistrationHandler
 				}
 				importRepository.saveCompany(unregisteredCompany);
 			}
-			logger.info("Found " + unregisteredDuns.size() + " unregistered duns. Read in " + regs.size() + " registrations. Active = " + String.valueOf(active) +" Pending = " + String.valueOf(pending) +" Failed = " + String.valueOf(failed) +".");
+			logger.info("Found " + unregisteredDuns.size() + " unregistered duns. Read in " + regs.size() + " registrations. Active = " + String.valueOf(active) +" Pending = " + String.valueOf(pending) +" Failed = " + String.valueOf(failed) +", Out Of Business = " + String.valueOf(oob) + ", Trade Ups = " + String.valueOf(tradeups) + ".");
 		}
 		
 		importRepository.commitAllChanges();

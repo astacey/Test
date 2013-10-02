@@ -14,7 +14,7 @@ public class TestSupplierAppCSVCompanyRepository
 {
 	// TODO : Need it to not depend on path ?
 	String folderLocation = AllTests.getTestFolder();
-	String expectedAccountOutput = AllTests.getAccountsFileBaseString() + "1;Test & Company;C;1;;100;Active;FAILED;;;;0100;Non Limited;ACTIVE;;;5A1;;;;;;;;;;;;\r\n";
+	String expectedAccountOutput = AllTests.getAccountsFileBaseString() + "1;Test & Company;C;1;;100;Active;FAILED;;;;0100;Non Limited;ACTIVE;;;5A1;;;;;;;;;;;;;\r\n";
 	String expectedAccountInput = AllTests.getAccountsFileBaseString() ;
 	
 	@Test

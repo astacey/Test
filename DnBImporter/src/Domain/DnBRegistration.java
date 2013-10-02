@@ -4,6 +4,7 @@ public class DnBRegistration
 {
 	private int dunsNo;
 	private RegistrationStatus status;
+	private int originalMatchedDunsNo;
 	
 	public DnBRegistration(){this(0);}
 	
@@ -24,6 +25,14 @@ public class DnBRegistration
 	}
 	public void setStatus(RegistrationStatus status) {
 		this.status = status;
+	}
+
+	public int getOriginalMatchedDunsNo() {
+		return originalMatchedDunsNo;
+	}
+
+	public void setOriginalMatchedDunsNo(int originalMatchedDunsNo) {
+		this.originalMatchedDunsNo = originalMatchedDunsNo;
 	}
 	
 	
