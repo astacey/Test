@@ -1,5 +1,5 @@
 Usage: 
-DnbImporter -gui [-guifolder folder] [-u userName] [-pwd password] [-jksfile filepath] [-jkspass password]
+DnbImporter -gui [-guifolder folder] [-u userName] [-pwd password] [-jksfile filepath] [-jkspass password] [-debug]
 
 	-gui		Displays the user interface to make calls manually
 	-guifolder	Populates the "Supplier Data" input box on the Account Details tab
@@ -7,10 +7,11 @@ DnbImporter -gui [-guifolder folder] [-u userName] [-pwd password] [-jksfile fil
 	-pwd		Populates the D&B "Password" input box on the Account Details tab
 	-jksfile	Populates the Experian "JKS File" input box on the Account Details tab
 	-jkspass	Populates the Experian "Password" input box on the Account Details tab
+	-debug		Turns on javax debugging. i.e. System.setProperty("javax.net.debug","all")
 
 Or
 
-DnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mappingtype [-delimiter delimiter]] [-rdnb] [-xdnb] [-rexperian] [-xexperian] [-xabw folder [-f clientfilter]]
+DnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mappingtype -mappingGrade mappinggrade -mappingConfidence mappingconfidencecode [-delimiter delimiter]] [-rdnb] [-xdnb] [-rexperian] [-xexperian] [-xabw folder [-f clientfilter]] [-debug]
 
 	-bm		Perform a bulk mapping import from a csv file
 	-masterid	Column header of the master id column in the csv file
@@ -19,6 +20,8 @@ DnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mapping
 			Current options are:
 			"dnb" for Dunn and Bradstreet DUNS numbers
 			"experian" for Experian reference numbers
+	-mappingGrade	Column header of the match grade column in the csv file
+	-mappingConfidence	Column header of the match confidence code column in the csv file
 	-delimiter	The delimiter used in the csv file
 	
 	-rdnb		Update the D&B notification registrations
@@ -33,3 +36,5 @@ DnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mapping
 
 	-xabw		Import data from abw based csv files. Must specify the folder location as a parameter.
 	-f		Filter the import based on Client. If specified, will only import the companies that match the specified client value.
+	
+	-debug		Turns on javax debugging. i.e. System.setProperty("javax.net.debug","all")
