@@ -78,7 +78,9 @@ public class DnBUpdateHandler
 			if( data != null )
 			{
 				data.getRegistrationDetails().setStatus(RegistrationStatus.ACTIVE);
-				c.setDunnBradstreetData(data);
+				//c.setDunnBradstreetData(data);
+				// Can't just do c.setDunnBradstreetData(data); the company might already have D&B data, e.g. from file import
+				updateCompanyDnBData(c, data);
 				u4baCompanyRepository.saveCompany(c); // do I need this ?
 				success++;
 			}
@@ -161,6 +163,9 @@ public class DnBUpdateHandler
 			companyToUpdate.getDunnBradstreetData().setMaximumCreditRecommendationCurrency(data.getMaximumCreditRecommendationCurrency());
 			
 			companyToUpdate.getDunnBradstreetData().setOutOfBusiness(data.getOutOfBusiness());
+			
+			companyToUpdate.getDunnBradstreetData().setName(data.getName());
+			// TODO : Address updates
 		}
 		else
 		{

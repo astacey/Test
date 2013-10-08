@@ -193,7 +193,8 @@ public class DnBDataUpdateMapper
 			if(cashAssets>-1.0)
 				data.getCashLiquidAssetsHistory().upsert(new MoneyDatedValue(changeDate, new Money(data.getDefaultCurrency(), cashAssets)));
 		}
-
+		
+		// TODO : Move to the updateChangesFull method - can't distinguish between null address due to update to null or just no update
 		Address address = getAddress(postCode, town, county, country, addressLine);
 		data.setMainAddress(address);
 	}

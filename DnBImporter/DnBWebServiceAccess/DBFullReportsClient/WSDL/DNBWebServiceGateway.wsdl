@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="DNBWebServiceGatewayWSDL" targetNamespace="http://gateway.dnb.com/getProduct" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://gateway.dnb.com/getProduct" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://gateway.dnb.com/getProduct" xmlns="http://gateway.dnb.com/getProduct" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://gateway.dnb.com/getProduct" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/BusinessDetailsRequest.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/BusinessDetailsResponse.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/GetProductRequest.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/GetProductResponse.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/GetProductModulesRequest.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/GetProductModulesResponse.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/MonitoringRegistrationRequest.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/MonitoringRegistrationResponse.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/ModifyPasswordRequest.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/ModifyPasswordResponse.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/DocumentAvailabilityRequest.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/DocumentAvailabilityResponse.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/DocumentOrderRequest.xsd" />
+			<xsd:include schemaLocation="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway?xsd=xsd/DocumentOrderResponse.xsd" />
+		</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getDocumentOrderResponseMessage">
+    <wsdl:part element="tns:getDocumentOrderResponse" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getModularProductResponseMessage">
+    <wsdl:part element="tns:getModularProductResponse" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getModularProductRequestMessage">
+    <wsdl:part element="tns:getModularProductRequest" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RetrieveMonitoringListResponseMessage">
+    <wsdl:part element="tns:RetrieveMonitoringListResponse" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="FindBusinessResponseMessage">
+    <wsdl:part element="tns:FindBusinessResponse" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDocumentOrderRequestMessage">
+    <wsdl:part element="tns:getDocumentOrderRequest" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RegisterForMonitoringResponseMessage">
+    <wsdl:part element="tns:RegisterForMonitoringResponse" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="modifyPasswordResponseMessage">
+    <wsdl:part element="tns:modifyPasswordResponse" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RegisterForMonitoringRequestMessage">
+    <wsdl:part element="tns:RegisterForMonitoringRequest" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RetrieveMonitoringListRequestMessage">
+    <wsdl:part element="tns:RetrieveMonitoringListRequest" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getProductRequestMessage">
+    <wsdl:part element="tns:getProductRequest" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="modifyPasswordRequestMessage">
+    <wsdl:part element="tns:modifyPasswordRequest" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="FindBusinessRequestMessage">
+    <wsdl:part element="tns:FindBusinessRequest" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CancelMonitoringRequestMessage">
+    <wsdl:part element="tns:CancelMonitoringRequest" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CancelMonitoringResponseMessage">
+    <wsdl:part element="tns:CancelMonitoringResponse" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getProductResponseMessage">
+    <wsdl:part element="tns:getProductResponse" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDocumentAvailabilityRequestMessage">
+    <wsdl:part element="tns:getDocumentAvailabilityRequest" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDocumentAvailabilityResponseMessage">
+    <wsdl:part element="tns:getDocumentAvailabilityResponse" name="inparams">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="DNBWebServicingPortType">
+    <wsdl:operation name="findBusiness">
+      <wsdl:input message="tns:FindBusinessRequestMessage">
+    </wsdl:input>
+      <wsdl:output message="tns:FindBusinessResponseMessage">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProduct">
+      <wsdl:input message="tns:getProductRequestMessage">
+    </wsdl:input>
+      <wsdl:output message="tns:getProductResponseMessage">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDocumentAvailability">
+      <wsdl:input message="tns:getDocumentAvailabilityRequestMessage">
+    </wsdl:input>
+      <wsdl:output message="tns:getDocumentAvailabilityResponseMessage">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDocumentOrder">
+      <wsdl:input message="tns:getDocumentOrderRequestMessage">
+    </wsdl:input>
+      <wsdl:output message="tns:getDocumentOrderResponseMessage">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getModularProduct">
+      <wsdl:input message="tns:getModularProductRequestMessage">
+    </wsdl:input>
+      <wsdl:output message="tns:getModularProductResponseMessage">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addMonitoring">
+      <wsdl:input message="tns:RegisterForMonitoringRequestMessage">
+    </wsdl:input>
+      <wsdl:output message="tns:RegisterForMonitoringResponseMessage">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelMonitoring">
+      <wsdl:input message="tns:CancelMonitoringRequestMessage">
+    </wsdl:input>
+      <wsdl:output message="tns:CancelMonitoringResponseMessage">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveMonitoringList">
+      <wsdl:input message="tns:RetrieveMonitoringListRequestMessage">
+    </wsdl:input>
+      <wsdl:output message="tns:RetrieveMonitoringListResponseMessage">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modifyPassword">
+      <wsdl:input message="tns:modifyPasswordRequestMessage">
+    </wsdl:input>
+      <wsdl:output message="tns:modifyPasswordResponseMessage">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DNBWebServiceBinding" type="tns:DNBWebServicingPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="findBusiness">
+      <soap:operation soapAction="http://gateway.dnb.com/getProduct" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getModularProduct">
+      <soap:operation soapAction="http://gateway.dnb.com/getProduct" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProduct">
+      <soap:operation soapAction="http://gateway.dnb.com/getProduct" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addMonitoring">
+      <soap:operation soapAction="http://gateway.dnb.com/getProduct" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDocumentOrder">
+      <soap:operation soapAction="http://gateway.dnb.com/getProduct" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDocumentAvailability">
+      <soap:operation soapAction="http://gateway.dnb.com/getProduct" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelMonitoring">
+      <soap:operation soapAction="http://gateway.dnb.com/getProduct" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveMonitoringList">
+      <soap:operation soapAction="http://gateway.dnb.com/getProduct" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modifyPassword">
+      <soap:operation soapAction="http://gateway.dnb.com/getProduct" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DNBWebService">
+    <wsdl:port binding="tns:DNBWebServiceBinding" name="DNBWebServicingPort">
+      <soap:address location="http://mktinterface.dnb.com/wsgateway/services/DNBWebServiceGateway" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

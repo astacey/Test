@@ -38,6 +38,7 @@ import WebServiceClients.ExperianBusinessTargetClient;
 import WebServiceClients.ExperianLtdCompanySearchClient;
 import WebServiceClients.ExperianNonLtdBusinessSearch;
 import WebServiceClients.FullReportClient;
+import WebServiceClients.FullReportFormattedClient;
 import WebServiceClients.GetCompanyDetailsClient;
 import WebServiceClients.GetNotificationsClient;
 import WebServiceClients.GetRegistrationActivityClient;
@@ -113,6 +114,7 @@ public class DnBImportForm extends JFrame {
 	private JTextField txtSupplierDataFolder;
 	private JButton btnGetNext;
 	private JScrollPane scrollPaneFormattedResults;
+	private JButton btnGetReportformatted;
 	
 	/**
 	 * Create the frame.
@@ -214,16 +216,16 @@ public class DnBImportForm extends JFrame {
 		panel.setLayout(null);
 		
 		lblDunsNumber = new JLabel("DUNS Number :");
-		lblDunsNumber.setBounds(12, 123, 114, 15);
+		lblDunsNumber.setBounds(12, 108, 114, 15);
 		panel.add(lblDunsNumber);
 		
 		txtDuns = new JTextField();
-		txtDuns.setBounds(153, 121, 114, 19);
+		txtDuns.setBounds(153, 106, 114, 19);
 		panel.add(txtDuns);
 		txtDuns.setColumns(10);
 		
 		btnGetData = new JButton("Get Data");
-		btnGetData.setBounds(386, 118, 117, 25);
+		btnGetData.setBounds(386, 106, 117, 25);
 		panel.add(btnGetData);
 		
 		lblPostCode = new JLabel("Post Code :");
@@ -254,8 +256,17 @@ public class DnBImportForm extends JFrame {
 				getDBFullReport();
 			}
 		});
-		btnGetReport.setBounds(386, 155, 117, 25);
+		btnGetReport.setBounds(386, 143, 117, 25);
 		panel.add(btnGetReport);
+		
+		btnGetReportformatted = new JButton("Get Report (formatted)");
+		btnGetReportformatted.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getdnbReportFormatted();
+			}
+		});
+		btnGetReportformatted.setBounds(355, 174, 203, 25);
+		panel.add(btnGetReportformatted);
 		
 		panel_2 = new JPanel();
 		tabbedPane.addTab("Account Details", null, panel_2, null);
@@ -633,6 +644,24 @@ public class DnBImportForm extends JFrame {
 		if(dunsNumber.length()>0)
 		{
 			FullReportClient client = new FullReportClient(txtUserName.getText(), txtPassword.getText());
+			try
+			{
+				String res = client.getReport(dunsNumber);
+				txtResults.setText(res);
+			}
+			catch(Exception e)
+			{
+				txtResults.setText(e.getMessage());				
+			}
+		}
+	}
+	
+	private void getdnbReportFormatted()
+	{
+		String dunsNumber = txtDuns.getText();
+		if(dunsNumber.length()>0)
+		{
+			FullReportFormattedClient client = new FullReportFormattedClient(txtUserName.getText(), txtPassword.getText());
 			try
 			{
 				String res = client.getReport(dunsNumber);
