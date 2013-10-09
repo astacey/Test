@@ -77,10 +77,11 @@ public class DnBUpdateHandler
 			DnBData data = dnbRepository.getCompanyDetails(c.getDunnBradstreetData().getDunsNumber());
 			if( data != null )
 			{
-				data.getRegistrationDetails().setStatus(RegistrationStatus.ACTIVE);
+				//data.getRegistrationDetails().setStatus(RegistrationStatus.ACTIVE);
 				//c.setDunnBradstreetData(data);
 				// Can't just do c.setDunnBradstreetData(data); the company might already have D&B data, e.g. from file import
 				updateCompanyDnBData(c, data);
+				c.getDunnBradstreetData().getRegistrationDetails().setStatus(RegistrationStatus.ACTIVE);
 				u4baCompanyRepository.saveCompany(c); // do I need this ?
 				success++;
 			}
