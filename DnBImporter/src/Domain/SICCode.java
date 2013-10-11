@@ -39,4 +39,10 @@ public enum SICCode
 		}
 		return null;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return code + " - " + description;
+	}
 }

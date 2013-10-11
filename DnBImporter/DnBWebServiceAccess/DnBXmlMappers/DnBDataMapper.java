@@ -81,7 +81,7 @@ public class DnBDataMapper
 					else if(children.item(j).getNodeName()=="PAYD_NORM")
 						data.getPaydexNormHistory().upsert(new IntegerDatedValue(new Date(), XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent())));
 					else if(children.item(j).getNodeName()=="PRIM_SIC")
-						data.setPrimarySicCode(XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent()));
+						data.setPrimarySicCode(SICCode.getSICFromCode(children.item(j).getTextContent()));
 					else if(children.item(j).getNodeName()=="PRIM_NME")
 						data.setName(XmlHelper.getStringFromXmlString(children.item(j).getTextContent()));
 					else if(children.item(j).getNodeName()=="OUT_BUS_IND" && children.item(j).getTextContent().equalsIgnoreCase("y"))

@@ -166,6 +166,7 @@ public class DnBUpdateHandler
 			companyToUpdate.getDunnBradstreetData().setOutOfBusiness(data.getOutOfBusiness());
 			
 			companyToUpdate.getDunnBradstreetData().setName(data.getName());
+			companyToUpdate.getDunnBradstreetData().setPrimarySicCode(data.getPrimarySicCode());
 			// TODO : Address updates
 		}
 		else

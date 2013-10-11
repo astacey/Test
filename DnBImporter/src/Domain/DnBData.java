@@ -34,7 +34,7 @@ public class DnBData
 	// The industry median or average D&B® Paydex score for the subject’s Line of Business.
 	private IntegerDatedValueCollection paydexNormHistory;
 	// Primary SIC Code
-	private int primarySicCode;
+	private SICCode primarySicCode;
 	// DnB Registration Details
 	private DnBRegistration dnbRegistrationDetails;
 	// DnB OutOfBusiness indicator
@@ -141,7 +141,7 @@ public class DnBData
 			thisData += "\nCredit Delinquency Score Override: " + creditDelinquencyScoreOverride.getCode() + " : " + creditDelinquencyScoreOverride.getDescription();
 		
 		thisData += "\nOut of Business Indicator : " + outOfBusiness;
-		thisData += "\nPrimary SIC Code : " + primarySicCode;
+		thisData += "\nPrimary SIC Code : " + primarySicCode.toString();
 		
 		if(mainAddress!=null)
 			thisData += "\nAddress : " + mainAddress.toString();
@@ -165,11 +165,11 @@ public class DnBData
 		this.name = name;
 	}
 
-	public int getPrimarySicCode() {
+	public SICCode getPrimarySicCode() {
 		return primarySicCode;
 	}
 
-	public void setPrimarySicCode(int primarySicCode) {
+	public void setPrimarySicCode(SICCode primarySicCode) {
 		this.primarySicCode = primarySicCode;
 	}
 

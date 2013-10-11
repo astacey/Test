@@ -30,7 +30,7 @@ public class TestDnBDataMapper {
 		assertTrue("Check Failure Risk Percentile", 100 == data.getFailureRiskPercentileHistory().getCurrent().getValue());
 		assertTrue("Check PAYDEX", 64 == data.getPaydexScoreHistory().getCurrent().getValue());
 		assertTrue("Check PAYDEX Norm", 75 == data.getPaydexNormHistory().getCurrent().getValue());
-		assertEquals("Check SIC Code", 7379, data.getPrimarySicCode());
+		assertEquals("Check SIC Code", "7379", data.getPrimarySicCode().getCode());
 		assertEquals("Check Out of Business Indicator", true, data.getOutOfBusiness());
 		assertTrue("Check cash and liquid assets", 373000.0 - data.getCashLiquidAssetsHistory().getCurrent().getValue().getValue() < 0.00001);
 		assertTrue("Check cash and liquid assets currency", Currency.GBP == data.getCashLiquidAssetsHistory().getCurrent().getValue().getCurrency());

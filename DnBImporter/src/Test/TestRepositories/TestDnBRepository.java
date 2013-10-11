@@ -8,6 +8,7 @@ import Domain.DnBRating;
 import Domain.DnBRegistrationCollection;
 import Domain.IDnBRepository;
 import Domain.IntegerDatedValue;
+import Domain.SICCode;
 
 public class TestDnBRepository implements IDnBRepository 
 {
@@ -36,7 +37,7 @@ public class TestDnBRepository implements IDnBRepository
 		data.setName("Unit 4 - Test Class");
 		data.getPaydexScoreHistory().add(new IntegerDatedValue(new Date(), 64));
 		data.getPaydexNormHistory().add(new IntegerDatedValue(new Date(), 75));
-		data.setPrimarySicCode(7379);
+		data.setPrimarySicCode(SICCode.SIC7379);//7379
 		return data;
 	}
 

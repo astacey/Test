@@ -21,6 +21,7 @@ import Domain.DnBRating;
 import Domain.IntegerDatedValue;
 import Domain.Money;
 import Domain.MoneyDatedValue;
+import Domain.SICCode;
 
 public class DnBDataUpdateMapper 
 {
@@ -225,7 +226,7 @@ public class DnBDataUpdateMapper
 			for(int j=0;j<children.getLength();j++)
 			{	
 				if(children.item(j).getNodeName()=="PRIM_SIC")
-					data.setPrimarySicCode(XmlHelper.getIntegerFromXmlString(children.item(j).getTextContent()));
+					data.setPrimarySicCode(SICCode.getSICFromCode(children.item(j).getTextContent()));
 				else if(children.item(j).getNodeName()=="OUT_BUS_IND" && children.item(j).getTextContent().equalsIgnoreCase("y"))
 					data.setOutOfBusiness(true);
 				else if(children.item(j).getNodeName()=="CRCY_CD")

@@ -12,6 +12,7 @@ import Domain.CompanyCollection;
 import Domain.CompanyType;
 import Domain.DnBData;
 import Domain.ICompanyRepository;
+import Domain.SICCode;
 
 public class DnBCSVCompanyRepository implements ICompanyRepository 
 {
@@ -114,9 +115,9 @@ public class DnBCSVCompanyRepository implements ICompanyRepository
 						int dunsNumber = Integer.parseInt(dunsString);
 						DnBData data = new DnBData(dunsNumber);
 						String dnbName = csvReader.get("COMPANY_NAME");
-						int sic = XmlHelper.getIntegerFromXmlString(csvReader.get("PRIMARY_SIC"));
 						data.setName(dnbName);
-						if(sic>0)
+						SICCode sic = SICCode.getSICFromCode(csvReader.get("PRIMARY_SIC"));
+						if(sic!=null)
 							data.setPrimarySicCode(sic);
 						
 						c.setDunnBradstreetData(data);
