@@ -2,7 +2,6 @@ package WebServiceClients;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Logger;
 
 import javax.xml.soap.SOAPException;
 import javax.xml.ws.BindingProvider;
@@ -13,8 +12,6 @@ import ExperianAlertsRequestWS.*;
 
 public class ExperianAlertsRequestClient extends ExperianWebService 
 {
-	private static Logger logger = Logger.getLogger(ExperianAlertsRequestClient.class.getName());
-	
 	private static final String serviceUrl = "https://biwebservices.uat.uk.experian.com/experian/wbsv/generic/bi/v100/AlertsRequest.svc";
 
 	public AlertsMessageOutput getAlerts(Date from, Date to) throws SOAPException

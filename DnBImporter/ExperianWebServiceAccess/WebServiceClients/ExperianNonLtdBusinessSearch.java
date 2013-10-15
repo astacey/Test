@@ -1,7 +1,5 @@
 package WebServiceClients;
 
-import java.util.logging.Logger;
-
 import javax.xml.soap.SOAPException;
 import javax.xml.ws.BindingProvider;
 
@@ -11,8 +9,6 @@ import com.sun.xml.ws.developer.WSBindingProvider;
 
 public class ExperianNonLtdBusinessSearch extends ExperianWebService
 {
-private static Logger logger = Logger.getLogger(ExperianNonLtdBusinessSearch.class.getName());
-	
 	private static final String serviceUrl = "https://biwebservices.uat.uk.experian.com/experian/wbsv/generic/bi/v100/NonLtdBusinessSearch.svc";
 	
 	public NonLtdBusinessData getCompany(String id) throws SOAPException

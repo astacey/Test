@@ -11,7 +11,6 @@ import DBGDPV3.ProdOrderRequest3;
 import DBGDPV3.SocCode;
 import DBGDPV3.WspGDPV3PortType;
 import DBGDPV3.WspGDPV3;
-import DBGetNotificationsClientV1.GLBLMNSVCMSGSRSV1;
 
 public class GetCompanyDetailsClient  extends DnBWebServiceClient 
 {	

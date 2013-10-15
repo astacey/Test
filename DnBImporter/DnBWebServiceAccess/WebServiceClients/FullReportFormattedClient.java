@@ -1,14 +1,10 @@
 package WebServiceClients;
 
 import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
 
 import DBFullReportsClient.*;
 

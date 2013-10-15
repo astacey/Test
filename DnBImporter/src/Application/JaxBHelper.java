@@ -5,7 +5,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
 public class JaxBHelper {
-	public static String ConvertJaxBToString(Class classType, Object objectToConvert)
+	public static String ConvertJaxBToString(@SuppressWarnings("rawtypes") Class classType, Object objectToConvert)
 	{
 		StringWriter sWriter = new StringWriter();
 		try

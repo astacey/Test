@@ -17,7 +17,6 @@ import Domain.RegistrationStatus;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-import com.sun.org.apache.xpath.internal.operations.And;
 
 public class SupplierAppCSVAccounts extends SupplierAppCSVFile 
 {

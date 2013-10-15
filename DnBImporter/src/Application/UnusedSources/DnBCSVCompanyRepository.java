@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import com.csvreader.CsvReader;
 
-import Application.XmlHelper;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
