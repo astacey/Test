@@ -163,7 +163,13 @@ public class DnBDataUpdateMapper
 				else if(children.item(j).getNodeName()=="CASH_LIQ_ASET")
 					cashAssets = XmlHelper.getDoubleFromXmlString(children.item(j).getTextContent());
 				else if(children.item(j).getNodeName()=="DELQ_SCR_ENTR")
-					creditDelinquencyPercentile = getCreditDelinquencyScore(children.item(j));
+				{
+					// Updates look like this - <ArrayOfNTFCRSItem><DETECT_DT>2013-10-16T22:28:01-04:00</DETECT_DT><SRC_DT>2013-10-16T09:34:37-04:00</SRC_DT><DELQ_SCR_ENTR><ArrayOfDELQ_SCR_ENTRItem><SCR_GRP><SCR>376</SCR></SCR_GRP></ArrayOfDELQ_SCR_ENTRItem></DELQ_SCR_ENTR></ArrayOfNTFCRSItem><ArrayOfNTFCRSItem><DETECT_DT>2013-10-16T22:28:01-04:00</DETECT_DT><SRC_DT>2013-10-16T09:34:37-04:00</SRC_DT><DELQ_SCR_ENTR><ArrayOfDELQ_SCR_ENTRItem><SCR_GRP><NATL_PCTL>14</NATL_PCTL></SCR_GRP></ArrayOfDELQ_SCR_ENTRItem></DELQ_SCR_ENTR></ArrayOfNTFCRSItem>
+					// So score and percentile are in different <DELQ_SCR_ENTR> tags. Need to be careful I don't overwrite the percentile by reading the score node second
+					int tempVal = getCreditDelinquencyScore(children.item(j), "NATL_PCTL");
+					if(tempVal>-1)
+						creditDelinquencyPercentile = tempVal;
+				}
 				else if(children.item(j).getNodeName()=="CTRY_CD")
 					country = Country.getCountryFromIso2(children.item(j).getTextContent());
 				else if(children.item(j).getNodeName()=="POST_TOWN")
@@ -239,18 +245,25 @@ public class DnBDataUpdateMapper
 	
 	// This is very similar to the method in dnbdatamapper. The big difference is the date, which appears to be in a different place here.
 	// if it turns out that there is an ASMT_DT in the updates, then maybe I can consolidate the 2 methods
-	public int getCreditDelinquencyScore(Node delinquencyNode)
+	public int getCreditDelinquencyScore(Node delinquencyNode, String tagName)
 	{
-	//	 * Credit Delinquency Score National Percentile - DELQ_SCR_ENTR\SCR_GRP\NATL_PCTL 
+	//	 * Credit Delinquency Score National Percentile - DELQ_SCR_ENTR\ArrayOfDELQ_SCR_ENTRItem\SCR_GRP\NATL_PCTL 
 		for(int i=0;i<delinquencyNode.getChildNodes().getLength();i++)
 		{
-			if( delinquencyNode.getChildNodes().item(i).getNodeName()=="SCR_GRP" )
+			if( delinquencyNode.getChildNodes().item(i).getNodeName()=="ArrayOfDELQ_SCR_ENTRItem" )
 			{
-				NodeList scoreNodes = delinquencyNode.getChildNodes().item(i).getChildNodes();
-				for(int j=0;j<scoreNodes.getLength();j++)
+				NodeList arrayNodes = delinquencyNode.getChildNodes().item(i).getChildNodes();
+				for(int k=0;k<arrayNodes.getLength();k++)
 				{
-					if(scoreNodes.item(j).getNodeName()=="NATL_PCTL")
-						return XmlHelper.getIntegerFromXmlString(scoreNodes.item(j).getTextContent());
+					if( arrayNodes.item(k).getNodeName()=="SCR_GRP" )
+					{
+						NodeList scoreNodes = arrayNodes.item(k).getChildNodes();
+						for(int j=0;j<scoreNodes.getLength();j++)
+						{
+							if(scoreNodes.item(j).getNodeName()==tagName)
+								return XmlHelper.getIntegerFromXmlString(scoreNodes.item(j).getTextContent());
+						}						
+					}
 				}
 			}
 		}

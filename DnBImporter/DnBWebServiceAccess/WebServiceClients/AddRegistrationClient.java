@@ -5,6 +5,7 @@ import DBAddRegistrationClientV1.AddRegistrationData;
 import DBAddRegistrationClientV1.AddRegistrationRequest;
 import DBAddRegistrationClientV1.AddRegistrationResponse;
 import DBAddRegistrationClientV1.GLBLMNSVCMSGSRSV1;
+import DBAddRegistrationClientV1.ObjectFactory;
 import DBAddRegistrationClientV1.WspAddRegistrationV1;
 import DBAddRegistrationClientV1.WspAddRegistrationV1PortType;
 
@@ -19,7 +20,7 @@ public class AddRegistrationClient extends DnBWebServiceClient
 	public String addRegistration(String dunsNumber)
 	{
 		String responseXml = "";
-		
+//		ObjectFactory helper = new ObjectFactory();
 		AddRegistrationRequest request = new AddRegistrationRequest();
 		request.setUserId(userName);
 		request.setPassword(password);
@@ -28,6 +29,8 @@ public class AddRegistrationClient extends DnBWebServiceClient
 		data.setDnBDUNSNumber(dunsNumber);
 		data.setProductName("Enterprise Management");
 		data.setNotificationLevel("Level 3");
+//		data.setCountryCode(helper.createAddRegistrationDataCountryCode("GB"));
+//		data.setReasonCode(helper.createAddRegistrationDataReasonCode("1"));
 		request.setAddRegistrationData(data);
 		
 		WspAddRegistrationV1 client = new WspAddRegistrationV1();

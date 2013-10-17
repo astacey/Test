@@ -4,13 +4,13 @@ import java.util.Date;
 import java.text.*;
 import Application.JaxBHelper;
 
-import DBGetNotificationsClientV1.GLBLMNSVCMSGSRSV1;
-import DBGetNotificationsClientV1.GetNotificationsRequest;
-import DBGetNotificationsClientV1.GetNotificationsRequestData;
-import DBGetNotificationsClientV1.GetNotificationsResponse;
-import DBGetNotificationsClientV1.ObjectFactory;
-import DBGetNotificationsClientV1.WspGetNotificationsV1;
-import DBGetNotificationsClientV1.WspGetNotificationsV1PortType;
+import DBGetNotificationsClientV3.GLBLMNSVCMSGSRSV1;
+import DBGetNotificationsClientV3.GetNotificationsRequest;
+import DBGetNotificationsClientV3.GetNotificationsRequestData;
+import DBGetNotificationsClientV3.GetNotificationsResponse;
+import DBGetNotificationsClientV3.ObjectFactory;
+import DBGetNotificationsClientV3.WspGetNotificationsV3;
+import DBGetNotificationsClientV3.WspGetNotificationsV3PortType;
 
 
 public class GetNotificationsClient extends DnBWebServiceClient 
@@ -46,9 +46,9 @@ public class GetNotificationsClient extends DnBWebServiceClient
 		request.setPassword(password);
 		request.setGetNotificationsRequestData(data);
 		
-		WspGetNotificationsV1 client = new WspGetNotificationsV1();
+		WspGetNotificationsV3 client = new WspGetNotificationsV3();
 		
-		WspGetNotificationsV1PortType port = client.getDNBWebServicesProvidersGetNotificationsV1WspGetNotificationsV1Port();
+		WspGetNotificationsV3PortType port = client.getDNBWebServicesProvidersGetNotificationsV3WspGetNotificationsV3Port();
 		
 		GetNotificationsResponse response = port.wsGetNotifications(request);
 		
