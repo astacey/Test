@@ -29,7 +29,7 @@ public class WspGetNotificationsV3
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = DBGetNotificationsClientV3.WspGetNotificationsV3 .class.getResource(".");
+            baseUrl = DBGetNotificationsClientV3.WspGetNotificationsV3 .class.getResource("");
             url = new URL(baseUrl, "WSDL/GetNotifications_V3.wsdl");
         } catch (MalformedURLException e) {
             logger.warning("Failed to create URL for the wsdl Location: 'WSDL/GetNotifications_V3.wsdl', retrying as a local file");

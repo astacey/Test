@@ -5,7 +5,7 @@ import DBAddRegistrationClientV1.AddRegistrationData;
 import DBAddRegistrationClientV1.AddRegistrationRequest;
 import DBAddRegistrationClientV1.AddRegistrationResponse;
 import DBAddRegistrationClientV1.GLBLMNSVCMSGSRSV1;
-import DBAddRegistrationClientV1.ObjectFactory;
+//import DBAddRegistrationClientV1.ObjectFactory;
 import DBAddRegistrationClientV1.WspAddRegistrationV1;
 import DBAddRegistrationClientV1.WspAddRegistrationV1PortType;
 
