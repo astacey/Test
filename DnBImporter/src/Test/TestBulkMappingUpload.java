@@ -2,6 +2,8 @@ package Test;
 
 import static org.junit.Assert.*;
 
+import javax.swing.RowFilter.ComparisonType;
+
 import org.junit.Test;
 
 import Application.BulkMappingUpload;
@@ -43,7 +45,7 @@ public class TestBulkMappingUpload
 	public void testUploadDnBMappings() 
 	{
 		String csvfile = AllTests.getTestFolder() + "MappingImport.csv";
-		String mappingInput = "apar_id,dnb,grade, conf\nCMQ1241,9636108,AAA,7\n2368,6953114,BBB,9\n2542,4928616,,\n";
+		String mappingInput = "apar_id,dnb,grade, conf\nCMQ1241,9636108,AAA,7\n2368,6953114,BBB,9\n2542,4928616,,\nBYGUS,99999,,\n";
 		FileHelper.writeFile(csvfile, mappingInput);
 		
 		TestCompanyRepository repo = new TestCompanyRepository();
@@ -51,8 +53,12 @@ public class TestBulkMappingUpload
 		companies.add(new Company("CMQ1241", "Whatever", CompanyType.CUSTOMER));
 		companies.add(new Company("2368", "Whatever", CompanyType.CUSTOMER));
 		companies.add(new Company("2444", "Whatever", CompanyType.CUSTOMER));
+		Company companyDnB = new Company("BYGUS", "Test with dnb remapping", CompanyType.CUSTOMER);
+		companyDnB.setDunnBradstreetData(new DnBData(91119));
+		assertEquals("Company BYGUS starts with unregistered status", RegistrationStatus.UNREGISTERED, companyDnB.getDunnBradstreetData().getRegistrationDetails().getStatus());
+		companies.add(companyDnB);
 		repo.setTestCompanies(companies);
-		
+	
 		BulkMappingUpload bmu = new BulkMappingUpload(repo, csvfile, "apar_id", "dnb", "dnb", "grade","conf");
 		try 
 		{
@@ -67,5 +73,7 @@ public class TestBulkMappingUpload
 		assertEquals("Company 2368 has match grade BBB", "BBB", companies.getCompanyFromId("2368").getDunnBradstreetData().getMatchGrade());
 		assertEquals("Company CMQ1241 has confidence 7", "7", companies.getCompanyFromId("CMQ1241").getDunnBradstreetData().getMatchConfidenceCode());
 		assertEquals("Company 2444 has no duns", null, companies.getCompanyFromId("2444").getDunnBradstreetData());
+		assertEquals("Company BYGUS now has remapped duns", RegistrationStatus.REMAPPED, companies.getCompanyFromId("BYGUS").getDunnBradstreetData().getRegistrationDetails().getStatus());
+		assertEquals("Company BYGUS now has duns 99999", 99999, companies.getCompanyFromId("BYGUS").getDunnBradstreetData().getDunsNumber());
 	}
 }

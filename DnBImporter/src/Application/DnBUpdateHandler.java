@@ -146,7 +146,7 @@ public class DnBUpdateHandler
 	
 	private void updateCompanyDnBData(Company companyToUpdate, DnBData data)
 	{
-		if( companyToUpdate.hasDunnBradstreetData())
+		if( companyToUpdate.hasDunnBradstreetData()) // think this clause doesn't do anything. If no D&B data, then there couldn't be an update and we wont end up here
 		{
 			for(DnBRating rat : data.getDbratingHistory())
 			{

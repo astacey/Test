@@ -156,7 +156,20 @@ public class DnBData
 	public void setDunsNumber(int dunsNumber) {
 		dnbRegistrationDetails.setDunsNo(dunsNumber);
 	}
-
+	
+	// This is when our company has been auto matched to a branch by D&B, not the real company.
+	// When we request a registration for updates, the service says "unable to activate - unavailable subject due to trade-up"
+	// in this case, if you request the companies data from the GDP
+	public void tradeUp(int dunsNumber)
+	{
+		// set original duns field, so that we have a recorder
+		dnbRegistrationDetails.setOriginalMatchedDunsNo(dnbRegistrationDetails.getDunsNo());
+		// Set status unregistered
+		dnbRegistrationDetails.setStatus(RegistrationStatus.UNREGISTERED);
+		// finally, set the duns to be the new one
+		dnbRegistrationDetails.setDunsNo(dunsNumber);
+	}
+		
 	public String getName() {
 		return name;
 	}

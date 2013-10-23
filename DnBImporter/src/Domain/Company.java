@@ -80,9 +80,11 @@ public class Company implements Comparable<Company>
 	
 	private Boolean uploadDnBMapping(String id, String grade, String confidence)
 	{
-		if(id.length()==0) // unmapped - wipe old data ( dangerous ??? )
+		if(id.length()==0) // unmapped - wipe old data ( dangerous ??? ). Need to set status to "ReMapped" or facts won't be deleted
 		{
-			dunnBradstreetData = null;
+			// This might screw up without a duns, but safer than dunnBradstreetData = null. duns will just be 0
+			dunnBradstreetData = new DnBData();
+			dunnBradstreetData.getRegistrationDetails().setStatus(RegistrationStatus.REMAPPED);
 			return true;
 		}
 		else if(dunnBradstreetData==null)// If no existing mapping or mapping is different, then set up new D&B details
@@ -93,8 +95,9 @@ public class Company implements Comparable<Company>
 		}
 		else if(dunnBradstreetData.getDunsNumber()!=Integer.parseInt(id))
 		{
-			//TODO : Not sure what else we need to do, but all existing D&B data needs to be wiped if remapped
+			//TODO : Not sure what else we need to do, but all existing D&B data needs to be wiped if re-mapped
 			dunnBradstreetData = new DnBData(Integer.parseInt(id));
+			dunnBradstreetData.getRegistrationDetails().setStatus(RegistrationStatus.REMAPPED);
 			updateDnBMatchGradeAndConfidence(grade, confidence);
 			return true;
 		}

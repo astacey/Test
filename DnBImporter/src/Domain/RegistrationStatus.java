@@ -2,7 +2,7 @@ package Domain;
 
 public enum RegistrationStatus 
 {
-	UNREGISTERED(""), PENDING("PENDING"), FAILED("FAILED"), ACTIVE("ACTIVE"), CANCELLED("CANCELLED"), REGISTERED("REGISTERED");
+	UNREGISTERED(""), PENDING("PENDING"), FAILED("FAILED"), ACTIVE("ACTIVE"), CANCELLED("CANCELLED"), REGISTERED("REGISTERED"), REMAPPED("REMAPPED");
 	private String description;
 	
 	private RegistrationStatus (String description)

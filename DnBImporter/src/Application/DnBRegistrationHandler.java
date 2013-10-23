@@ -19,7 +19,7 @@ public class DnBRegistrationHandler
 	// 1. Get list of unregistered companies
 	// 2. Check to see if they have been registered since last run 
 	//		- there is a delay between making the AddRegistration call and the registration being activated
-	// 3. If any have been registered, update the isregistered flag
+	// 3. If any have been registered, update the registration status
 	// 4. register any that are left
 	public void RegisterCompanies()
 	{
@@ -79,12 +79,7 @@ public class DnBRegistrationHandler
 							{
 								if(dnbData.getDunsNumber()!=unregisteredCompany.getDunnBradstreetData().getDunsNumber())
 								{
-									// set original duns field, so that we have a record
-									unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setOriginalMatchedDunsNo(unregisteredCompany.getDunnBradstreetData().getDunsNumber());
-									// Set status unregistered
-									unregisteredCompany.getDunnBradstreetData().getRegistrationDetails().setStatus(RegistrationStatus.UNREGISTERED);
-									// finally, set the duns to be the new one
-									unregisteredCompany.getDunnBradstreetData().setDunsNumber(dnbData.getDunsNumber());
+									unregisteredCompany.getDunnBradstreetData().tradeUp(dnbData.getDunsNumber());
 									tradeups++;
 								}
 								else if(dnbData.getOutOfBusiness()==true)
