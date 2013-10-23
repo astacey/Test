@@ -1,0 +1,10 @@
+bulk insert int_allocation from 'C:\Users\Administrator\Documents\SupplierData/allocation.csv' WITH (FIRSTROW = 2, FIELDTERMINATOR = ';', CODEPAGE = 'ACP');
+bulk insert int_business_area from 'C:\Users\Administrator\Documents\SupplierData/business_area.csv' WITH (FIRSTROW = 2, FIELDTERMINATOR = ';', CODEPAGE = 'ACP');
+bulk insert int_code from 'C:\Users\Administrator\Documents\SupplierData/code.csv' WITH (FIRSTROW = 2, FIELDTERMINATOR = ';', CODEPAGE = 'ACP');
+bulk insert int_connection_type from 'C:\Users\Administrator\Documents\SupplierData/connection_type.csv' WITH (FIRSTROW = 2, FIELDTERMINATOR = ';', CODEPAGE = 'ACP');
+bulk insert int_dataset from 'C:\Users\Administrator\Documents\SupplierData/dataset.csv' WITH (FIRSTROW = 2, FIELDTERMINATOR = ';', CODEPAGE = 'ACP');
+bulk insert int_t_comment from 'C:\Users\Administrator\Documents\SupplierData/t_comment.csv' WITH (FIRSTROW = 2, FIELDTERMINATOR = ';', CODEPAGE = 'ACP');
+bulk insert int_t_feproperty from 'C:\Users\Administrator\Documents\SupplierData/t_feproperty.csv' WITH (FIRSTROW = 2, FIELDTERMINATOR = ';', CODEPAGE = 'ACP');
+bulk insert int_accounts from 'C:\Users\Administrator\Documents\SupplierData/accounts.csv' WITH (FIRSTROW = 2, FIELDTERMINATOR = ';', CODEPAGE = 'ACP');
+bulk insert int_fact_data from 'C:\Users\Administrator\Documents\SupplierData/fact_data.csv' WITH (FIRSTROW = 2, FIELDTERMINATOR = ';', CODEPAGE = 'ACP');
+bulk insert int_criteria from 'C:\Users\Administrator\Documents\SupplierData/criteria.csv' WITH (FIRSTROW = 2, FIELDTERMINATOR = ';', CODEPAGE = 'ACP');
