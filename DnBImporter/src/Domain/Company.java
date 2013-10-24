@@ -1,7 +1,12 @@
 package Domain;
 
+import java.util.logging.Logger;
+
+import Application.DnBRegistrationHandler;
+
 public class Company implements Comparable<Company>
 {
+	private static Logger logger = Logger.getLogger(Company.class.getName());
 	// id of the company. Expecting this to come from agresso
 	private String id;
 	// Name - from agresso probably
@@ -83,6 +88,10 @@ public class Company implements Comparable<Company>
 		if(id.length()==0) // unmapped - wipe old data ( dangerous ??? ). Need to set status to "ReMapped" or facts won't be deleted
 		{
 			// This might screw up without a duns, but safer than dunnBradstreetData = null. duns will just be 0
+			String oldduns = "";
+			if( dunnBradstreetData != null)
+				oldduns = String.valueOf(dunnBradstreetData.getDunsNumber());
+			logger.info("DUNS mapping cleared for company id [" + this.id +"], old DUNS [" + oldduns + "]");
 			dunnBradstreetData = new DnBData();
 			dunnBradstreetData.getRegistrationDetails().setStatus(RegistrationStatus.REMAPPED);
 			return true;
@@ -95,7 +104,7 @@ public class Company implements Comparable<Company>
 		}
 		else if(dunnBradstreetData.getDunsNumber()!=Integer.parseInt(id))
 		{
-			//TODO : Not sure what else we need to do, but all existing D&B data needs to be wiped if re-mapped
+			logger.info("DUNS mapping changed for company id [" + this.id +"], old DUNS [" + dunnBradstreetData.getDunsNumber() + "], new DUNS [" + id + "]");
 			dunnBradstreetData = new DnBData(Integer.parseInt(id));
 			dunnBradstreetData.getRegistrationDetails().setStatus(RegistrationStatus.REMAPPED);
 			updateDnBMatchGradeAndConfidence(grade, confidence);
