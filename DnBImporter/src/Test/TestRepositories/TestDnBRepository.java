@@ -14,6 +14,7 @@ public class TestDnBRepository implements IDnBRepository
 {
 	private DnBRegistrationCollection testRegistrations;
 	private ArrayList<DnBData> testCompanyUpdates;
+	private DnBData testCompanyDetails;
 	
 	@Override
 	public Boolean registerCompany(int dunsNumber) {
@@ -29,16 +30,21 @@ public class TestDnBRepository implements IDnBRepository
 	@Override
 	public DnBData getCompanyDetails(int dunsNumber) 
 	{
-		// Test class - always returns test data....
-		DnBData data = new DnBData(dunsNumber);
-		data.getDbratingHistory().add(new DnBRating("1A"));
-		data.getFailureRiskScoreHistory().add(new IntegerDatedValue(new Date(), 1578)); 
-		data.getFailureRiskPercentileHistory().add(new IntegerDatedValue(new Date(), 100));
-		data.setName("Unit 4 - Test Class");
-		data.getPaydexScoreHistory().add(new IntegerDatedValue(new Date(), 64));
-		data.getPaydexNormHistory().add(new IntegerDatedValue(new Date(), 75));
-		data.setPrimarySicCode(SICCode.SIC7379);//7379
-		return data;
+		if( this.testCompanyDetails == null )
+		{
+			// Test class - always returns test data....
+			// this is the default, but user can specify
+			DnBData data = new DnBData(dunsNumber);
+			data.getDbratingHistory().add(new DnBRating("1A"));
+			data.getFailureRiskScoreHistory().add(new IntegerDatedValue(new Date(), 1578)); 
+			data.getFailureRiskPercentileHistory().add(new IntegerDatedValue(new Date(), 100));
+			data.setName("Unit 4 - Test Class");
+			data.getPaydexScoreHistory().add(new IntegerDatedValue(new Date(), 64));
+			data.getPaydexNormHistory().add(new IntegerDatedValue(new Date(), 75));
+			data.setPrimarySicCode(SICCode.SIC7379);//7379
+			return data;
+		}
+		return this.testCompanyDetails;
 	}
 
 	@Override
@@ -67,6 +73,11 @@ public class TestDnBRepository implements IDnBRepository
 
 	public void setTestCompanyUpdates(ArrayList<DnBData> testCompanyUpdates) {
 		this.testCompanyUpdates = testCompanyUpdates;
+	}
+	
+	public void setTestCompanyDetails(DnBData testData)
+	{
+		this.testCompanyDetails = testData;
 	}
 
 }

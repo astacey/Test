@@ -6,11 +6,13 @@ public class TestCompanyRepository implements ICompanyRepository
 {
 	private CompanyCollection companiesSaved;
 	private CompanyCollection testCompanies;
+	private CompanyCollection initialUpdateDBCompanies;
 	
 	public TestCompanyRepository()
 	{
 		this.companiesSaved = new CompanyCollection();
 		this.testCompanies = new CompanyCollection();
+		this.initialUpdateDBCompanies = new CompanyCollection();
 	}
 	
 	@Override
@@ -82,7 +84,7 @@ public class TestCompanyRepository implements ICompanyRepository
 
 	@Override
 	public Company getCompanyById(String id) 
-	{
+	{new CompanyCollection();
 		return getAllCompanies().getCompanyFromId(id);
 	}
 
@@ -94,8 +96,7 @@ public class TestCompanyRepository implements ICompanyRepository
 
 	@Override
 	public CompanyCollection getCompaniesForInitialUpdateDnB() {
-		// TODO Auto-generated method stub
-		return new CompanyCollection();
+		return initialUpdateDBCompanies;
 	}
 	
 	@Override
@@ -505,5 +506,9 @@ public class TestCompanyRepository implements ICompanyRepository
 	public void setTestCompanies(CompanyCollection companies) {
 		this.testCompanies = companies;
 	}
-
+	
+	public void setTestInitialUpdateDBCompanies(CompanyCollection initialUpdateDBCompanies)
+	{
+		this.initialUpdateDBCompanies = initialUpdateDBCompanies;
+	}
 }

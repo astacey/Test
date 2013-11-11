@@ -15,11 +15,13 @@ import Test.TestRepositories.TestDnBRepository;
 import Test.TestRepositories.TestImporterSettingsRepository;
 
 import Application.DnBUpdateHandler;
+import Domain.Address;
 import Domain.Company;
 import Domain.CompanyCollection;
 import Domain.CompanyType;
 import Domain.DnBData;
 import Domain.DnBRating;
+import Domain.RegistrationStatus;
 
 public class TestDnBUpdateHandler {
 
@@ -120,6 +122,39 @@ public class TestDnBUpdateHandler {
 		
 		assertEquals("There should be 1 rating for company 1", 1, companyRepo.getCompanyById("1").getDunnBradstreetData().getDbratingHistory().size());
 		assertEquals("The rating for company 1 should be H2", "H2", companyRepo.getCompanyById("1").getDunnBradstreetData().getCurrentRating().getRating());
+	}
+	
+	@Test
+	public void testGetNewCompanyAddress()
+	{
+		TestCompanyRepository companyRepo = new TestCompanyRepository();
+		TestDnBRepository dnbRepo = new TestDnBRepository();
+		TestImporterSettingsRepository settingsRepo = new TestImporterSettingsRepository();
+		// Set date to be now - 1 min, this means it'll only call dnbRepo.getupdates once
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -1);
+		settingsRepo.setLastRunDate(cal.getTime());
+		
+		// set up 1 company
+		CompanyCollection companies = new CompanyCollection();
+		Company c = new Company("1", "Test", CompanyType.CUSTOMER);
+		c.setDunnBradstreetData(new DnBData(100));
+		// set to registered, so update routine will call GetDetails for first time
+		c.getDunnBradstreetData().getRegistrationDetails().setStatus(RegistrationStatus.REGISTERED);
+		companies.add(c);
+		companyRepo.setTestCompanies(companies);
+		companyRepo.setTestInitialUpdateDBCompanies(companies);
+		
+		DnBData testDBData = new DnBData(100);
+		Address address = new Address();
+		address.getAddressLines().add("110 Dartmouth Road");
+		testDBData.setMainAddress(address);
+		dnbRepo.setTestCompanyDetails(testDBData);
+		
+		DnBUpdateHandler handler = new DnBUpdateHandler(companyRepo, dnbRepo, settingsRepo.getSettings());
+		handler.getUpdates();
+		
+		assertEquals("Address line 1 should be 110 Dartmouth Road", "110 Dartmouth Road", companyRepo.getCompanyById("1").getDunnBradstreetData().getMainAddress().getAddressLine1());
 	}
 	
 	private ArrayList<DnBData> getDBUpdates()
