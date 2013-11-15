@@ -9,23 +9,21 @@ CREATE PROCEDURE [dbo].[usp_Handle_Remapped]
 AS
 
 -- Check for accounts with DnB_STATUS == 'REMAPPED'
+-- or a null duns ( unmapped companies )
 -- Delete all D&B related facts
 -- UPDATE DnB_STATUS to be NULL ( Unregistered, which will then trigger the getting of initial facts and registering for updates )
 -- Actually this step is pointless and potentially confusing. It will mean the accounts table is out of sync with 
 -- Experian - not handled yet
 
 	DELETE FROM FACT_DATA 
-	WHERE accounts IN ( SELECT Accounts_ID FROM ACCOUNTS WHERE DnB_STATUS = 'REMAPPED' )
+	WHERE accounts IN ( SELECT Accounts_ID FROM ACCOUNTS WHERE DnB_STATUS = 'REMAPPED' OR duns_no is null )
 	AND DATASET IN ( 3,4,5,6,7,16,17,18 ) -- hardcoded for now, add flag to dataset table later
 	DELETE FROM FACT_DATA_DAILY_SNAPSHOT 
-	WHERE accounts IN ( SELECT Accounts_ID FROM ACCOUNTS WHERE DnB_STATUS = 'REMAPPED' )
+	WHERE accounts IN ( SELECT Accounts_ID FROM ACCOUNTS WHERE DnB_STATUS = 'REMAPPED' OR duns_no is null )
 		AND DATASET IN ( 3,4,5,6,7,16,17,18 ) -- hardcoded for now, add flag to dataset table later
 	DELETE FROM FACT_DATA_MONTHLY_SNAPSHOT 
-	WHERE accounts IN ( SELECT Accounts_ID FROM ACCOUNTS WHERE DnB_STATUS = 'REMAPPED' )
+	WHERE accounts IN ( SELECT Accounts_ID FROM ACCOUNTS WHERE DnB_STATUS = 'REMAPPED' OR duns_no is null )
 		AND DATASET IN ( 3,4,5,6,7,16,17,18 ) -- hardcoded for now, add flag to dataset table later
-
-	-- Actually this step is pointless and potentially confusing. It will mean the accounts table is out of sync with 
-	--UPDATE ACCOUNTS SET DnB_STATUS = NULL WHERE DnB_STATUS = 'REMAPPED'
 
 GO
 

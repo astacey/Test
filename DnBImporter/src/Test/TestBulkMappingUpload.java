@@ -76,4 +76,31 @@ public class TestBulkMappingUpload
 		assertEquals("Company BYGUS now has remapped duns", RegistrationStatus.REMAPPED, companies.getCompanyFromId("BYGUS").getDunnBradstreetData().getRegistrationDetails().getStatus());
 		assertEquals("Company BYGUS now has duns 99999", 99999, companies.getCompanyFromId("BYGUS").getDunnBradstreetData().getDunsNumber());
 	}
+	
+	@Test
+	public void testUnmapDnBMapping() 
+	{
+		// Test to see if unmapping a duns works
+		String csvfile = AllTests.getTestFolder() + "MappingImport.csv";
+		String mappingInput = "apar_id,dnb,grade, conf\nBYGUS,,,\n";
+		FileHelper.writeFile(csvfile, mappingInput);
+		
+		TestCompanyRepository repo = new TestCompanyRepository();
+		CompanyCollection companies = new CompanyCollection();
+		Company companyDnB = new Company("BYGUS", "Test with dnb remapping", CompanyType.CUSTOMER);
+		companyDnB.setDunnBradstreetData(new DnBData(91119));
+		companies.add(companyDnB);
+		repo.setTestCompanies(companies);
+	
+		BulkMappingUpload bmu = new BulkMappingUpload(repo, csvfile, "apar_id", "dnb", "dnb", "grade","conf");
+		try 
+		{
+			bmu.uploadMappings();
+		}
+		catch (Exception e)
+		{
+			assertTrue("Error " + e.getMessage(), false);
+		}
+		assertTrue("Company BYGUS now has no D&B data", null==companies.getCompanyFromId("BYGUS").getDunnBradstreetData());
+	}
 }

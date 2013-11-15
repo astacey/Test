@@ -85,15 +85,16 @@ public class Company implements Comparable<Company>
 	
 	private Boolean uploadDnBMapping(String id, String grade, String confidence)
 	{
-		if(id.length()==0) // unmapped - wipe old data ( dangerous ??? ). Need to set status to "ReMapped" or facts won't be deleted
+		if(id.length()==0) 
 		{
+			// unmapped - wipe old data ( dangerous ??? ). 
+			// changing the post process sp to delete d&b facts if no duns number. so don't need status.
 			// This might screw up without a duns, but safer than dunnBradstreetData = null. duns will just be 0
 			String oldduns = "";
 			if( dunnBradstreetData != null)
 				oldduns = String.valueOf(dunnBradstreetData.getDunsNumber());
 			logger.info("DUNS mapping cleared for company id [" + this.id +"], old DUNS [" + oldduns + "]");
-			dunnBradstreetData = new DnBData();
-			dunnBradstreetData.getRegistrationDetails().setStatus(RegistrationStatus.REMAPPED);
+			dunnBradstreetData = null;
 			return true;
 		}
 		else if(dunnBradstreetData==null)// If no existing mapping or mapping is different, then set up new D&B details

@@ -73,7 +73,7 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 						data.setName(csvReader.get("DNB_NAME"));
 						data.setMatchGrade(csvReader.get("DNB_MATCH_GRADE"));
 						data.setMatchConfidenceCode(csvReader.get("DNB_CONFIDENCE_CODE"));
-						
+												
 						
 						Address dnbAddress = getAddress(csvReader);
 						data.setMainAddress(dnbAddress);
