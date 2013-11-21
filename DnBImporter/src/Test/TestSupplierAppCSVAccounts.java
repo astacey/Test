@@ -2,6 +2,7 @@ package Test;
 
 import static org.junit.Assert.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
@@ -78,7 +79,7 @@ public class TestSupplierAppCSVAccounts {
 	public void testReadRecordsRatingNameAndMatching() 
 	{
 		String sourceFile = baseAccountsFileContentsFull
-				+"1;Test & Company;C;1;111;100;Inactive;FAILED;ted;teddy;vertical;0100;Non Limited;ACTIVE;USD;PLN;;;;;;;;;;;D & B Enw;AAAAAA;8\r\n";
+				+"1;Test & Company;C;1;111;100;Inactive;FAILED;ted;teddy;vertical;0100;Non Limited;ACTIVE;USD;PLN;A1;;;;;;;;;;D & B Enw;AAAAAA;8\r\n";
 		FileHelper.writeFile(testFile, sourceFile);
 		
 		SupplierAppCSVAccounts accountsCsv = new SupplierAppCSVAccounts();
@@ -91,7 +92,9 @@ public class TestSupplierAppCSVAccounts {
 		assertEquals("D&B Name", "D & B Enw", one.getDunnBradstreetData().getName());
 		assertEquals("Match Grade", "AAAAAA", one.getDunnBradstreetData().getMatchGrade());
 		assertEquals("Match Confidence Code", "8", one.getDunnBradstreetData().getMatchConfidenceCode());
-		
+		assertEquals("D&B Rating is A1", "A1", one.getDunnBradstreetData().getCurrentRating().getRating());
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		assertEquals("D&B Rating date is today", formatter.format(new Date()), formatter.format(one.getDunnBradstreetData().getCurrentRating().getDate()));
 	}
 	
 	@Test

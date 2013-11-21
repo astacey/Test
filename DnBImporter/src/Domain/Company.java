@@ -89,7 +89,6 @@ public class Company implements Comparable<Company>
 		{
 			// unmapped - wipe old data ( dangerous ??? ). 
 			// changing the post process sp to delete d&b facts if no duns number. so don't need status.
-			// This might screw up without a duns, but safer than dunnBradstreetData = null. duns will just be 0
 			String oldduns = "";
 			if( dunnBradstreetData != null)
 				oldduns = String.valueOf(dunnBradstreetData.getDunsNumber());

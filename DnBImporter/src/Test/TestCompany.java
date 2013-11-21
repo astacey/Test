@@ -48,8 +48,7 @@ public class TestCompany {
 		
 		//DnB
 		c.uploadCompanyMapping("", "dnb", "", "");
-		assertEquals("Duns is 0 ( default )", 0, c.getDunnBradstreetData().getDunsNumber());
-		assertEquals("Status is remapped", RegistrationStatus.REMAPPED, c.getDunnBradstreetData().getRegistrationDetails().getStatus());
+		assertTrue("Duns is 0 ( default )", c.getDunnBradstreetData()==null);
 	}
 	
 	@Test

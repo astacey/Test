@@ -2,6 +2,7 @@ package Application;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import Domain.AccountGroup;
 import Domain.Address;
@@ -11,6 +12,7 @@ import Domain.CompanyType;
 import Domain.Country;
 import Domain.Currency;
 import Domain.DnBData;
+import Domain.DnBRating;
 import Domain.ExperianData;
 import Domain.ExperianLegalStatus;
 import Domain.RegistrationStatus;
@@ -74,7 +76,14 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 						data.setMatchGrade(csvReader.get("DNB_MATCH_GRADE"));
 						data.setMatchConfidenceCode(csvReader.get("DNB_CONFIDENCE_CODE"));
 												
-						
+						// current rating
+						String currentRating = csvReader.get("DNB_RATING");
+						if(currentRating.length()>0)
+						{
+							// Use today's date. This isn't the most accurate, since the current rating date is probably in the past. This will do for the risk app for now.
+							// interestingly, it doesn't write a new fact to fact_data, because the fact is marked as committed after being read in ( in supplierappcsvcompanyrepository ). It is written to fact_data_full. This might bloat this file, but no harm done.
+							data.getDbratingHistory().upsert(new DnBRating(currentRating, new Date()));
+						}
 						Address dnbAddress = getAddress(csvReader);
 						data.setMainAddress(dnbAddress);
 						c.setDunnBradstreetData(data);
