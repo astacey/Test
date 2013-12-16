@@ -37,6 +37,7 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 				//{ "GEN_ID", "NAME", "PARENT (PARENT_GEN_ID)", "AGR_NO", "CH_NO", "DUNS_NO", "STATUS", "DnB_STATUS";ACCOUNT_GROUP_CODE;ACCOUNT_GROUP_NAME;VERTICAL_MARKET };
 				// TODO : constants for each header ?
 				String id = csvReader.get("GEN_ID");
+				String agrNo = csvReader.get("AGR_NO");
 				String name = csvReader.get("NAME");
 				String companyRegNo = csvReader.get("CH_NO");
 				String status = csvReader.get("STATUS");
@@ -46,10 +47,16 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 				String currencyCode = csvReader.get("DNB_DEFAULT_CURRENCY_CODE");
 				String maxCreditCurrencyCode = csvReader.get("DNB_CREDIT_RECOMMENDATION_CURRENCY_CODE");
 								
-				// Ignore the artificial companies, all, supplier, partners, customers
-				if( ! ( (id.equals("1")&&name.equals("All") ) || ( id.equals("A") && name.equals("Suppliers") ) || ( id.equals("B") && name.equals("Partners") ) || ( id.equals("C") && name.equals("Customers" ) ) ) )
+				// Ignore the artificial companies, all, supplier, partners, customers and account groups
+				// possibly introduce a field to track this - justa flag to say if real company or not
+				if( ! ( (id.equals("1")&&name.equals("All") ) 
+						|| ( id.equals("A") && name.equals("Suppliers") ) 
+						|| ( id.equals("B") && name.equals("Partners") ) 
+						|| ( id.equals("C") && name.equals("Customers" ) )
+						|| ( agrNo.equals("")) // ignore anything without an agrNo, works for now, but could go wrong in future
+						) )
 				{
-					CompanyType type = CompanyType.getCompanyTypeFromId(csvReader.get("PARENT (PARENT_GEN_ID)"));
+					CompanyType type = CompanyType.getCompanyTypeFromId(csvReader.get("PARENT (PARENT_GEN_ID)").substring(0, 1)); // Take advantage of the fact that the first letter is always the company type, regardless of if we have account groups in the mix. Bit dodgy maybe but works for now 
 					Company c = new Company(id, name, type);
 					c.setCompanyRegistrationNumber(companyRegNo);
 					c.setVerticalMarket(verticalMarket);
@@ -111,6 +118,9 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 	{
 		// Write headers
 		initialiseAccounts(csvWriter);
+		//write account groups as companies
+		writeAccountGroups(csvWriter, companies);
+		// write the companies
 		for(Company c : companies)
 		{
 			String accGroupName = "", accGroupCode ="";
@@ -167,8 +177,10 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 				experianLegalStatus = c.getExperianData().getLegalStatus().getDescription();
 				experianRegStatus = c.getExperianData().getRegistrationStatus().getDescription();
 			}
-
-			csvWriter.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), duns, outOfBusiness, dnbStatus, accGroupCode, accGroupName, c.getVerticalMarket(), experianNo, experianLegalStatus, experianRegStatus, currency, maxCreditCurrency, dnbRating, dnbAddress1, dnbAddress2, dnbAddress3, dnbAddress4, dnbAddressTown, dnbAddressCounty, dnbAddressCountryCode, dnbAddressCountryDesc, dnbAddressPostCode, dnbName, dnbMatchGrade, dnbConfidenceCode, dnbOriginalDuns});
+			if(accGroupCode.length()>0) // use accountgroup as parent
+				csvWriter.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId()+accGroupCode, c.getId(), c.getCompanyRegistrationNumber(), duns, outOfBusiness, dnbStatus, accGroupCode, accGroupName, c.getVerticalMarket(), experianNo, experianLegalStatus, experianRegStatus, currency, maxCreditCurrency, dnbRating, dnbAddress1, dnbAddress2, dnbAddress3, dnbAddress4, dnbAddressTown, dnbAddressCounty, dnbAddressCountryCode, dnbAddressCountryDesc, dnbAddressPostCode, dnbName, dnbMatchGrade, dnbConfidenceCode, dnbOriginalDuns});
+			else // use companytype as parent
+				csvWriter.writeRecord(new String[] { c.getId(), c.getName(), c.getType().getId(), c.getId(), c.getCompanyRegistrationNumber(), duns, outOfBusiness, dnbStatus, accGroupCode, accGroupName, c.getVerticalMarket(), experianNo, experianLegalStatus, experianRegStatus, currency, maxCreditCurrency, dnbRating, dnbAddress1, dnbAddress2, dnbAddress3, dnbAddress4, dnbAddressTown, dnbAddressCounty, dnbAddressCountryCode, dnbAddressCountryDesc, dnbAddressPostCode, dnbName, dnbMatchGrade, dnbConfidenceCode, dnbOriginalDuns});
 			
 			csvWriter.flush();
 		}
@@ -221,6 +233,31 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 		}
 		csvWriter.flush();
 	}
+	
+	private void writeAccountGroups(CsvWriter csvWriter, CompanyCollection companies) throws IOException
+	{
+		AccountGroupCollection accountGroups = getAccountGroups(companies);
+		for(AccountGroupByType ag : accountGroups)
+		{
+			// combine parent code + code to get a unique pk ( hopefully ! )
+			csvWriter.writeRecord(new String[] { ag.getUniqueCode(), ag.getDescription(), ag.getParent(), "", "", "", "", "","","","","","","","","","","","","","","","","","","","","","","" });
+		}
+		csvWriter.flush();
+	}
+
+	private AccountGroupCollection getAccountGroups(CompanyCollection companies)
+	{
+		AccountGroupCollection accountGroups = new AccountGroupCollection();
+		for(Company c : companies)
+		{
+			if(c.getAccountGroup()!=null && c.getType()!=null && c.getType()!=CompanyType.UNKNOWN)
+			{
+				AccountGroupByType ag = new AccountGroupByType(c.getAccountGroup().getCode(), c.getAccountGroup().getName(), c.getType().getId());
+				accountGroups.upsert(ag);
+			}
+		}
+		return accountGroups;
+	}
 
 	private Boolean getOutOfBusiness(String outOfBusiness)
 	{
@@ -236,5 +273,56 @@ public class SupplierAppCSVAccounts extends SupplierAppCSVFile
 			return "Inactive";
 		// Active by default
 		return "Active";
+	}
+	
+	// Different to domain class. Parent makes no sense to the domain, it's a construct of how I need to write the output to make u4ba behave ( i.e. have a parent child relationship that goes Customers\Suppliers->Account Groups->Companies )
+	private class AccountGroupByType
+	{
+		private String code;
+		private String description;
+		private String parent;
+		
+		public AccountGroupByType(String code, String description, String parent)
+		{
+			this.code=code;
+			this.description=description;
+			this.parent=parent;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public String getParent() {
+			return parent;
+		}
+		
+		public String getUniqueCode()
+		{
+			return parent+code;
+		}
+		
+	}
+	
+	
+	private class AccountGroupCollection extends ArrayList<AccountGroupByType>
+	{
+		// increment if breaking change to serializaion
+		public static final long serialVersionUID = 1L;
+		
+		public void upsert(AccountGroupByType ag)
+		{
+			for(AccountGroupByType a : this)
+			{
+				if(a.getCode().equalsIgnoreCase(ag.code) && a.getParent().equalsIgnoreCase(ag.getParent()))
+					return; // i.e. don't add if already here
+			}
+			// and if not there already, then add
+			this.add(ag);
+		}
 	}
 }
