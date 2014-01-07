@@ -28,6 +28,19 @@ public class LookUpClient extends DnBWebServiceClient
 		return runLookUp(request);
 	}
 	
+	public String performLookUp(String companyName, String postCode, String address, String companyRegNo)
+	{
+		ObjectFactory helper = new ObjectFactory();
+		
+		LookUpRequest request = getNewLookUpRequest();
+		request.getLookUpInput().setName(helper.createLookUpInputName(companyName));
+		request.getLookUpInput().setPostCode(helper.createLookUpInputPostCode(postCode));
+		request.getLookUpInput().setStreetAddress(helper.createLookUpInputStreetAddress(address));
+		request.getLookUpInput().setBusinessNumber(helper.createLookUpInputBusinessNumber(companyRegNo));
+		
+		return runLookUp(request);
+	}
+	
 	private LookUpRequest getNewLookUpRequest()
 	{
 		LookUpInput input = new LookUpInput();

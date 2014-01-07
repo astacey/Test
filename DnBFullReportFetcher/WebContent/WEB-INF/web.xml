@@ -63,6 +63,14 @@
     <param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
     <param-value>true</param-value>
   </context-param>
+ <context-param>
+    <param-name>DBUserName</param-name>
+    <param-value>unit4testaccount2</param-value>
+  </context-param>
+  <context-param>
+    <param-name>DBPassword</param-name>
+    <param-value>51acy51</param-value>
+  </context-param>
   <listener>
     <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
   </listener>
