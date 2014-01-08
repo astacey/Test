@@ -16,6 +16,11 @@ public class GetRegistrationListClient extends DnBWebServiceClient
 	
 	public String getRegistrationList(String resultTicket)
 	{
+		return getRegistrationList("", resultTicket);
+	}
+
+	public String getRegistrationList(String dunsNumber, String resultTicket)
+	{
 		String responseXml = "";
 		ObjectFactory helper = new ObjectFactory();
 				
@@ -26,6 +31,8 @@ public class GetRegistrationListClient extends DnBWebServiceClient
 		GetRegistrationListData data = new GetRegistrationListData();
 		if(resultTicket.length()>0)
 			data.setResultTicket(helper.createGetRegistrationListDataResultTicket(resultTicket));
+		if(dunsNumber.length()>0)
+			data.setDnBDUNSNumber(helper.createGetRegistrationListDataDnBDUNSNumber(dunsNumber));
 		request.setGetRegistrationListData(data);
 		
 		WspGetRegistrationList client = new WspGetRegistrationList();
@@ -36,6 +43,5 @@ public class GetRegistrationListClient extends DnBWebServiceClient
 
 		return responseXml;
 	}
-	
-	
+
 }

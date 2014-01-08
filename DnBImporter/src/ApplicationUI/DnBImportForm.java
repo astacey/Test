@@ -44,6 +44,8 @@ import WebServiceClients.GetNotificationsClient;
 import WebServiceClients.GetRegistrationActivityClient;
 import WebServiceClients.GetRegistrationListClient;
 import WebServiceClients.LookUpClient;
+import WebServiceClients.ModifyRegistrationClient;
+
 import javax.swing.JScrollPane;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -115,6 +117,8 @@ public class DnBImportForm extends JFrame {
 	private JButton btnGetNext;
 	private JScrollPane scrollPaneFormattedResults;
 	private JButton btnGetReportformatted;
+	private JButton btnCancelRegistration;
+	private JButton btnUncancelRegistration;
 	
 	/**
 	 * Create the frame.
@@ -155,7 +159,7 @@ public class DnBImportForm extends JFrame {
 		btnAddRegistration.setBounds(259, 26, 211, 25);
 		panel_1.add(btnAddRegistration);
 		
-		btnGetRegistrations = new JButton("Get Registrations");
+		btnGetRegistrations = new JButton("Get All Registrations");
 		btnGetRegistrations.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				getRegistrationsList();
@@ -210,6 +214,33 @@ public class DnBImportForm extends JFrame {
 		JLabel lblResultticket = new JLabel("ResultTicket");
 		lblResultticket.setBounds(13, 176, 70, 15);
 		panel_1.add(lblResultticket);
+		
+		JButton btnGetRegistration = new JButton("Get Registration");
+		btnGetRegistration.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getRegistration();
+			}
+		});
+		btnGetRegistration.setBounds(259, 59, 211, 25);
+		panel_1.add(btnGetRegistration);
+		
+		btnCancelRegistration = new JButton("Cancel Registration");
+		btnCancelRegistration.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modifyRegistration(true);
+			}
+		});
+		btnCancelRegistration.setBounds(482, 59, 173, 25);
+		panel_1.add(btnCancelRegistration);
+		
+		btnUncancelRegistration = new JButton("Uncancel Registration");
+		btnUncancelRegistration.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modifyRegistration(false);
+			}
+		});
+		btnUncancelRegistration.setBounds(667, 59, 198, 25);
+		panel_1.add(btnUncancelRegistration);
 		
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("DnB Simple", null, panel, null);
@@ -606,6 +637,19 @@ public class DnBImportForm extends JFrame {
 		}
 	}
 	
+	private void getRegistration()
+	{
+		GetRegistrationListClient regsClient = new GetRegistrationListClient(txtUserName.getText(), txtPassword.getText());
+		try
+		{
+			txtResults.setText(regsClient.getRegistrationList(txtRegDunsNo.getText(), txtResultTicket.getText()));
+		}
+		catch(Exception e)
+		{
+			txtResults.setText(e.getMessage());
+		}
+	}
+	
 	private void getRegistrationsList()
 	{
 		GetRegistrationListClient regsClient = new GetRegistrationListClient(txtUserName.getText(), txtPassword.getText());
@@ -617,6 +661,7 @@ public class DnBImportForm extends JFrame {
 		{
 			txtResults.setText(e.getMessage());
 		}
+		
 	}
 	
 	private void runCompanyLookUp()
@@ -918,6 +963,23 @@ public class DnBImportForm extends JFrame {
 			catch ( Exception e)
 			{
 				txtResults.setText(e.getMessage());				
+			}
+		}
+	}
+	
+	private void modifyRegistration(Boolean cancel)
+	{
+		String dunsNo = txtRegDunsNo.getText();
+		if( dunsNo.length() > 0)
+		{
+			ModifyRegistrationClient client = new ModifyRegistrationClient(txtUserName.getText(), txtPassword.getText());
+			if(cancel)
+			{
+				txtResults.setText(client.cancelRegistration(dunsNo));
+			}
+			else
+			{
+				txtResults.setText(client.unCancelRegistration(dunsNo));
 			}
 		}
 	}
