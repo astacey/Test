@@ -25,6 +25,7 @@ public class ImporterArgs
 	private String GUIUpdateFolder="";
 	private char delimiter=','; // default
 	private Boolean isDebugJavax = false;
+	private Boolean isDBUnRegistrationSelected = false;
 	
 	public ImporterArgs(String[] args)
 	{
@@ -47,6 +48,10 @@ public class ImporterArgs
 			else if(args[i].equalsIgnoreCase("-rdnb"))
 			{
 				isRegistrationSelected = true;
+			}
+			else if(args[i].equalsIgnoreCase("-urdnb"))
+			{
+				isDBUnRegistrationSelected = true;
 			}
 			else if(args[i].equalsIgnoreCase("-rexperian"))
 			{
@@ -161,7 +166,7 @@ public class ImporterArgs
 	private void printHelp()
 	{
 		// Converted from help.txt using http://www.htmlescape.net/javaescape_tool.html
-		String help = "Usage: \nDnbImporter -gui [-guifolder folder] [-u userName] [-pwd password] [-jksfile filepath] [-jkspass password] [-debug]\n\n\t-gui\t\tDisplays the user interface to make calls manually\n\t-guifolder\tPopulates the \"Supplier Data\" input box on the Account Details tab\n\t-u\t\tPopulates the D&B \"User Name\" input box on the Account Details tab\n\t-pwd\t\tPopulates the D&B \"Password\" input box on the Account Details tab\n\t-jksfile\tPopulates the Experian \"JKS File\" input box on the Account Details tab\n\t-jkspass\tPopulates the Experian \"Password\" input box on the Account Details tab\n\t-debug\t\tTurns on javax debugging. i.e. System.setProperty(\"javax.net.debug\",\"all\")\n\nOr\n\nDnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mappingtype -mappingGrade mappinggrade -mappingConfidence mappingconfidencecode [-delimiter delimiter]] [-rdnb] [-xdnb] [-rexperian] [-xexperian] [-xabw folder [-f clientfilter]] [-debug]\n\n\t-bm\t\tPerform a bulk mapping import from a csv file\n\t-masterid\tColumn header of the master id column in the csv file\n\t-mappingid\tColumn header of the mapping id in the csv file ( the -mappingtype option specifies exactly what this id represents )\n\t-mappingtype\tSpecifies the mapping type of the mapping id column. \n\t\t\tCurrent options are:\n\t\t\t\"dnb\" for Dunn and Bradstreet DUNS numbers\n\t\t\t\"experian\" for Experian reference numbers\n\t-mappingGrade\tColumn header of the match grade column in the csv file\n\t-mappingConfidence\tColumn header of the match confidence code column in the csv file\n\t-delimiter\tThe delimiter used in the csv file\n\t\n\t-rdnb\t\tUpdate the D&B notification registrations\n\t-xdnb\t\tGet D&B data updates for registered companies\n\t-u\t\tPopulates the D&B \"User Name\" input box on the Account Details tab\n\t-pwd\t\tPopulates the D&B \"Password\" input box on the Account Details tab\n\n\t-rexperian\tUpdate the Experian alert registrations\n\t-xxperian\tGet D&B data updates for registered companies\n\t-jksfile\tPopulates the Experian \"JKS File\" input box on the Account Details tab\n\t-jkspass\tPopulates the Experian \"Password\" input box on the Account Details tab\n\n\t-xabw\t\tImport data from abw based csv files. Must specify the folder location as a parameter.\n\t-f\t\tFilter the import based on Client. If specified, will only import the companies that match the specified client value.\n\t\n\t-debug\t\tTurns on javax debugging. i.e. System.setProperty(\"javax.net.debug\",\"all\")";
+		String help = "Usage: \nDnbImporter -gui [-guifolder folder] [-u userName] [-pwd password] [-jksfile filepath] [-jkspass password] [-debug]\n\n\t-gui\t\tDisplays the user interface to make calls manually\n\t-guifolder\tPopulates the \"Supplier Data\" input box on the Account Details tab\n\t-u\t\tPopulates the D&B \"User Name\" input box on the Account Details tab\n\t-pwd\t\tPopulates the D&B \"Password\" input box on the Account Details tab\n\t-jksfile\tPopulates the Experian \"JKS File\" input box on the Account Details tab\n\t-jkspass\tPopulates the Experian \"Password\" input box on the Account Details tab\n\t-debug\t\tTurns on javax debugging. i.e. System.setProperty(\"javax.net.debug\",\"all\")\n\nOr\n\nDnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mappingtype -mappingGrade mappinggrade -mappingConfidence mappingconfidencecode [-delimiter delimiter]] [-rdnb] [-urdnb] [-xdnb] [-rexperian] [-xexperian] [-xabw folder [-f clientfilter]] [-debug]\n\n\t-bm\t\tPerform a bulk mapping import from a csv file\n\t-masterid\tColumn header of the master id column in the csv file\n\t-mappingid\tColumn header of the mapping id in the csv file ( the -mappingtype option specifies exactly what this id represents )\n\t-mappingtype\tSpecifies the mapping type of the mapping id column. \n\t\t\tCurrent options are:\n\t\t\t\"dnb\" for Dunn and Bradstreet DUNS numbers\n\t\t\t\"experian\" for Experian reference numbers\n\t-mappingGrade\tColumn header of the match grade column in the csv file\n\t-mappingConfidence\tColumn header of the match confidence code column in the csv file\n\t-delimiter\tThe delimiter used in the csv file\n\t\n\t-rdnb\t\tUpdate the D&B notification registrations\n\t-urdnb\t\tCancel any D&B notification registrations that are no longer relevant\n\t-xdnb\t\tGet D&B data updates for registered companies\n\t-u\t\tPopulates the D&B \"User Name\" input box on the Account Details tab\n\t-pwd\t\tPopulates the D&B \"Password\" input box on the Account Details tab\n\n\t-rexperian\tUpdate the Experian alert registrations\n\t-xxperian\tGet D&B data updates for registered companies\n\t-jksfile\tPopulates the Experian \"JKS File\" input box on the Account Details tab\n\t-jkspass\tPopulates the Experian \"Password\" input box on the Account Details tab\n\n\t-xabw\t\tImport data from abw based csv files. Must specify the folder location as a parameter.\n\t-f\t\tFilter the import based on Client. If specified, will only import the companies that match the specified client value.\n\t\n\t-debug\t\tTurns on javax debugging. i.e. System.setProperty(\"javax.net.debug\",\"all\")";
 		System.out.println(help);
 	}
 	
@@ -259,5 +264,9 @@ public class ImporterArgs
 
 	public String getMappingConfidence() {
 		return mappingConfidence;
+	}
+
+	public Boolean getIsDnBUnRegistrationSelected() {
+		return isDBUnRegistrationSelected;
 	}
 }

@@ -51,6 +51,8 @@ public class SupplierAppCSVCompanyRepository implements ICompanyRepository
 							c.getDunnBradstreetData().getRegistrationDetails().getStatus()!=RegistrationStatus.ACTIVE
 							&&
 							c.getDunnBradstreetData().getRegistrationDetails().getStatus()!=RegistrationStatus.REGISTERED
+							&&
+							c.getDunnBradstreetData().getRegistrationDetails().getStatus()!=RegistrationStatus.CANCELLED
 						)
 					&& c.getDunnBradstreetData().getOutOfBusiness() == false)
 			{

@@ -13,6 +13,7 @@ import WebServiceClients.AddRegistrationClient;
 import WebServiceClients.GetCompanyDetailsClient;
 import WebServiceClients.GetNotificationsClient;
 import WebServiceClients.GetRegistrationListClient;
+import WebServiceClients.ModifyRegistrationClient;
 
 import DnBXmlMappers.DnBDataMapper;
 import DnBXmlMappers.DnBDataUpdateMapper;
@@ -49,6 +50,26 @@ public class DnBWebServiceRepository implements IDnBRepository
 			
 			logXmlResponse(responseXml);
 			return isResponseSuccess(responseXml);
+		}
+		catch(Exception e)
+		{
+			logger.severe(e.getMessage());
+		}
+		return false;
+	}
+
+	@Override
+	public Boolean unRegisterCompany(int dunsNumber) 
+	{
+		try
+		{
+			ModifyRegistrationClient client = new ModifyRegistrationClient(wsUserName, wsPassword);
+		
+			String responseXml = client.cancelRegistration(String.valueOf(dunsNumber));
+			
+			logXmlResponse(responseXml);
+			
+			return true;
 		}
 		catch(Exception e)
 		{

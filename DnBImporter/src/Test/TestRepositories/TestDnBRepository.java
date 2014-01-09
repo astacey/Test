@@ -5,9 +5,11 @@ import java.util.Date;
 
 import Domain.DnBData;
 import Domain.DnBRating;
+import Domain.DnBRegistration;
 import Domain.DnBRegistrationCollection;
 import Domain.IDnBRepository;
 import Domain.IntegerDatedValue;
+import Domain.RegistrationStatus;
 import Domain.SICCode;
 
 public class TestDnBRepository implements IDnBRepository 
@@ -18,6 +20,17 @@ public class TestDnBRepository implements IDnBRepository
 	
 	@Override
 	public Boolean registerCompany(int dunsNumber) {
+		return true;
+	}
+
+	@Override
+	public Boolean unRegisterCompany(int dunsNumber) 
+	{
+		for(DnBRegistration reg : testRegistrations)
+		{
+			if(reg.getDunsNo()==dunsNumber)
+				reg.setStatus(RegistrationStatus.CANCELLED);
+		}
 		return true;
 	}
 

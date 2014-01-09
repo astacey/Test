@@ -29,4 +29,20 @@ public class TestImporterArgs {
 		assertTrue("IsUpdate is true", impArgs.getIsDnBUpdate());
 	}
 
+	@Test
+	public void testunregister()
+	{
+		String[] args = new String[]{ "-urdnb" };
+		ImporterArgs impArgs = new ImporterArgs(args);
+		assertTrue("unregister d&B is true", impArgs.getIsDnBUnRegistrationSelected());
+	}
+	
+	@Test
+	public void testDefaults()
+	{
+		String[] args = new String[]{};
+		ImporterArgs impArgs = new ImporterArgs(args);
+		assertFalse("unregister d&B is false by default", impArgs.getIsDnBUnRegistrationSelected());
+		
+	}
 }

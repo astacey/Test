@@ -104,6 +104,13 @@ public class EntryPoint
 			handler.RegisterCompanies();
 			logger.info("Finished DnB Registration");
 		}
+		if(args.getIsDnBUnRegistrationSelected() == true ) 
+		{
+			logger.info("Starting DnB UnRegistration");
+			//DnBRegistrationHandler handler = new DnBRegistrationHandler(companyRepo, dnbRepo);
+			//handler.RegisterCompanies();
+			logger.info("Finished DnB UnRegistration");
+		}
 		if(args.getIsExperianRegistrationSelected() == true ) 
 		{
 			logger.info("Starting Experian Registration");

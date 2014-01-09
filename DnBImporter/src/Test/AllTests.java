@@ -20,6 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
 				TestDnBLookupMapper.class,
 				TestDnBRating.class, 
 				TestDnBRegistrationCollection.class, 
+				TestDnBUnRegistrationHandler.class,
 				TestDnBUpdateHandler.class,
 				TestExperianDataMapper.class, 
 				TestExperianUpdateHandler.class, 

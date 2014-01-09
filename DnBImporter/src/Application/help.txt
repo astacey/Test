@@ -11,7 +11,7 @@ DnbImporter -gui [-guifolder folder] [-u userName] [-pwd password] [-jksfile fil
 
 Or
 
-DnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mappingtype -mappingGrade mappinggrade -mappingConfidence mappingconfidencecode [-delimiter delimiter]] [-rdnb] [-xdnb] [-rexperian] [-xexperian] [-xabw folder [-f clientfilter]] [-debug]
+DnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mappingtype -mappingGrade mappinggrade -mappingConfidence mappingconfidencecode [-delimiter delimiter]] [-rdnb] [-urdnb] [-xdnb] [-rexperian] [-xexperian] [-xabw folder [-f clientfilter]] [-debug]
 
 	-bm		Perform a bulk mapping import from a csv file
 	-masterid	Column header of the master id column in the csv file
@@ -25,6 +25,7 @@ DnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mapping
 	-delimiter	The delimiter used in the csv file
 	
 	-rdnb		Update the D&B notification registrations
+	-urdnb		Cancel any D&B notification registrations that are no longer relevant
 	-xdnb		Get D&B data updates for registered companies
 	-u		Populates the D&B "User Name" input box on the Account Details tab
 	-pwd		Populates the D&B "Password" input box on the Account Details tab
