@@ -192,7 +192,7 @@ public class DnBDataUpdateMapper
 			if(paydex>-1)
 				data.getPaydexScoreHistory().upsert(new IntegerDatedValue(changeDate, paydex));
 			if(paydexNorm>-1)
-				data.getPaydexScoreHistory().upsert(new IntegerDatedValue(changeDate, paydexNorm));
+				data.getPaydexNormHistory().upsert(new IntegerDatedValue(changeDate, paydexNorm));
 			if(creditDelinquencyPercentile>-1)
 				data.getCreditDelinquencyNationalPercentileHistory().upsert(new IntegerDatedValue(changeDate, creditDelinquencyPercentile));
 			if(maxCredit>-1.0)
