@@ -60,11 +60,11 @@ public class ABWUpdateHandler
 		target.setVerticalMarket(source.getVerticalMarket());
 		// We only add average days to payment or opening balance if the value we just read is different to the current value
 		// this is to prevent a new fact every day, even when the data hasn't changed
-		if(target.getOpenBalance()==null || source.getOpenBalance()==null || target.getOpenBalance().getValue()-source.getOpenBalance().getValue() >0.001)
+		if(target.getOpenBalance()==null || source.getOpenBalance()==null || Math.abs(target.getOpenBalance().getValue()-source.getOpenBalance().getValue()) > 0.001)
 		{
-			target.getOpenBalanceCollection().upsert(source.getOpenBalanceCollection());
+			target.getOpenBalanceCollection().upsert(source.getOpenBalanceCollection()); 
 		}
-		if(target.getAverageDaysToPayment()==null || source.getAverageDaysToPayment()==null || target.getAverageDaysToPayment().getValue()-source.getAverageDaysToPayment().getValue() >0.001)
+		if(target.getAverageDaysToPayment()==null || source.getAverageDaysToPayment()==null || Math.abs(target.getAverageDaysToPayment().getValue()-source.getAverageDaysToPayment().getValue()) >0.001)
 		{
 			target.getAverageDaysToPaymentCollection().upsert(source.getAverageDaysToPaymentCollection());
 		}

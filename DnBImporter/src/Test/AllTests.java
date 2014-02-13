@@ -7,6 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ TestABWCSVCompanyRepository.class, 
 				TestABWXlsxCompanyRepository.class,
+				TestABWUpdateHandler.class,
 				TestBulkMappingUpload.class, 
 				TestCompany.class, 
 				TestCompanyType.class,
