@@ -26,6 +26,9 @@ public class ImporterArgs
 	private char delimiter=','; // default
 	private Boolean isDebugJavax = false;
 	private Boolean isDBUnRegistrationSelected = false;
+	// offset to add to the month that is read in from source financial systems.
+	// e.g. some may have a financial year april to march and return data for month 201301, meaning 1st month 2013 i.e. April 2013, not January 2013
+	private int fiscalMonthOffset = 0; 
 	
 	public ImporterArgs(String[] args)
 	{
@@ -151,6 +154,19 @@ public class ImporterArgs
 				args[i].getChars(0, 1, chars, 0);
 				this.delimiter=chars[0];
 			}
+			else if(args[i].equalsIgnoreCase("-fmo")) //Fiscal Month Offset
+			{
+				i++;
+				try
+				{
+					this.fiscalMonthOffset = Integer.parseInt(args[i]);
+				}
+				catch(NumberFormatException nfe)
+				{
+					RuntimeException e = new RuntimeException("Invalid fmo parameter. Must be an integer.", nfe);
+					throw(e);
+				}
+			}
 			else if(args[i].equalsIgnoreCase("-help"))
 			{
 				printHelp();
@@ -268,5 +284,9 @@ public class ImporterArgs
 
 	public Boolean getIsDnBUnRegistrationSelected() {
 		return isDBUnRegistrationSelected;
+	}
+
+	public int getFiscalMonthOffset() {
+		return fiscalMonthOffset;
 	}
 }

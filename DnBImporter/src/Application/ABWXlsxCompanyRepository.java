@@ -30,14 +30,19 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 	private String sourceFileTotalSpend;
 	private String sourceFileAvgDays;
 	private String clientFilter;
+	private int fiscalMonthsOffset = 0;
 	
 	private CompanyCollection allCompanies;
 
 	public ABWXlsxCompanyRepository(String sourceFolder)
 	{
-		this(sourceFolder, "");
+		this(sourceFolder, "", 0);
 	}
 	public ABWXlsxCompanyRepository(String sourceFolder, String clientFilter)
+	{
+		this(sourceFolder, clientFilter, 0);
+	}
+	public ABWXlsxCompanyRepository(String sourceFolder, String clientFilter, int fiscalMonthsOffset)
 	{
 		if( !sourceFolder.endsWith("/"))
 			sourceFolder+="/";
@@ -46,6 +51,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 		this.sourceFileTotalSpend = sourceFolder + "CurrentBatch-Customer Supplier Total Spend.CSV";
 		this.sourceFileAvgDays = sourceFolder + "CurrentBatch-Customer Supplier Avg Days.CSV";
 		this.clientFilter=clientFilter;
+		this.fiscalMonthsOffset = fiscalMonthsOffset;
 	}
 	
 	@Override
@@ -285,7 +291,7 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 						{
 							try
 							{
-								Date date = getDate(period);
+								Date date = getDateWithOffset(period);
 								double val = XmlHelper.getDoubleFromXmlString(amount);
 								c.getTotalSpendCollection().upsert(new DoubleDatedValue(date, val));
 							}
@@ -356,9 +362,12 @@ public class ABWXlsxCompanyRepository implements ICompanyRepository
 		}
 	}
 	
-	private Date getDate(String stringDate) throws ParseException
+	private Date getDateWithOffset(String stringDate) throws ParseException
 	{
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-		return formatter.parse(stringDate);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(formatter.parse(stringDate));
+		cal.add(Calendar.MONTH, fiscalMonthsOffset);
+		return cal.getTime();
 	}
 }

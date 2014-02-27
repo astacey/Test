@@ -92,7 +92,7 @@ public class EntryPoint
 		if(args.getIsABWUpdate() == true)
 		{
 			logger.info("Starting ABW Update");
-			ICompanyRepository companySourceRepo = new ABWXlsxCompanyRepository(args.getAbwUpdateFolder(), args.getClientFilter());
+			ICompanyRepository companySourceRepo = new ABWXlsxCompanyRepository(args.getAbwUpdateFolder(), args.getClientFilter(), args.getFiscalMonthOffset());
 			ABWUpdateHandler abwHandler = new ABWUpdateHandler(companyRepo, companySourceRepo);
 			abwHandler.getUpdates();
 			logger.info("Finihed ABW Update");
