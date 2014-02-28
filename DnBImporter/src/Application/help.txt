@@ -11,7 +11,7 @@ DnbImporter -gui [-guifolder folder] [-u userName] [-pwd password] [-jksfile fil
 
 Or
 
-DnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mappingtype -mappingGrade mappinggrade -mappingConfidence mappingconfidencecode [-delimiter delimiter]] [-rdnb] [-urdnb] [-xdnb] [-rexperian] [-xexperian] [-xabw folder [-f clientfilter]] [-debug]
+DnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mappingtype -mappingGrade mappinggrade -mappingConfidence mappingconfidencecode [-delimiter delimiter]] [-rdnb] [-urdnb] [-xdnb] [-rexperian] [-xexperian] [-xabw folder [-f clientfilter] [-fmo fiscalMonthOffset]] [-debug]
 
 	-bm		Perform a bulk mapping import from a csv file
 	-masterid	Column header of the master id column in the csv file
@@ -36,6 +36,7 @@ DnbImporter [-bm filepath -masterid id -mappingid mappingid -mappingtype mapping
 	-jkspass	Populates the Experian "Password" input box on the Account Details tab
 
 	-xabw		Import data from abw based csv files. Must specify the folder location as a parameter.
-	-f		Filter the import based on Client. If specified, will only import the companies that match the specified client value.
+	-f			Filter the import based on Client. If specified, will only import the companies that match the specified client value.
+	-fmo 		Fiscal Month Offset. Offsets the dates imported by the number of months specified. 
 	
 	-debug		Turns on javax debugging. i.e. System.setProperty("javax.net.debug","all")
